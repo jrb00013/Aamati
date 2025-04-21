@@ -2,6 +2,6 @@
 # Aamati
 
 
-# Audio Filtering DAW VST3 Plugin 
+## Audio Filtering DAW VST3 Plugin 
 
-# Aamati.vst3 
+## Aamati.vst3 
