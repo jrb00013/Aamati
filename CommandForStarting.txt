@@ -1,0 +1,37 @@
+  # Building 
+
+rm -rf build
+cmake -B build -S . \
+  -DJUCE_APPLICATION_NAME="Aamati" \
+  -DJUCE_ENABLE_MODULE_SOURCE_GROUPS=ON \
+  -DJUCE_BUILD_VST3_PLUGIN=ON \
+  -DJUCE_BUILD_PLUGIN_STANDALONE=ON
+
+
+  # Compiling
+  
+cmake --build build --config Release
+
+
+  # Running and Testing
+
+./build/Aamati_artefacts/Standalone/Aamati
+
+
+
+
+- use deep seek then claude
+
+
+
+# With Toolchain
+
+rm -rf build
+cmake -B build -S . \
+  -DJUCE_APPLICATION_NAME="Aamati" \
+  -DJUCE_ENABLE_MODULE_SOURCE_GROUPS=ON \
+  -DJUCE_BUILD_VST3_PLUGIN=ON \
+  -DJUCE_BUILD_PLUGIN_STANDALONE=ON \
+  -DCMAKE_TOOLCHAIN_FILE=../CMake/toolchains/Toolchain-VS2022.cmake
+
+  # Building:
