@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.15)
 
-project(Aamati VERSION 0.1.0)
+project(Aamati VERSION 1.1.0)
 
 # Find and include JUCE
-set(JUCE_DIR "../JUCE")
+set(JUCE_DIR "JUCE")
 add_subdirectory(${JUCE_DIR} JUCE)
 
 # Create the plugin
