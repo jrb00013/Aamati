@@ -6,8 +6,15 @@ project(Aamati VERSION 1.1.0)
 set(JUCE_DIR "JUCE")
 add_subdirectory(${JUCE_DIR} JUCE)
 
+# Include Midifile and link libraries
 add_subdirectory(midifile midifile_build)
 target_link_libraries(Aamati PRIVATE midifile)
+
+# Include Onnx Runtime and link libraries
+add_subdirectory(onnxruntime)
+target_link_libraries(Aamati PRIVATE
+    onnxruntime
+)
 
 # Create the plugin
 juce_add_plugin(Aamati
@@ -54,6 +61,11 @@ target_link_libraries(Aamati
 target_compile_definitions(Aamati PRIVATE
     JUCE_DSP=1)
 
+# Link pthread and dl on UNIX systems
+if(UNIX)
+    target_link_libraries(Aamati PRIVATE pthread dl)
+endif()
+
 # === Copy ONNX model to build Resources ===
 set(MODEL_PATH "${CMAKE_CURRENT_SOURCE_DIR}/MLPython/groove_mood_model.onnx")
 set(DEST_PATH "${CMAKE_CURRENT_BINARY_DIR}/Resources")
@@ -64,3 +76,4 @@ add_custom_command(
     TARGET Aamati POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different ${MODEL_PATH} ${DEST_PATH}/groove_mood_model.onnx
 )
+

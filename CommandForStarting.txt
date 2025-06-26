@@ -1,0 +1,76 @@
+  # Building 
+
+// WITH NINJA
+  rm -rf build
+cmake -B build -S . -G Ninja \
+  -DJUCE_APPLICATION_NAME="Aamati" \
+  -DJUCE_ENABLE_MODULE_SOURCE_GROUPS=ON \
+  -DJUCE_BUILD_VST3_PLUGIN=ON \
+  -DJUCE_BUILD_PLUGIN_STANDALONE=ON \
+  -DCMAKE_TOOLCHAIN_FILE=../CMake/toolchains/Toolchain-VS2022.cmake
+
+ 
+
+  // WITHOUT NINJA
+
+rm -rf build
+cmake -B build -S . \
+  -DJUCE_APPLICATION_NAME="Aamati" \
+  -DJUCE_ENABLE_MODULE_SOURCE_GROUPS=ON \
+  -DJUCE_BUILD_VST3_PLUGIN=ON \
+  -DJUCE_BUILD_PLUGIN_STANDALONE=ON
+
+
+  # Compiling
+
+  WITH NINJA
+  ninja -C build
+
+  // WITHOUT NINJA
+  
+  cmake --build build --config Release
+
+
+  # Running and Testing
+
+./build/Aamati_artefacts/Standalone/Aamati
+
+
+
+
+- use deep seek then claude
+
+
+
+# With Toolchain
+
+rm -rf build
+cmake -B build -S . \
+  -DJUCE_APPLICATION_NAME="Aamati" \
+  -DJUCE_ENABLE_MODULE_SOURCE_GROUPS=ON \
+  -DJUCE_BUILD_VST3_PLUGIN=ON \
+  -DJUCE_BUILD_PLUGIN_STANDALONE=ON \
+  -DCMAKE_TOOLCHAIN_FILE=../CMake/toolchains/Toolchain-VS2022.cmake
+
+ 
+
+
+ # Sending Plugin to Aamati
+ 
+
+Zip the entire .vst3 folder like this:
+
+zip -r Aamati.vst3.zip Aamati.vst3/
+
+Share the .zip file to them
+
+Tell them to unzip it into their VST3 folder:
+
+On Linux: ~/.vst3/
+
+On Windows: C:\Program Files\Common Files\VST3
+
+On macOS: /Library/Audio/Plug-Ins/VST3
+
+Now their DAW will find it like any regular plugin 🎉
+

@@ -1,0 +1,37 @@
+Install Python Dependencies
+pip3 install pandas numpy scikit-learn joblib torch skl2onnx
+
+
+Install onnxruntime
+
+cd ~/Downloads
+wget https://github.com/microsoft/onnxruntime/releases/download/v1.17.0/onnxruntime-linux-x64-1.17.0.tgz
+tar -xzf onnxruntime-linux-x64-1.17.0.tgz
+sudo mv onnxruntime-linux-x64-1.17.0 /opt/onnxruntime
+
+Install System  Dependencies (here as of 1:38 PM)
+
+sudo apt update
+sudo apt install -y \
+    build-essential \
+    cmake \
+    ninja-build \
+    libasound2-dev \
+    libjack-jackd2-dev \
+    libx11-dev \
+    libxrandr-dev \
+    libxinerama-dev \
+    libxcursor-dev \
+    libfreetype6-dev \
+    libcurl4-openssl-dev \
+    libgtk-3-dev \
+    pkg-config \
+    git \
+    unzip
+
+
+    Install Ninja
+    sudo apt update
+    sudo apt install ninja-build
+
+    
