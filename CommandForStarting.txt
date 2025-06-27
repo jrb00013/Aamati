@@ -23,12 +23,16 @@ cmake -B build -S . \
 
   # Compiling
 
-  WITH NINJA
+  // WITH NINJA
+
   ninja -C build
+
 
   // WITHOUT NINJA
   
   cmake --build build --config Release
+
+
 
 
   # Running and Testing
@@ -38,9 +42,12 @@ cmake -B build -S . \
 
 
 
-- use deep seek then claude
+-----------------------------
 
+Path to Classify for Next Midif File
+/mnt/c/Users/josep/Documents/Sandbox2Workspace/DAWPlugin/Aamati/MLPython/MusicGroovesMidi/Anthem 140 BPM @prod.aamatii.mid
 
+------------------------------
 
 # With Toolchain
 
@@ -58,19 +65,4 @@ cmake -B build -S . \
  # Sending Plugin to Aamati
  
 
-Zip the entire .vst3 folder like this:
-
-zip -r Aamati.vst3.zip Aamati.vst3/
-
-Share the .zip file to them
-
-Tell them to unzip it into their VST3 folder:
-
-On Linux: ~/.vst3/
-
-On Windows: C:\Program Files\Common Files\VST3
-
-On macOS: /Library/Audio/Plug-Ins/VST3
-
-Now their DAW will find it like any regular plugin 🎉
 

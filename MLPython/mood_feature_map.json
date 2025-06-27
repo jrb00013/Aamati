@@ -1,0 +1,72 @@
+{
+  "chill": {
+    "timing_feel": "loose",
+    "rhythmic_density": "low",
+    "dynamic_intensity": "soft",
+    "fill_activity": "sparse",
+    "fx_character": "wet, wide, airy"
+  },
+  "energetic": {
+    "timing_feel": "tight",
+    "rhythmic_density": "high",
+    "dynamic_intensity": "hard",
+    "fill_activity": "frequent",
+    "fx_character": "dry, punchy, sharp"
+  },
+  "suspenseful": {
+    "timing_feel": "mid",
+    "rhythmic_density": "medium",
+    "dynamic_intensity": "varied",
+    "fill_activity": "moderate",
+    "fx_character": "dark, modulated, narrow"
+  },
+  "uplifting": {
+    "timing_feel": "mid",
+    "rhythmic_density": "high",
+    "dynamic_intensity": "bright",
+    "fill_activity": "medium",
+    "fx_character": "shimmery, wide, echoing"
+  },
+  "ominous": {
+    "timing_feel": "tight",
+    "rhythmic_density": "medium",
+    "dynamic_intensity": "deep",
+    "fill_activity": "sparse",
+    "fx_character": "saturated, low-end heavy"
+  },
+  "romantic": {
+    "timing_feel": "loose",
+    "rhythmic_density": "medium",
+    "dynamic_intensity": "gentle",
+    "fill_activity": "occasional",
+    "fx_character": "warm, lush, resonant"
+  },
+  "gritty": {
+    "timing_feel": "tight",
+    "rhythmic_density": "high",
+    "dynamic_intensity": "harsh",
+    "fill_activity": "irregular",
+    "fx_character": "distorted, mono, rough"
+  },
+  "dreamy": {
+    "timing_feel": "loose",
+    "rhythmic_density": "low",
+    "dynamic_intensity": "light",
+    "fill_activity": "sparse",
+    "fx_character": "reverb-heavy, washed-out"
+  },
+  "frantic": {
+    "timing_feel": "random",
+    "rhythmic_density": "very_high",
+    "dynamic_intensity": "wild",
+    "fill_activity": "bursty",
+    "fx_character": "glitchy, stuttered, noisy"
+  },
+  "focused": {
+    "timing_feel": "tight",
+    "rhythmic_density": "medium",
+    "dynamic_intensity": "consistent",
+    "fill_activity": "minimal",
+    "fx_character": "clean, subtle, precise"
+  }
+}
