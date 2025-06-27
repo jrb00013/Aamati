@@ -75,7 +75,7 @@ def predict_mood(midi_path):
         return
 
     
-    # For now, fallback to 'chill' or any default mood
+    # Fallback to 'chill' or any default mood
     rough_mood = 'chill'  
 
     # Get categorical features from rough mood 
