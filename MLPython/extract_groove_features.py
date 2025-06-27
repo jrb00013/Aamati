@@ -135,7 +135,13 @@ def main(midi_folder, output_csv, log_csv):
             features = extract_features(midi_path)
             if features:
                 print(f"Please label this groove: {filename}")
-                mood = input("Mood (chill/tense/uplifting/dark/energetic/relaxed): ").strip()
+                valid_moods = [ "chill", "melancholy", "triumphant", "suspenseful", "carefree", "romantic", "gritty", "ethereal", "chaotic", "focused"]
+                while True:
+                    mood = input("Mood (aggressive/melancholy/triumphant/suspenseful/carefree/romantic/gritty/ethereal/chaotic/focused/gritty): ").strip()
+                    if mood in valid_moods:
+                            break
+                    else:
+                        print("Invalid mood. Choose from listed options.")
                 features['mood'] = mood
                 records.append(features)
 
