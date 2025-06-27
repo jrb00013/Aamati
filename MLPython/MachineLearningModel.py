@@ -53,12 +53,12 @@ model.fit(X_train, y_train)
 y_pred = model.predict(X_test)
 print(classification_report(y_test, y_pred))
 
-# Save model and encoder for later use in prediction
+# Save model as .pkl and encoder for later use in prediction
 joblib.dump(model, 'groove_mood_model.pkl')
 joblib.dump(encoder, 'categorical_encoder.pkl')
 print("Model and encoder saved.")
 
-# Convert to ONNX format
+# Convert to ONNX format 
 initial_type = [('float_input', FloatTensorType([None, X_all.shape[1]]))]
 onnx_model = convert_sklearn(model, initial_types=initial_type)
 
