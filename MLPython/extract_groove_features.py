@@ -32,6 +32,39 @@ fx_character_map = {
     'distorted, mono, rough': 6, 'reverb-heavy, washed-out': 7, 'glitchy, stuttered, noisy': 8,
     'clean, subtle, precise': 9
 }
+def estimate_swing(note_starts):
+
+    MIN_NOTES = 8  # minimum number of notes to consider swing meaningful
+    TOLERANCE = 0.005  # tolerance to treat IOIs as equal (e.g., for quantized input)
+
+    sorted_starts = np.sort(note_starts)
+    iois = np.diff(sorted_starts)
+
+    if len(iois) < MIN_NOTES:
+        return 0.0  #  too short to estimate swing meaningfully
+
+    # Check if all IOIs are roughly equal quantized stiff rhythm
+    if np.std(iois) < TOLERANCE:
+        return 0.0
+
+    odd_iois = iois[0::2]
+    even_iois = iois[1::2]
+
+    if len(odd_iois) < 2 or len(even_iois) < 2:
+        return 0.0  # not enough paired intervals
+
+    # Avoid divide-by-zero
+    mean_odd = np.mean(odd_iois)
+    mean_even = np.mean(even_iois)
+    if mean_even == 0:
+        return 0.0
+
+    swing_ratio = mean_odd / mean_even
+    swing_amount = abs(swing_ratio - 1.0)
+
+    # Clamp extreme values
+    return round(min(swing_amount, 1.0), 4)
+
 
 def extract_features(midi_path):
     try:
@@ -57,7 +90,13 @@ def extract_features(midi_path):
         velocity_mean = np.mean(velocities)
         duration = pm.get_end_time()
         density = len(note_starts) / duration if duration > 0 else 0
-        swing = np.mean(np.abs(np.array(note_starts) - np.round(np.array(note_starts) * 2) / 2))
+        quarter_note = 60.0 / tempo
+        eighth_note = quarter_note / 2
+        #quant_grid = np.round(np.array(note_starts) / eighth_note) * eighth_note
+        swing = estimate_swing(note_starts)
+        #swing = np.mean(np.abs(np.array(note_starts) - np.round(np.array(note_starts) * 2) / 2)) # OLD swing equation
+        dynamic_range = np.max(velocities) - np.min(velocities)
+        
 
         timeline.sort()
         polyphony_counts = []
@@ -67,12 +106,15 @@ def extract_features(midi_path):
             polyphony_counts.append(active_notes)
 
         iois = np.diff(np.sort(note_starts))
+        avg_polyphony = np.mean(polyphony_counts)
+        peak_polyphony = np.max(polyphony_counts) # just to have, maybe used for later
+        
         return {
             'tempo': tempo,
             'swing': swing,
             'density': density,
             'dynamic_range': np.max(velocities) - np.min(velocities),
-            'energy': (density * 0.5) + (velocity_mean / 127 * 0.5),
+            'energy': (0.4581 * density + 0.0372 * velocity_mean + 0.0154 * dynamic_range + 0.1026 * avg_polyphony + 0.7832),
             'mean_note_length': np.mean(note_lengths),
             'std_note_length': np.std(note_lengths),
             'velocity_mean': velocity_mean,
@@ -127,10 +169,55 @@ def main(midi_folder, output_csv, log_csv):
 
                 features['mood'] = mood
                 description = mood_feature_map[mood]
-                features['timing_feel'] = timing_feel_map[description['timing_feel']]
-                features['rhythmic_density'] = rhythmic_density_map[description['rhythmic_density']]
+
+                swing = features['swing']
+                syncopation = features['syncopation']
+                onset_entropy = features['onset_entropy']
+                pitch_range = features['pitch_range']
+                density = features['density']
+
+                if swing > 0.1 and syncopation > 0.02:
+                    timing_feel_score = 2  # loose
+                elif swing < 0.03 and syncopation < 0.01:
+                    timing_feel_score = 0  # tight
+                elif syncopation > 0.05 and onset_entropy > 2.0:
+                    timing_feel_score = 3  # random
+                else:
+                     timing_feel_score = 1  # mid
+                features['timing_feel'] = timing_feel_score
+
+                if density < 2:
+                    rhythmic_density_score = 0
+                elif density < 5:
+                    rhythmic_density_score = 1
+                elif density < 10:
+                    rhythmic_density_score = 2
+                else:
+                    rhythmic_density_score = 3
+                features['rhythmic_density'] = rhythmic_density_score
+                
+
                 features['dynamic_intensity'] = dynamic_intensity_map[description['dynamic_intensity']]
-                features['fill_activity'] = fill_activity_map[description['fill_activity']]
+               
+               # Estimate fill_activity on an 8-level scale (0 to 7)
+                if pitch_range < 5 and onset_entropy < 1.2:
+                    fill_activity_score = 0  # sparse
+                elif pitch_range < 10 and onset_entropy < 1.5:
+                     fill_activity_score = 1  # minimal
+                elif pitch_range < 15 and onset_entropy < 1.8:
+                      fill_activity_score = 2  # occasional
+                elif pitch_range < 20 and onset_entropy < 2.1:
+                       fill_activity_score = 3  # moderate
+                elif pitch_range < 25 and onset_entropy < 2.4:
+                   fill_activity_score = 4  # medium
+                elif pitch_range < 30 and onset_entropy < 2.7:
+                      fill_activity_score = 5  # frequent
+                elif pitch_range <= 35 or onset_entropy <= 3.0:
+                    fill_activity_score = 6  # bursty
+                else:
+                  fill_activity_score = 7  # irregular
+                features['fill_activity'] = fill_activity_score
+
                 features['fx_character'] = fx_character_map[description['fx_character']]
                 records.append(features)
 
