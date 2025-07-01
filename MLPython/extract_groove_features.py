@@ -109,11 +109,16 @@ def extract_features(midi_path):
         avg_polyphony = np.mean(polyphony_counts)
         peak_polyphony = np.max(polyphony_counts) # just to have, maybe used for later
         
+        velocities_np = np.array(velocities)
+        dynamic_range = np.max(velocities_np) - np.min(velocities_np)
+        if dynamic_range < 1e-3:
+                dynamic_range = np.std(velocities_np)
+
         return {
             'tempo': tempo,
             'swing': swing,
             'density': density,
-            'dynamic_range': np.max(velocities) - np.min(velocities),
+            'dynamic_range': dynamic_range,
             'energy': (0.4581 * density + 0.0372 * velocity_mean + 0.0154 * dynamic_range + 0.1026 * avg_polyphony + 0.7832),
             'mean_note_length': np.mean(note_lengths),
             'std_note_length': np.std(note_lengths),
