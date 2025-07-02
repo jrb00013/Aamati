@@ -159,6 +159,9 @@ def main(midi_folder, output_csv, log_csv):
     records = []
     moods = list(mood_feature_map.keys())
 
+    inactive_folder = os.path.join(os.path.dirname(midi_folder), "ProcessedMIDIs")
+    os.makedirs(inactive_folder, exist_ok=True)
+
     for filename in os.listdir(midi_folder):
         if filename.lower().endswith(('.mid', '.midi')):
             midi_path = os.path.join(midi_folder, filename)
@@ -226,9 +229,15 @@ def main(midi_folder, output_csv, log_csv):
 
                 features['fx_character'] = fx_character_map[description['fx_character']]
                 records.append(features)
+
                 df_single = pd.DataFrame([features])
                 append_to_log(df_single, log_csv,output_csv)
                 print(f"✅ Appended {filename} to log.")
+
+                 # Move processed MIDI to InactiveMIDIs
+                new_path = os.path.join(inactive_folder, filename)
+                os.rename(midi_path, new_path)
+                print(f"🗂️  Moved {filename} to InactiveMIDIs.\n")
 
     print(f"Finished processing {len(records)} MIDI files.")
     df_all = pd.DataFrame(records)
