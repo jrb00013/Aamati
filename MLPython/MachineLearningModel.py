@@ -4,10 +4,12 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import OneHotEncoder
+from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import classification_report
 import joblib
 from skl2onnx import convert_sklearn
 from skl2onnx.common.data_types import FloatTensorType
+from imblearn.over_sampling import SMOTE
 
 # Load data
 data = pd.read_csv('groove_features_log.csv')
@@ -42,20 +44,29 @@ X_cat_encoded = encoder.fit_transform(X_cat)
 # Combine encoded categorical features and numerical features
 X_all = np.hstack([X_cat_encoded, X_num])
 
+# y Label Encoder
+label_encoder = LabelEncoder()
+y_encoded = label_encoder.fit_transform(y)
+
 # Train/test split
-X_train, X_test, y_train, y_test = train_test_split(X_all, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X_all, y_encoded, test_size=0.2, random_state=42,stratify=y_encoded)
+
+# Apply SMOTE to training set only
+smote = SMOTE(random_state=42)
+X_train_resampled, y_train_resampled = smote.fit_resample(X_train, y_train)
 
 # Train RandomForestClassifier on numeric input only
-model = RandomForestClassifier(n_estimators=100, random_state=42)
-model.fit(X_train, y_train)
+model = RandomForestClassifier(n_estimators=100,random_state=42) # model = RandomForestClassifier(n_estimators=100,class_weight='balanced' ,random_state=42)
+model.fit(X_train_resampled, y_train_resampled)
 
 # Predict and evaluate
 y_pred = model.predict(X_test)
-print(classification_report(y_test, y_pred))
+print(classification_report(label_encoder.inverse_transform(y_test), label_encoder.inverse_transform(y_pred), zero_division=0))
 
 # Save model as .pkl and encoder for later use in prediction
 joblib.dump(model, 'groove_mood_model.pkl')
 joblib.dump(encoder, 'categorical_encoder.pkl')
+joblib.dump(label_encoder, 'label_encoder.pkl')
 print("Model and encoder saved.")
 
 # Convert to ONNX format 

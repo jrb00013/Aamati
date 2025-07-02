@@ -137,7 +137,7 @@ def extract_features(midi_path):
         print(f"Error processing {midi_path}: {e}")
         return None
 
-def append_to_log(new_data: pd.DataFrame, log_csv: str):
+def append_to_log(new_data: pd.DataFrame, log_csv: str, current_csv: str):
     columns = [
         'tempo', 'swing', 'density', 'dynamic_range', 'energy',
         'mean_note_length', 'std_note_length', 'velocity_mean', 'velocity_std',
@@ -151,8 +151,9 @@ def append_to_log(new_data: pd.DataFrame, log_csv: str):
         combined = pd.concat([old, new_data], ignore_index=True)
     else:
         combined = new_data
-    combined[columns].to_csv(log_csv, index=False, float_format="%.4f")
-    print(f"Appended to {log_csv}")
+    combined[columns].to_csv(log_csv, index=False, float_format="%.4f") # append to log
+    new_data[columns].to_csv(current_csv, index=False, float_format="%.4f") # overwrite
+    print(f"Appended to {log_csv} and updated {current_csv}")
 
 def main(midi_folder, output_csv, log_csv):
     records = []
@@ -225,14 +226,14 @@ def main(midi_folder, output_csv, log_csv):
 
                 features['fx_character'] = fx_character_map[description['fx_character']]
                 records.append(features)
+                df_single = pd.DataFrame([features])
+                append_to_log(df_single, log_csv,output_csv)
+                print(f"✅ Appended {filename} to log.")
 
-    if records:
-        df = pd.DataFrame(records)
-        df.to_csv(output_csv, index=False, float_format="%.4f")
-        append_to_log(df, log_csv)
-        print(f"Saved {len(records)} grooves to {output_csv}")
-    else:
-        print("No grooves processed.")
+    print(f"Finished processing {len(records)} MIDI files.")
+    df_all = pd.DataFrame(records)
+    df_all.to_csv(output_csv, index=False, float_format="%.4f")
+
     with open("mood_feature_map.json", "w") as f:
          json.dump(mood_feature_map, f, indent=2)
          print("Exported mood_feature_map.json")
