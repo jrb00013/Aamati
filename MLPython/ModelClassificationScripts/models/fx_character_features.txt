@@ -1,0 +1,5 @@
+instrument_count
+onset_entropy
+pitch_range
+entropy_pitch_interaction
+instr_entropy_interaction
