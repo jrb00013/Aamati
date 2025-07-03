@@ -4,6 +4,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error, r2_score
+from joblib import dump
 
 df = pd.read_csv("groove_features_log.csv")
 
@@ -28,3 +29,6 @@ r2 = r2_score(y_test, y_pred)
 print("FX Character Regression Performance:")
 print(f"  MSE: {mse:.4f}")
 print(f"  R^2: {r2:.4f}")
+
+# Save the trained model to disk to be used in extract_groove_features.py
+dump(model, "models/energy_random_forest.joblib")

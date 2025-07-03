@@ -1,4 +1,4 @@
-# extract_groove_features.py
+# extract_energy_features.py
 import os
 import pretty_midi
 import pandas as pd
@@ -6,16 +6,9 @@ import numpy as np
 import datetime
 import scipy.stats
 import json
-from joblib import load
+from joblib import dump
 
-# Import data analysis models
-energy_model = load("ModelClassificationScripts/models/energy_random_forest.joblib") 
-dynamic_model = load("ModelClassificationScripts/models/dynamic_intensity_randomforest.joblib")
-fill_model = load("ModelClassificationScripts/models/fill_activity_randomforest.joblib")
-rhythm_model = load("ModelClassificationScripts/models/rhythmic_density_ordinal_regression.joblib")
-fx_model = load("ModelClassificationScripts/models/fx_character_regression.joblib")
-
-# Define mood-to-feature mapping
+# Step 1: Define mood-to-feature mapping
 mood_feature_map = {
     "chill": {"timing_feel": "loose", "rhythmic_density": "low", "dynamic_intensity": "soft", "fill_activity": "sparse", "fx_character": "wet, wide, airy"},
     "energetic": {"timing_feel": "tight", "rhythmic_density": "high", "dynamic_intensity": "hard", "fill_activity": "frequent", "fx_character": "dry, punchy, sharp"},
@@ -29,7 +22,21 @@ mood_feature_map = {
     "focused": {"timing_feel": "tight", "rhythmic_density": "medium", "dynamic_intensity": "consistent", "fill_activity": "minimal", "fx_character": "clean, subtle, precise"}
 }
 
-# Define numeric mappings
+# Step 1.5: Define mood-to-energy mapping
+mood_energy_score = {
+    "chill": 0.2,
+    "romantic": 0.3,
+    "dreamy": 0.4,
+    "focused": 0.5,
+    "uplifting": 0.6,
+    "suspenseful": 0.7,
+    "gritty": 0.75,
+    "ominous": 0.8,
+    "frantic": 0.9,
+    "energetic": 1.0
+}
+
+# Step 2: Define numeric mappings
 timing_feel_map = {'tight': 0, 'mid': 1, 'loose': 2, 'random': 3}
 rhythmic_density_map = {'low': 0, 'medium': 1, 'high': 2, 'very_high': 3}
 dynamic_intensity_map = {'soft': 0, 'gentle': 1, 'light': 2, 'bright': 3, 'deep': 4, 'varied': 5, 'consistent': 6, 'hard': 7, 'harsh': 8, 'wild': 9}
@@ -40,18 +47,16 @@ fx_character_map = {
     'distorted, mono, rough': 6, 'reverb-heavy, washed-out': 7, 'glitchy, stuttered, noisy': 8,
     'clean, subtle, precise': 9
 }
+
 def estimate_swing(note_starts):
-
-    MIN_NOTES = 8  # minimum number of notes to consider swing meaningful
-    TOLERANCE = 0.005  # tolerance to treat IOIs as equal (e.g., for quantized input)
-
+    MIN_NOTES = 8
+    TOLERANCE = 0.005
     sorted_starts = np.sort(note_starts)
     iois = np.diff(sorted_starts)
 
     if len(iois) < MIN_NOTES:
-        return 0.0  #  too short to estimate swing meaningfully
+        return 0.0
 
-    # Check if all IOIs are roughly equal quantized stiff rhythm
     if np.std(iois) < TOLERANCE:
         return 0.0
 
@@ -59,9 +64,8 @@ def estimate_swing(note_starts):
     even_iois = iois[1::2]
 
     if len(odd_iois) < 2 or len(even_iois) < 2:
-        return 0.0  # not enough paired intervals
+        return 0.0
 
-    # Avoid divide-by-zero
     mean_odd = np.mean(odd_iois)
     mean_even = np.mean(even_iois)
     if mean_even == 0:
@@ -69,10 +73,7 @@ def estimate_swing(note_starts):
 
     swing_ratio = mean_odd / mean_even
     swing_amount = abs(swing_ratio - 1.0)
-
-    # Clamp extreme values
     return round(min(swing_amount, 1.0), 4)
-
 
 def extract_features(midi_path):
     try:
@@ -98,13 +99,9 @@ def extract_features(midi_path):
         velocity_mean = np.mean(velocities)
         duration = pm.get_end_time()
         density = len(note_starts) / duration if duration > 0 else 0
-        quarter_note = 60.0 / tempo
-        eighth_note = quarter_note / 2
-        #quant_grid = np.round(np.array(note_starts) / eighth_note) * eighth_note
         swing = estimate_swing(note_starts)
-        #swing = np.mean(np.abs(np.array(note_starts) - np.round(np.array(note_starts) * 2) / 2)) # OLD swing equation
         dynamic_range = np.max(velocities) - np.min(velocities)
-        
+
         timeline.sort()
         polyphony_counts = []
         active_notes = 0
@@ -114,26 +111,17 @@ def extract_features(midi_path):
 
         iois = np.diff(np.sort(note_starts))
         avg_polyphony = np.mean(polyphony_counts)
-        peak_polyphony = np.max(polyphony_counts) # just to have, maybe used for later
-        
-        # dynamic range calculation
+
         velocities_np = np.array(velocities)
         dynamic_range = np.max(velocities_np) - np.min(velocities_np)
         if dynamic_range < 1e-3:
-                dynamic_range = np.std(velocities_np)
-        
-        # Extracting energy level from .joblib Random Forest trained model
-        input_features = pd.DataFrame([{ 'density': density,'velocity_mean': velocity_mean,'dynamic_range': dynamic_range,'avg_polyphony': avg_polyphony}])
-        energy = float(energy_model.predict(input_features)[0])
-        #features_vector = np.array([[density, velocity_mean, dynamic_range, avg_polyphony]])
-        #energy = float(energy_model.predict(features_vector)[0])
-        
+            dynamic_range = np.std(velocities_np)
+
         return {
             'tempo': tempo,
             'swing': swing,
             'density': density,
             'dynamic_range': dynamic_range,
-            'energy': energy,
             'mean_note_length': np.mean(note_lengths),
             'std_note_length': np.std(note_lengths),
             'velocity_mean': velocity_mean,
@@ -165,14 +153,13 @@ def append_to_log(new_data: pd.DataFrame, log_csv: str, current_csv: str):
         combined = pd.concat([old, new_data], ignore_index=True)
     else:
         combined = new_data
-    combined[columns].to_csv(log_csv, index=False, float_format="%.4f") # append to log
-    new_data[columns].to_csv(current_csv, index=False, float_format="%.4f") # overwrite
+    combined[columns].to_csv(log_csv, index=False, float_format="%.4f")
+    # new_data[columns].to_csv(current_csv, index=False, float_format="%.4f")
     print(f"Appended to {log_csv} and updated {current_csv}")
 
 def main(midi_folder, output_csv, log_csv):
     records = []
     moods = list(mood_feature_map.keys())
-
     inactive_folder = os.path.join(os.path.dirname(midi_folder), "ProcessedMIDIs")
     os.makedirs(inactive_folder, exist_ok=True)
 
@@ -185,14 +172,9 @@ def main(midi_folder, output_csv, log_csv):
                 for k, v in features.items():
                     print(f"  {k}: {v:.4f}" if isinstance(v, float) else f"  {k}: {v}")
 
-                # while True:
-                #     mood = input(f"Choose mood ({'/'.join(moods)}): ").strip().lower()
-                #     if mood in mood_feature_map:
-                #         break
-
-                
                 mood = "chill"
                 features['mood'] = mood
+                features['energy'] = (0.2087 * features['density'] + 0.0123 * features['velocity_mean'] + 0.0129 * features['dynamic_range']  + 0.0812 * features['avg_polyphony'] + 0.8158)
                 description = mood_feature_map[mood]
 
                 swing = features['swing']
@@ -202,13 +184,13 @@ def main(midi_folder, output_csv, log_csv):
                 density = features['density']
 
                 if swing > 0.1 and syncopation > 0.02:
-                    timing_feel_score = 2  # loose
+                    timing_feel_score = 2
                 elif swing < 0.03 and syncopation < 0.01:
-                    timing_feel_score = 0  # tight
+                    timing_feel_score = 0
                 elif syncopation > 0.05 and onset_entropy > 2.0:
-                    timing_feel_score = 3  # random
+                    timing_feel_score = 3
                 else:
-                     timing_feel_score = 1  # mid
+                    timing_feel_score = 1
                 features['timing_feel'] = timing_feel_score
 
                 if density < 2:
@@ -220,40 +202,34 @@ def main(midi_folder, output_csv, log_csv):
                 else:
                     rhythmic_density_score = 3
                 features['rhythmic_density'] = rhythmic_density_score
-                
-                # Estimate Dynamic_Intensity Temporarily
-                dynamic_input = pd.DataFrame([{'velocity_mean': features['velocity_mean'],'dynamic_range': features['dynamic_range'],'velocity_std': features['velocity_std']}])
-                pred_dynamic = dynamic_model.predict(dynamic_input)[0]
-                features['dynamic_intensity'] = int(pred_dynamic)
+
                 features['dynamic_intensity'] = dynamic_intensity_map[description['dynamic_intensity']]
-               
-               # Estimate fill_activity on an 8-level scale (0 to 7)
+
                 if pitch_range < 5 and onset_entropy < 1.2:
-                    fill_activity_score = 0  # sparse
+                    fill_activity_score = 0
                 elif pitch_range < 10 and onset_entropy < 1.5:
-                     fill_activity_score = 1  # minimal
+                    fill_activity_score = 1
                 elif pitch_range < 15 and onset_entropy < 1.8:
-                      fill_activity_score = 2  # occasional
+                    fill_activity_score = 2
                 elif pitch_range < 20 and onset_entropy < 2.1:
-                       fill_activity_score = 3  # moderate
+                    fill_activity_score = 3
                 elif pitch_range < 25 and onset_entropy < 2.4:
-                   fill_activity_score = 4  # medium
+                    fill_activity_score = 4
                 elif pitch_range < 30 and onset_entropy < 2.7:
-                      fill_activity_score = 5  # frequent
+                    fill_activity_score = 5
                 elif pitch_range <= 35 or onset_entropy <= 3.0:
-                    fill_activity_score = 6  # bursty
+                    fill_activity_score = 6
                 else:
-                  fill_activity_score = 7  # irregular
+                    fill_activity_score = 7
                 features['fill_activity'] = fill_activity_score
 
                 features['fx_character'] = fx_character_map[description['fx_character']]
                 records.append(features)
 
                 df_single = pd.DataFrame([features])
-                append_to_log(df_single, log_csv,output_csv)
+                append_to_log(df_single, log_csv, output_csv)
                 print(f"✅ Appended {filename} to log.")
 
-                 # Move processed MIDI to InactiveMIDIs
                 new_path = os.path.join(inactive_folder, filename)
                 os.rename(midi_path, new_path)
                 print(f"🗂️  Moved {filename} to InactiveMIDIs.\n")
@@ -263,8 +239,8 @@ def main(midi_folder, output_csv, log_csv):
     df_all.to_csv(output_csv, index=False, float_format="%.4f")
 
     with open("mood_feature_map.json", "w") as f:
-         json.dump(mood_feature_map, f, indent=2)
-         print("Exported mood_feature_map.json")
+        json.dump(mood_feature_map, f, indent=2)
+        print("Exported mood_feature_map.json")
 
 if __name__ == "__main__":
-    main("MusicGroovesMIDI/TrainingMIDIs", "current_groove_features.csv", "groove_features_log.csv")
+    main("MusicGroovesMIDI/TrainingMIDIs", "current_groove_features.csv", "raw_features.csv")
