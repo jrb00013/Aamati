@@ -1,2 +1,6 @@
 MusicGroovesMidi/**/*.mid
 MusicGroovesMidi/**/*.midi
+MusicGroovesMidi/ProcessedMIDIs/*.midi
+MusicGroovesMidi/ProcessedMIDIs/*.mid
+MusicGroovesMidi/TrainingMIDIs/*.mid
+MusicGroovesMidi/TrainingMIDIs/*.midi
