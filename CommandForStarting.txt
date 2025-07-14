@@ -66,3 +66,39 @@ cmake -B build -S . \
  
 
 
+
+
+
+# Virtual Enviornments
+
+
+# Create Virtual Enviornment 
+# Navigate to your project folder (if not already there)
+cd ~/Aamati/Aamati/MLPython
+
+# Create a virtual environment
+python3 -m venv venv
+
+# Activate it
+source venv/bin/activate
+
+# Now install the package
+pip install pretty_midi
+
+# Run your script
+python extract_groove_features.py
+
+# Deactivation Command
+
+deactivate
+
+
+
+# ✅ Reactivation
+
+Navigate to your project folder (where the venv was created):
+
+cd ~/Aamati/Aamati/MLPython
+
+Activate the virtual environment:
+source venv/bin/activate
