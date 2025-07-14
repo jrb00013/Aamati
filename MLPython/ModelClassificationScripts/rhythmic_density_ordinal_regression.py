@@ -65,6 +65,11 @@ def main(input_csv, model_path, do_tune=False):
     print("Rhythmic Density Classification Report:")
     print(classification_report(y_test, y_pred, zero_division=1))
 
+    # Set output directly to model script location
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    models_dir = os.path.join(script_dir, "models")
+    os.makedirs(models_dir, exist_ok=True)
+
     # Confusion matrix plot — save to file for headless environments
     cm = confusion_matrix(y_test, y_pred, labels=sorted(y.unique()))
     plt.figure(figsize=(8, 6))
@@ -75,7 +80,8 @@ def main(input_csv, model_path, do_tune=False):
     plt.ylabel('True')
     plt.title('Confusion Matrix')
     plt.tight_layout()
-    plt.savefig("rhythmic_density_confusion_matrix.png")
+    conf_matrix_path = os.path.join(models_dir, "rhythmic_density_confusion_matrix.png")
+    plt.savefig(conf_matrix_path)
     plt.close()
     print("Confusion matrix saved as rhythmic_density_confusion_matrix.png in the models folder")
 
@@ -87,6 +93,7 @@ def main(input_csv, model_path, do_tune=False):
         print(f"  {f}: {imp:.4f}")
 
     # Save model
+    model_path = os.path.join(models_dir, "rhythmic_density_ordinal_regression.joblib")
     os.makedirs(os.path.dirname(model_path), exist_ok=True)
     dump(model, model_path)
     print(f"Model saved to {model_path}")
