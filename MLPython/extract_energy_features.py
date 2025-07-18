@@ -128,7 +128,7 @@ def extract_features(midi_path):
             'velocity_std': np.std(velocities),
             'pitch_mean': np.mean(pitches),
             'pitch_range': np.max(pitches) - np.min(pitches),
-            'avg_polyphony': np.mean(polyphony_counts),
+            'avg_polyphony': avg_polyphony,
             'syncopation': np.var(iois) if len(iois) > 1 else 0,
             'onset_entropy': scipy.stats.entropy(np.histogram(iois, bins=10)[0] + 1) if len(iois) > 1 else 0,
             'instrument_count': len(pm.instruments),

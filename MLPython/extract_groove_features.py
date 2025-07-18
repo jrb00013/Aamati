@@ -266,12 +266,12 @@ def main(midi_folder, output_csv, log_csv):
                 for k, v in features.items():
                     print(f"  {k}: {v:.4f}" if isinstance(v, float) else f"  {k}: {v}")
 
-                # while True:
-                #     mood = input(f"Choose mood ({'/'.join(moods)}): ").strip().lower()
-                #     if mood in mood_feature_map:
-                #         break
+                while True:
+                    mood = input(f"Choose mood ({'/'.join(moods)}): ").strip().lower()
+                    if mood in mood_feature_map:
+                        break
 
-                mood = "chill"
+               # mood = "chill"
                 features['mood'] = mood
                 description = mood_feature_map[mood]
 

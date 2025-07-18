@@ -12,7 +12,7 @@ from skl2onnx.common.data_types import FloatTensorType
 from imblearn.over_sampling import SMOTE
 
 # Load data
-data = pd.read_csv('groove_features_log.csv')
+data = pd.read_csv('groove_features_log_for_pred.csv')
 
 print("Total samples:", len(data))
 print("Class distribution:\n", data['mood'].value_counts())
