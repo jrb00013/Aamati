@@ -8,9 +8,10 @@ import numpy as np
 
 from extract_groove_features import extract_full_feature_vector 
 
-# === Load trained mood model and encoder ===
+# === Load trained mood model and encoders ===
 model = joblib.load("groove_mood_model.pkl")
 encoder = joblib.load("categorical_encoder.pkl")
+label_encoder = joblib.load("label_encoder.pkl")
 
 with open("mood_feature_map.json", "r") as f:
     mood_map = json.load(f)
@@ -41,9 +42,22 @@ def predict_mood(midi_path):
     X_num = df[numerical_features_order].values
     X_input = np.hstack([X_cat_encoded, X_num])
 
-    prediction = model.predict(X_input)[0]
-    print(f"\n🎵 Predicted Mood: {prediction}")
-    print("📝 Mood Description:", mood_map.get(prediction, "No description available."))
+    # Get probabilities for all classes
+    probs = model.predict_proba(X_input)[0]
+
+    # Get indices of top 2 classes
+    top2_indices = np.argsort(probs)[::-1][:2]
+    primary_idx, secondary_idx = top2_indices
+
+    primary_mood = label_encoder.inverse_transform([primary_idx])[0]
+    secondary_mood = label_encoder.inverse_transform([secondary_idx])[0]
+
+    print(f"\n🎵 Predicted Primary Mood: {primary_mood}")
+    print("📝 Mood Description:", mood_map.get(primary_mood, "No description available."))
+
+    if secondary_mood != primary_mood:
+        print(f"\n🎵 Predicted Secondary Mood: {secondary_mood}")
+        print("📝 Mood Description:", mood_map.get(secondary_mood, "No description available."))
 
 if __name__ == "__main__":
     drop_folder = "MusicGroovesMidi/InputMIDI"

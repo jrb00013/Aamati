@@ -173,12 +173,16 @@ def append_to_log(new_data: pd.DataFrame, log_csv: str, current_csv: str):
         'mean_note_length', 'std_note_length', 'velocity_mean', 'velocity_std',
         'pitch_mean', 'pitch_range', 'avg_polyphony', 'syncopation',
         'onset_entropy', 'instrument_count',
-        'mood', 'timing_feel', 'rhythmic_density', 'dynamic_intensity',
+        'primary_mood','secondary_mood', 'timing_feel', 'rhythmic_density', 'dynamic_intensity',
         'fill_activity', 'fx_character', 'timestamp'
     ]
     if os.path.exists(log_csv):
         old = pd.read_csv(log_csv)
-        combined = pd.concat([old, new_data], ignore_index=True)
+        # Drop empty/all-NA columns to avoid FutureWarning
+        old = old.dropna(axis=1, how='all')
+        new_data_clean = new_data.dropna(axis=1, how='all')
+        combined = pd.concat([old, new_data_clean], ignore_index=True)
+
     else:
         combined = new_data
     combined[columns].to_csv(log_csv, index=False, float_format="%.4f") # append to log
@@ -267,13 +271,26 @@ def main(midi_folder, output_csv, log_csv):
                     print(f"  {k}: {v:.4f}" if isinstance(v, float) else f"  {k}: {v}")
 
                 while True:
-                    mood = input(f"Choose mood ({'/'.join(moods)}): ").strip().lower()
-                    if mood in mood_feature_map:
+                    primary_mood = input(f"🎯 Choose **primary** mood ({'/'.join(moods)}): ").strip().lower()
+                    if primary_mood in mood_feature_map:
                         break
 
-               # mood = "chill"
-                features['mood'] = mood
-                description = mood_feature_map[mood]
+                while True:
+                    secondary_mood = input(f"🎨 Choose **secondary** mood ({'/'.join(moods)}), or press Enter to default to primary mood: ").strip().lower()
+                    if not secondary_mood:  # If user just hits Enter
+                        secondary_mood = primary_mood
+                        break
+                    elif secondary_mood in mood_feature_map:
+                        break
+                    else:
+                        print("Invalid secondary mood, try again.")
+
+                features['primary_mood'] = primary_mood
+                features['secondary_mood'] = secondary_mood if secondary_mood else ''
+
+                # mood = "chill"
+                # features['mood'] = mood
+                description = mood_feature_map[primary_mood]
 
                 syncopation = features['syncopation']
                 onset_entropy = features['onset_entropy']
@@ -317,7 +334,6 @@ def main(midi_folder, output_csv, log_csv):
 
                 features['timing_feel'] = int(timing_feel_model.predict(features_df)[0])
                 # features['timing_feel'] = estimate_timing_feel(features['swing'], features['syncopation'], features['onset_entropy'])
-                                
                 # Estimate Dynamic_Intensity 
                 dynamic_input = pd.DataFrame([{ 'velocity_mean': features['velocity_mean'], 'dynamic_range': features['dynamic_range'], 'velocity_std': features['velocity_std']}])
                 pred_dynamic = dynamic_intensity_model.predict(dynamic_input)[0]
