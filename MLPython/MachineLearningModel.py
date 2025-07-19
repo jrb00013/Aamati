@@ -35,7 +35,7 @@ data = data.dropna(subset=numerical_features + categorical_features + ['mood'])
 X_num = data[numerical_features].values
 X_cat = data[categorical_features]
 
-y = data['mood']
+y = data['mood'] # May have to update this to account for primary and secondary moods eventually
 
 # Fit OneHotEncoder on categorical features
 encoder = OneHotEncoder(handle_unknown='ignore', sparse_output=False)
