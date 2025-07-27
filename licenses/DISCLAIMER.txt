@@ -1,0 +1,10 @@
+AAMATI – GENERAL DISCLAIMER
+Effective Date: 7-27-2025
+
+Aamati is an AI-powered audio tool designed to isolate and process musical elements such as drums. While the service uses advanced machine learning techniques, results are **not guaranteed** and may vary depending on the complexity or quality of the input audio.
+
+Aamati is not intended for use in medical, legal, or mission-critical applications. Users are solely responsible for ensuring that their use of Aamati complies with copyright laws and local regulations.
+
+The owner (Joseph Ronald Black) disclaims all liability for any damages resulting from the use or misuse of this software or service.
+
+Use Aamati at your own risk.

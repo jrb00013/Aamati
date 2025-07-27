@@ -1,0 +1,52 @@
+AAMATI – PRIVACY POLICY
+Effective Date: [Insert Date]
+Owner: Joseph Ronald Black
+Contact: jrb00013wvu@gmail.com
+
+This Privacy Policy explains how we collect, use, and protect your information when you use the Aamati website and services.
+
+1. INFORMATION WE COLLECT
+We may collect the following types of information:
+- Email address (for account creation or communication)
+- Audio files uploaded by users
+- Log data (e.g., IP address, browser type, timestamp)
+- Usage analytics and interaction history
+- Optional feedback or messages submitted by users
+
+2. HOW WE USE YOUR INFORMATION
+We use your information to:
+- Provide and improve our services
+- Process uploaded audio files
+- Offer support or updates
+- Prevent abuse or fraud
+- Analyze usage trends to improve functionality
+
+3. DATA SHARING
+We do **not** sell your data. We may share data with:
+- Trusted service providers (e.g., cloud hosts, payment processors)
+- Authorities if required by law
+- Analytics platforms (only anonymized or aggregated)
+
+4. COOKIES
+We may use cookies and local storage to enhance user experience and store preferences. You can disable cookies in your browser settings, but this may affect service functionality.
+
+5. DATA STORAGE & SECURITY
+Your data is stored securely using encrypted infrastructure. We implement industry-standard security measures, but no system is 100% secure. Use the Service at your own risk.
+
+6. USER RIGHTS (GDPR & CCPA)
+If you are located in the EU or California:
+- You may request access to, correction of, or deletion of your data
+- You may opt out of future communications
+- To exercise your rights, contact: jrb00013wvu@gmail.com
+
+7. RETENTION
+We retain audio and account data only as long as necessary to provide services or comply with legal obligations.
+
+8. CHILDREN’S PRIVACY
+Aamati is not intended for use by individuals under the age of 13. We do not knowingly collect personal data from minors.
+
+9. CHANGES TO POLICY
+We may update this Privacy Policy at any time. Continued use of the Service constitutes acceptance of the revised policy.
+
+10. CONTACT
+For privacy inquiries or data requests, contact: jrb00013wvu@gmail.com

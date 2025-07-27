@@ -1,0 +1,52 @@
+AAMATI – END USER LICENSE AGREEMENT (EULA)
+Effective Date: 7-27-2025
+Software Version: 1.0.1
+Owner: Joseph Ronald Black
+Contact: jrb00013wvu@gmail.com
+
+PLEASE READ THIS END USER LICENSE AGREEMENT ("AGREEMENT") CAREFULLY BEFORE USING THE AAMATI SOFTWARE ("SOFTWARE"). BY ACCESSING OR USING THE SOFTWARE HOSTED ON AAMATI.JAXK.IO OR ANY ASSOCIATED DOMAIN (THE "SITE"), YOU AGREE TO BE BOUND BY THE TERMS OF THIS AGREEMENT. IF YOU DO NOT ACCEPT THE TERMS, DO NOT USE THE SOFTWARE.
+
+1. LICENSE GRANT
+You are granted a limited, non-exclusive, non-transferable, revocable license to access and use the Software solely via its official web interface. This license is for your personal, non-commercial or commercial use depending on your subscription tier and is subject to compliance with this Agreement.
+
+2. RESTRICTIONS
+You may NOT:
+- Copy, reproduce, or distribute the Software or any part of its underlying code or model
+- Modify, adapt, translate, or create derivative works of the Software
+- Reverse engineer, decompile, disassemble, or attempt to extract source code or model logic
+- Use the Software for any purpose that is unlawful, unethical, or violates any applicable laws
+- Use scraping tools, bots, or automation to access or abuse the service
+- Host, mirror, resell, or embed the Software on another platform without written consent
+
+3. INTELLECTUAL PROPERTY
+All rights, title, and interest in and to the Software, including but not limited to all algorithms, code, datasets, models, and trademarks, are and shall remain the exclusive property of Joseph Ronald Black. No rights are granted to you other than the limited license expressly stated in this Agreement.
+
+4. USER-GENERATED CONTENT
+You retain ownership of any audio content or input you provide to Aamati. However, you grant the owner a worldwide, royalty-free, non-exclusive license to use submitted content solely to provide and improve the functionality of the Software.
+
+5. PAYMENTS AND SUBSCRIPTIONS
+If access to certain features of the Software is subject to payment:
+- You agree to pay all applicable fees
+- Payments are non-refundable except as required by law
+- Subscriptions may auto-renew unless canceled prior to the billing date
+- Failure to pay may result in immediate suspension or termination of access
+
+6. TERMINATION
+This Agreement is effective until terminated. You may terminate it at any time by discontinuing use of the Software. Joseph Ronald Black may terminate this Agreement and your access at any time for any violation of this Agreement.
+
+7. WARRANTY DISCLAIMER
+THE SOFTWARE IS PROVIDED "AS IS" AND "AS AVAILABLE", WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED. TO THE MAXIMUM EXTENT PERMITTED BY LAW, JOSEPH RONALD BLACK DISCLAIMS ALL WARRANTIES, INCLUDING IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT.
+
+8. LIMITATION OF LIABILITY
+IN NO EVENT SHALL JOSEPH RONALD BLACK BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING LOST PROFITS, LOSS OF DATA, OR BUSINESS INTERRUPTION), EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+9. GOVERNING LAW
+This Agreement shall be governed by the laws of the State of West Virginia, without regard to its conflict of laws principles. Any disputes arising under this Agreement shall be subject to the exclusive jurisdiction of the courts located in West Virginia.
+
+10. CHANGES TO THE AGREEMENT
+We reserve the right to modify this Agreement at any time. Updated versions will be posted on the Site. Continued use of the Software after changes means you accept the new terms.
+
+11. CONTACT INFORMATION
+For questions about this Agreement, email: jrb00013wvu@gmail.com
+
+© 2025 Joseph Ronald Black. All Rights Reserved.

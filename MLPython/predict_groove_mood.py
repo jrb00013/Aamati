@@ -8,6 +8,9 @@ import numpy as np
 
 from extract_groove_features import extract_full_feature_vector 
 
+# New Note 7/27/2025: make sure that when predicting, primary mood has more weight
+# --- .... also primary mood and secondary mood combination order matters and is distinct
+
 # === Load trained mood model and encoders ===
 model = joblib.load("groove_mood_model.pkl")
 encoder = joblib.load("categorical_encoder.pkl")

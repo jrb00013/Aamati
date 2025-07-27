@@ -1,0 +1,47 @@
+AAMATI – TERMS OF SERVICE
+Effective Date: [Insert Date]
+Owner: Joseph Ronald Black
+Website: [Insert URL, e.g., aamati.jaxk.io]
+Contact: jrb00013wvu@gmail.com
+
+1. ACCEPTANCE OF TERMS
+By accessing or using the Aamati website ("Service"), you agree to be bound by these Terms of Service. If you do not agree with any part of these terms, do not use the Service.
+
+2. DESCRIPTION OF SERVICE
+Aamati is a web-based music/audio processing tool designed to analyze, filter, and separate elements (such as drums) from audio content using AI. It may offer free or paid features depending on your subscription tier.
+
+3. USER ACCOUNTS
+You may be required to create an account to access certain features. You are responsible for maintaining the confidentiality of your login credentials and for any activity that occurs under your account.
+
+4. ACCEPTABLE USE
+You agree not to:
+- Violate any applicable laws or regulations
+- Upload or distribute unlawful, harmful, or infringing content
+- Attempt to reverse engineer, scrape, or exploit any part of the system
+- Circumvent any security or payment restrictions
+
+5. SUBSCRIPTIONS & PAYMENTS
+Some features of the Service may be available via paid subscription. Fees are billed in advance and are non-refundable unless required by law. Failure to pay may result in access suspension or termination.
+
+6. TERMINATION
+We reserve the right to terminate or suspend your access at any time for any violation of these Terms or other misuse of the Service.
+
+7. INTELLECTUAL PROPERTY
+All software, trademarks, and content displayed on Aamati remain the sole property of Joseph Ronald Black. You are granted no rights beyond those described in the End-User License Agreement (EULA).
+
+8. DMCA POLICY
+If you believe that your copyrighted content has been used in a way that constitutes copyright infringement, please contact us at the email above with a formal DMCA notice.
+
+9. THIRD-PARTY LINKS
+Our Service may contain links to third-party websites. We are not responsible for the content or practices of these external sites.
+
+10. LIMITATION OF LIABILITY
+Aamati is provided “as is” without warranties. In no event shall Joseph Ronald Black be liable for any damages arising out of your use or inability to use the Service.
+
+11. GOVERNING LAW
+These Terms are governed by the laws of the State of West Virginia, without regard to conflict of law principles.
+
+12. CHANGES TO TERMS
+We may update these Terms at any time. Continued use of the Service after changes means you accept the revised terms.
+
+For questions, contact: jrb00013wvu@gmail.com
