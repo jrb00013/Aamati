@@ -11,6 +11,10 @@ from skl2onnx import convert_sklearn
 from skl2onnx.common.data_types import FloatTensorType
 from imblearn.over_sampling import SMOTE
 
+# New Note 7/27/2025: make sure that when predicting, primary mood has more weight
+# --- .... also primary mood and secondary mood combination order matters and is distinct
+
+
 # Load data
 data = pd.read_csv('groove_features_log_for_pred.csv')
 
