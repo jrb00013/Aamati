@@ -175,12 +175,15 @@ def append_to_log(new_data: pd.DataFrame, log_csv: str, current_csv: str):
         'pitch_mean', 'pitch_range', 'avg_polyphony', 'syncopation',
         'onset_entropy', 'instrument_count',
         'primary_mood','secondary_mood', 'timing_feel', 'rhythmic_density', 'dynamic_intensity',
-        'fill_activity', 'fx_character', 'timestamp'
+        'fill_activity', 'fx_character', 'timestamp','midi_file_name'
     ]
+    
     if os.path.exists(log_csv):
         old = pd.read_csv(log_csv)
+        if 'midi_file_name' not in old.columns:
+            old['midi_file_name'] = ''  #   Blank for old rows
         # Drop empty/all-NA columns to avoid FutureWarning
-        old = old.dropna(axis=1, how='all')
+        # old = old.dropna(axis=1, how='all')
         new_data_clean = new_data.dropna(axis=1, how='all')
         combined = pd.concat([old, new_data_clean], ignore_index=True)
 
@@ -372,6 +375,7 @@ def main(midi_folder, output_csv, log_csv):
                 features['fx_character'] = int(predicted_fx_idx)
 
                 # Add to features record
+                features['midi_file_name'] = filename
                 records.append(features)
                 df_single = pd.DataFrame([features])
                 append_to_log(df_single, log_csv,output_csv)
