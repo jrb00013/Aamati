@@ -51,5 +51,5 @@ def fix_all_midis(input_folder, output_folder):
 
 if __name__ == "__main__":
     input_dir = "MusicGroovesMIDI/NewMIDIs"
-    output_dir = "MusicGroovesMIDI/NewMIDIs"
+    output_dir = "MusicGroovesMIDI/FixedMIDIs"
     fix_all_midis(input_dir, output_dir)
