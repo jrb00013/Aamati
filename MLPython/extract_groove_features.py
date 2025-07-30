@@ -118,7 +118,7 @@ def extract_features(midi_path):
         quarter_note = 60.0 / tempo
         eighth_note = quarter_note / 2
         #quant_grid = np.round(np.array(note_starts) / eighth_note) * eighth_note
-        swing = estimate_swing(note_starts)
+        #swing = estimate_swing(note_starts)
         #swing = np.mean(np.abs(np.array(note_starts) - np.round(np.array(note_starts) * 2) / 2)) # OLD swing equation
         dynamic_range = np.max(velocities) - np.min(velocities)
         
@@ -145,6 +145,17 @@ def extract_features(midi_path):
         #features_vector = np.array([[density, velocity_mean, dynamic_range, avg_polyphony]])
         #energy = float(energy_model.predict(features_vector)[0])
         
+        swing_input_df = pd.DataFrame([{
+            'density': density,
+            'velocity_mean': velocity_mean,
+            'dynamic_range': dynamic_range,
+            'avg_polyphony': avg_polyphony,
+            'syncopation': np.var(iois) if len(iois) > 1 else 0,
+            'onset_entropy': scipy.stats.entropy(np.histogram(iois, bins=10)[0] + 1) if len(iois) > 1 else 0,
+            'rhythmic_density': -1  # placeholder for now
+        }])
+        swing = float(swing_model.predict(swing_input_df)[0])
+
         return {
             'tempo': tempo,
             'swing': swing,
@@ -194,69 +205,69 @@ def append_to_log(new_data: pd.DataFrame, log_csv: str, current_csv: str):
     print(f"Appended to {log_csv} and updated {current_csv}")
 
 
-def extract_full_feature_vector(midi_path, default_mood="unknown"):
-    features = extract_features(midi_path)
-    if features is None:
-        return None
+# def extract_full_feature_vector(midi_path, default_mood="unknown"):
+#     features = extract_features(midi_path)
+#     if features is None:
+#         return None
 
-    # Predict timing feel
-    features_df = pd.DataFrame([{
-        'swing': features['swing'],
-        'syncopation': features['syncopation'],
-        'onset_entropy': features['onset_entropy'],
-        'pitch_range': features['pitch_range'],
-        'density': features['density'],
-        'velocity_std': features['velocity_std'],
-        'avg_polyphony': features['avg_polyphony'],
-        'dynamic_range': features['dynamic_range']
-    }])
-    features['timing_feel'] = int(timing_feel_model.predict(features_df)[0])
+#     # Predict timing feel
+#     features_df = pd.DataFrame([{
+#         'swing': features['swing'],
+#         'syncopation': features['syncopation'],
+#         'onset_entropy': features['onset_entropy'],
+#         'pitch_range': features['pitch_range'],
+#         'density': features['density'],
+#         'velocity_std': features['velocity_std'],
+#         'avg_polyphony': features['avg_polyphony'],
+#         'dynamic_range': features['dynamic_range']
+#     }])
+#     features['timing_feel'] = int(timing_feel_model.predict(features_df)[0])
 
-    # Predict rhythmic density
-    rhythm_features = pd.DataFrame([{
-        'density': features['density'],
-        'syncopation': features['syncopation'],
-        'std_note_length': features['std_note_length']
-    }])
-    features['rhythmic_density'] = int(rhythm_model.predict(rhythm_features)[0])
+#     # Predict rhythmic density
+#     rhythm_features = pd.DataFrame([{
+#         'density': features['density'],
+#         'syncopation': features['syncopation'],
+#         'std_note_length': features['std_note_length']
+#     }])
+#     features['rhythmic_density'] = int(rhythm_model.predict(rhythm_features)[0])
 
-    # Predict dynamic intensity
-    dyn_features = pd.DataFrame([{
-        'velocity_mean': features['velocity_mean'],
-        'dynamic_range': features['dynamic_range'],
-        'velocity_std': features['velocity_std']
-    }])
-    features['dynamic_intensity'] = int(dynamic_intensity_model.predict(dyn_features)[0])
+#     # Predict dynamic intensity
+#     dyn_features = pd.DataFrame([{
+#         'velocity_mean': features['velocity_mean'],
+#         'dynamic_range': features['dynamic_range'],
+#         'velocity_std': features['velocity_std']
+#     }])
+#     features['dynamic_intensity'] = int(dynamic_intensity_model.predict(dyn_features)[0])
 
-    # Predict fill activity
-    fill_features = pd.DataFrame([{
-        'pitch_range': features['pitch_range'],
-        'velocity_std': features['velocity_std'],
-        'onset_entropy': features['onset_entropy'],
-        'syncopation': features['syncopation'],
-        'density': features['density'],
-        'avg_polyphony': features['avg_polyphony'],
-        'std_note_length': features['std_note_length'],
-        'energy': features['energy']
-    }])
-    features['fill_activity'] = int(fill_activity_model.predict(fill_features)[0])
+#     # Predict fill activity
+#     fill_features = pd.DataFrame([{
+#         'pitch_range': features['pitch_range'],
+#         'velocity_std': features['velocity_std'],
+#         'onset_entropy': features['onset_entropy'],
+#         'syncopation': features['syncopation'],
+#         'density': features['density'],
+#         'avg_polyphony': features['avg_polyphony'],
+#         'std_note_length': features['std_note_length'],
+#         'energy': features['energy']
+#     }])
+#     features['fill_activity'] = int(fill_activity_model.predict(fill_features)[0])
 
-    # Predict FX character
-    fx_features = pd.DataFrame([{
-        'instrument_count': features['instrument_count'],
-        'onset_entropy': features['onset_entropy'],
-        'pitch_range': features['pitch_range'],
-        'entropy_pitch_interaction': features['onset_entropy'] * features['pitch_range'],
-        'instr_entropy_interaction': features['instrument_count'] * features['onset_entropy']
-    }])
-    label_classes = np.load("ModelClassificationScripts/models/fx_character_label_classes.npy", allow_pickle=True)
-    fx_idx = int(fx_model.predict(fx_features)[0])
-    features['fx_character'] = fx_idx
+#     # Predict FX character
+#     fx_features = pd.DataFrame([{
+#         'instrument_count': features['instrument_count'],
+#         'onset_entropy': features['onset_entropy'],
+#         'pitch_range': features['pitch_range'],
+#         'entropy_pitch_interaction': features['onset_entropy'] * features['pitch_range'],
+#         'instr_entropy_interaction': features['instrument_count'] * features['onset_entropy']
+#     }])
+#     label_classes = np.load("ModelClassificationScripts/models/fx_character_label_classes.npy", allow_pickle=True)
+#     fx_idx = int(fx_model.predict(fx_features)[0])
+#     features['fx_character'] = fx_idx
 
-    # Optionally tag mood for logging
-    features['mood'] = default_mood
+#     # Optionally tag mood for logging
+#     features['mood'] = default_mood
 
-    return features
+#     return features
         
 def main(midi_folder, output_csv, log_csv):
     records = []

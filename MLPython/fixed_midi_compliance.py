@@ -50,6 +50,6 @@ def fix_all_midis(input_folder, output_folder):
             fix_midi_format_if_needed(input_path, output_path)
 
 if __name__ == "__main__":
-    input_dir = "MusicGroovesMIDI/TrainingMIDIs"
-    output_dir = "MusicGroovesMIDI/FixedMIDIs"
+    input_dir = "MusicGroovesMIDI/NewMIDIs"
+    output_dir = "MusicGroovesMIDI/NewMIDIs"
     fix_all_midis(input_dir, output_dir)
