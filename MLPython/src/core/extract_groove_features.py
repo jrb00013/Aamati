@@ -178,13 +178,29 @@ def extract_features(midi_path):
         if dynamic_range < 1e-3:
                 dynamic_range = np.std(velocities_np)
         
-        # Extracting energy level from .joblib Random Forest trained model
+        # Enhanced energy calculation with multiple factors
         if models['energy_model']:
-            input_features = pd.DataFrame([{ 'density': density,'velocity_mean': velocity_mean,'dynamic_range': dynamic_range,'avg_polyphony': avg_polyphony}])
+            # Use more comprehensive features for energy prediction
+            input_features = pd.DataFrame([{ 
+                'density': density,
+                'velocity_mean': velocity_mean,
+                'dynamic_range': dynamic_range,
+                'avg_polyphony': avg_polyphony,
+                'tempo': tempo,
+                'syncopation': np.var(iois) if len(iois) > 1 else 0,
+                'onset_entropy': scipy.stats.entropy(np.histogram(iois, bins=10)[0] + 1) if len(iois) > 1 else 0
+            }])
             energy = float(models['energy_model'].predict(input_features)[0])
         else:
-            energy = 0.0
+            # Fallback energy calculation based on musical characteristics
+            energy = min(17, max(0, (
+                (tempo / 200.0) * 0.3 +  # Tempo contribution
+                (density / 50.0) * 0.4 +  # Density contribution
+                (velocity_mean / 127.0) * 0.2 +  # Velocity contribution
+                (dynamic_range / 127.0) * 0.1  # Dynamic range contribution
+            ) * 17))
         
+        # Enhanced swing calculation with improved algorithm
         if models['swing_model']:
             swing_input_df = pd.DataFrame([{
                 'density': density,
@@ -193,11 +209,15 @@ def extract_features(midi_path):
                 'avg_polyphony': avg_polyphony,
                 'syncopation': np.var(iois) if len(iois) > 1 else 0,
                 'onset_entropy': scipy.stats.entropy(np.histogram(iois, bins=10)[0] + 1) if len(iois) > 1 else 0,
-                'rhythmic_density': -1  # placeholder for now
+                'rhythmic_density': density * tempo / 1000  # Improved rhythmic density calculation
             }])
             swing = float(models['swing_model'].predict(swing_input_df)[0])
         else:
-            swing = 0.0
+            # Enhanced fallback swing calculation
+            swing = estimate_swing(note_starts)
+            # Apply tempo-based swing adjustment
+            tempo_factor = min(1.0, tempo / 120.0)  # Normalize to 120 BPM
+            swing = swing * tempo_factor
 
         features = {
             'tempo': tempo,
