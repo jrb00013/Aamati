@@ -221,6 +221,57 @@ class AamatiRunner:
             print(f"❌ Plugin test failed: {e}")
             return False
     
+    def run_ml_pipeline(self, interactive: bool = True, 
+                       midi_folder: str = None) -> bool:
+        """Run the complete ML pipeline."""
+        print("\n🧠 Starting ML Pipeline")
+        print("=" * 40)
+        
+        try:
+            # Change to ML directory
+            os.chdir(self.ml_dir)
+            
+            # Run full ML pipeline
+            print("🚀 Running full ML pipeline...")
+            cmd = ["python3", "main.py", "--mode", "full-pipeline"]
+            if not interactive:
+                cmd.append("--non-interactive")
+            if midi_folder:
+                cmd.extend(["--midi-folder", midi_folder])
+            
+            result = subprocess.run(cmd, check=True)
+            print("✅ ML pipeline completed")
+            
+            self.run_status["ml_training"] = True
+            return True
+            
+        except subprocess.CalledProcessError as e:
+            print(f"❌ ML pipeline failed: {e}")
+            return False
+        except Exception as e:
+            print(f"❌ ML pipeline error: {e}")
+            return False
+        finally:
+            # Return to base directory
+            os.chdir(self.base_dir)
+    
+    def run_integration_tests(self) -> bool:
+        """Run comprehensive integration tests."""
+        print("\n🧪 Starting Integration Tests")
+        print("=" * 40)
+        
+        # Import test module
+        try:
+            from test_aamati import AamatiTester
+            tester = AamatiTester()
+            return tester.run_all_tests()
+        except ImportError:
+            print("❌ Test module not found")
+            return False
+        except Exception as e:
+            print(f"❌ Test error: {e}")
+            return False
+    
     def run_complete_pipeline(self, interactive: bool = True, 
                             midi_folder: str = None,
                             build_type: str = "Release") -> bool:
