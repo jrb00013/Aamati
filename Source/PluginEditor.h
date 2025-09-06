@@ -3,6 +3,10 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
+#include "ModernUI.h"
+#include "EmotionalOptimizer.h"
+#include "GrooveShaper.h"
+#include "AIMidiGenerator.h"
 
 class AamatiAudioProcessorEditor : public juce::AudioProcessorEditor
 {
