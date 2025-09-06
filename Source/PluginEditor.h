@@ -49,6 +49,57 @@ private:
     juce::Timer updateTimer;
     void timerCallback() override;
     
+    // Advanced UI Components
+    juce::TextButton uploadMidiButton;
+    juce::TextButton downloadReportButton;
+    juce::ComboBox featureSelector;
+    juce::ComboBox presetSelector;
+    
+    // Mood Display Components
+    juce::Label primaryMoodLabel;
+    juce::Label secondaryMoodLabel;
+    juce::Label moodConfidenceLabel;
+    juce::Label moodTagsLabel;
+    
+    // Feature Buttons
+    juce::TextButton emotionalOptButton;
+    juce::TextButton grooveShapeButton;
+    juce::TextButton instrumentationButton;
+    juce::TextButton melodicContourButton;
+    juce::TextButton harmonicDensityButton;
+    juce::TextButton fillOrnamentButton;
+    juce::TextButton aiMidiGenButton;
+    juce::TextButton keyTempoDetectButton;
+    juce::TextButton visualAnalyzerButton;
+    juce::TextButton moodRemixerButton;
+    juce::TextButton masteringToolsButton;
+    juce::TextButton grooveHumanizerButton;
+    juce::TextButton dynamicBalancerButton;
+    
+    // Feature Panels
+    juce::Component emotionalOptPanel;
+    juce::Component grooveShapePanel;
+    juce::Component instrumentationPanel;
+    juce::Component melodicContourPanel;
+    juce::Component harmonicDensityPanel;
+    juce::Component fillOrnamentPanel;
+    juce::Component aiMidiGenPanel;
+    juce::Component keyTempoDetectPanel;
+    juce::Component visualAnalyzerPanel;
+    juce::Component moodRemixerPanel;
+    juce::Component masteringToolsPanel;
+    juce::Component grooveHumanizerPanel;
+    juce::Component dynamicBalancerPanel;
+    
+    // Current active panel
+    juce::Component* activePanel = nullptr;
+    
+    // UI State
+    bool showAdvancedFeatures = false;
+    std::string currentMood = "unknown";
+    std::string currentSecondaryMood = "unknown";
+    float currentConfidence = 0.0f;
+    
     // Custom look and feel
     class AamatiLookAndFeel : public juce::LookAndFeel_V4
     {
