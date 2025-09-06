@@ -11,8 +11,17 @@ import datetime
 import scipy.stats
 import scipy.signal
 import json
+import time
 from joblib import load
 from pathlib import Path
+
+# Add parent directory to path for logging
+import sys
+sys.path.append(str(Path(__file__).parent.parent.parent.parent))
+from logging_config import get_logger, log_performance
+
+# Setup logger
+logger = get_logger("aamati.feature_extraction")
 
 # Import data analysis models
 def load_models():
@@ -116,9 +125,14 @@ def estimate_swing(note_starts):
 
     return round(scaled_swing, 4)
 
+@log_performance("extract_features")
 def extract_features(midi_path):
+    """Extract comprehensive features from a MIDI file."""
+    logger.info(f"Starting feature extraction for: {midi_path}")
+    
     try:
         pm = pretty_midi.PrettyMIDI(midi_path)
+        logger.debug(f"Successfully loaded MIDI file: {midi_path}")
         tempo = np.mean(pm.get_tempo_changes()[1]) if pm.get_tempo_changes()[1].size > 0 else 120
 
         note_starts, note_ends, velocities, pitches, timeline = [], [], [], [], []
