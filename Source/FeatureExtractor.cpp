@@ -134,3 +134,226 @@ GrooveFeatures FeatureExtractor::extractFeaturesFromMidi(const string& midiPath)
 
     return {tempo, swing, density, dynamicRange, energy};
 }
+
+// Helper method implementations for real-time audio analysis
+double FeatureExtractor::calculateTempo(const std::vector<float>& audioData, double sampleRate)
+{
+    // Simple tempo estimation based on peak detection
+    // This is a simplified version - in practice you'd use more sophisticated algorithms
+    std::vector<float> peaks;
+    float threshold = 0.1f;
+    
+    for (size_t i = 1; i < audioData.size() - 1; ++i)
+    {
+        if (audioData[i] > audioData[i-1] && audioData[i] > audioData[i+1] && audioData[i] > threshold)
+        {
+            peaks.push_back(static_cast<float>(i) / static_cast<float>(sampleRate));
+        }
+    }
+    
+    if (peaks.size() < 2) return 120.0; // Default tempo
+    
+    // Calculate average time between peaks
+    double avgInterval = 0.0;
+    for (size_t i = 1; i < peaks.size(); ++i)
+    {
+        avgInterval += peaks[i] - peaks[i-1];
+    }
+    avgInterval /= (peaks.size() - 1);
+    
+    // Convert to BPM
+    return 60.0 / avgInterval;
+}
+
+double FeatureExtractor::calculateSwing(const std::vector<float>& audioData, double sampleRate)
+{
+    // Simplified swing calculation based on rhythm analysis
+    // In practice, this would be much more sophisticated
+    double swing = 0.0;
+    int count = 0;
+    
+    for (size_t i = 0; i < audioData.size() - 1; ++i)
+    {
+        if (std::abs(audioData[i]) > 0.1f) // If there's significant audio
+        {
+            swing += std::abs(audioData[i] - audioData[i+1]);
+            count++;
+        }
+    }
+    
+    return count > 0 ? swing / count : 0.0;
+}
+
+double FeatureExtractor::calculateDensity(const std::vector<float>& audioData, double sampleRate)
+{
+    // Calculate density as number of significant events per second
+    int significantEvents = 0;
+    float threshold = 0.1f;
+    
+    for (float sample : audioData)
+    {
+        if (std::abs(sample) > threshold)
+        {
+            significantEvents++;
+        }
+    }
+    
+    double duration = audioData.size() / sampleRate;
+    return duration > 0 ? significantEvents / duration : 0.0;
+}
+
+double FeatureExtractor::calculateDynamicRange(const std::vector<float>& audioData)
+{
+    if (audioData.empty()) return 0.0;
+    
+    auto minmax = std::minmax_element(audioData.begin(), audioData.end());
+    return *minmax.second - *minmax.first;
+}
+
+double FeatureExtractor::calculateEnergy(const std::vector<float>& audioData)
+{
+    if (audioData.empty()) return 0.0;
+    
+    double sum = 0.0;
+    for (float sample : audioData)
+    {
+        sum += sample * sample;
+    }
+    
+    return std::sqrt(sum / audioData.size());
+}
+
+double FeatureExtractor::calculateVelocityMean(const std::vector<float>& velocityData)
+{
+    if (velocityData.empty()) return 0.0;
+    
+    double sum = 0.0;
+    for (float velocity : velocityData)
+    {
+        sum += velocity;
+    }
+    
+    return sum / velocityData.size();
+}
+
+double FeatureExtractor::calculateVelocityStd(const std::vector<float>& velocityData)
+{
+    if (velocityData.size() < 2) return 0.0;
+    
+    double mean = calculateVelocityMean(velocityData);
+    double sumSquaredDiffs = 0.0;
+    
+    for (float velocity : velocityData)
+    {
+        double diff = velocity - mean;
+        sumSquaredDiffs += diff * diff;
+    }
+    
+    return std::sqrt(sumSquaredDiffs / (velocityData.size() - 1));
+}
+
+double FeatureExtractor::calculatePitchMean(const std::vector<float>& pitchData)
+{
+    if (pitchData.empty()) return 0.0;
+    
+    double sum = 0.0;
+    for (float pitch : pitchData)
+    {
+        sum += pitch;
+    }
+    
+    return sum / pitchData.size();
+}
+
+double FeatureExtractor::calculatePitchRange(const std::vector<float>& pitchData)
+{
+    if (pitchData.empty()) return 0.0;
+    
+    auto minmax = std::minmax_element(pitchData.begin(), pitchData.end());
+    return *minmax.second - *minmax.first;
+}
+
+double FeatureExtractor::calculateAvgPolyphony(const std::vector<float>& audioData, double sampleRate)
+{
+    // Simplified polyphony calculation
+    // In practice, this would involve more sophisticated analysis
+    int activeVoices = 0;
+    float threshold = 0.1f;
+    
+    for (float sample : audioData)
+    {
+        if (std::abs(sample) > threshold)
+        {
+            activeVoices++;
+        }
+    }
+    
+    return static_cast<double>(activeVoices) / audioData.size();
+}
+
+double FeatureExtractor::calculateSyncopation(const std::vector<float>& audioData, double sampleRate)
+{
+    // Simplified syncopation calculation
+    // This is a placeholder - real implementation would be much more complex
+    double syncopation = 0.0;
+    int count = 0;
+    
+    for (size_t i = 1; i < audioData.size() - 1; ++i)
+    {
+        if (std::abs(audioData[i]) > 0.1f)
+        {
+            // Check for off-beat emphasis
+            double time = i / sampleRate;
+            double beatPosition = std::fmod(time * 2.0, 1.0); // Assuming 120 BPM
+            if (beatPosition > 0.25 && beatPosition < 0.75) // Off-beat
+            {
+                syncopation += std::abs(audioData[i]);
+                count++;
+            }
+        }
+    }
+    
+    return count > 0 ? syncopation / count : 0.0;
+}
+
+double FeatureExtractor::calculateOnsetEntropy(const std::vector<float>& audioData, double sampleRate)
+{
+    // Simplified onset entropy calculation
+    // This is a placeholder - real implementation would use proper onset detection
+    std::vector<float> onsets;
+    float threshold = 0.1f;
+    
+    for (size_t i = 1; i < audioData.size() - 1; ++i)
+    {
+        if (audioData[i] > audioData[i-1] && audioData[i] > audioData[i+1] && audioData[i] > threshold)
+        {
+            onsets.push_back(static_cast<float>(i) / static_cast<float>(sampleRate));
+        }
+    }
+    
+    if (onsets.size() < 2) return 0.0;
+    
+    // Calculate intervals between onsets
+    std::vector<float> intervals;
+    for (size_t i = 1; i < onsets.size(); ++i)
+    {
+        intervals.push_back(onsets[i] - onsets[i-1]);
+    }
+    
+    // Calculate entropy of intervals
+    // This is a simplified version
+    double entropy = 0.0;
+    for (float interval : intervals)
+    {
+        if (interval > 0.0)
+        {
+            double probability = interval / (onsets.back() - onsets.front());
+            if (probability > 0.0)
+            {
+                entropy -= probability * std::log2(probability);
+            }
+        }
+    }
+    
+    return entropy;
+}
