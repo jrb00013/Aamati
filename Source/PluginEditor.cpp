@@ -2,13 +2,17 @@
 
 AamatiAudioProcessorEditor::CustomLookAndFeel::CustomLookAndFeel()
 {
-    setColour(juce::Slider::thumbColourId, juce::Colour(255, 128, 0)); // Orange knob
-    setColour(juce::Slider::rotarySliderFillColourId, juce::Colour(100, 100, 255)); // Blue fill
-    setColour(juce::Slider::rotarySliderOutlineColourId, juce::Colours::darkgrey);
-    setColour(juce::Slider::textBoxTextColourId, juce::Colours::white);
-    setColour(juce::Slider::textBoxBackgroundColourId, juce::Colour(40, 40, 40));
-    setColour(juce::Slider::textBoxOutlineColourId, juce::Colour(60, 60, 60));
-    setColour(juce::Label::textColourId, juce::Colours::white);
+    // Aamati Theme: Black, White, Gold
+    setColour(juce::Slider::thumbColourId, juce::Colour(255, 215, 0)); // Gold knob
+    setColour(juce::Slider::rotarySliderFillColourId, juce::Colour(255, 215, 0)); // Gold fill
+    setColour(juce::Slider::rotarySliderOutlineColourId, juce::Colour(30, 30, 30)); // Dark outline
+    setColour(juce::Slider::textBoxTextColourId, juce::Colour(255, 255, 255)); // White text
+    setColour(juce::Slider::textBoxBackgroundColourId, juce::Colour(20, 20, 20)); // Dark background
+    setColour(juce::Slider::textBoxOutlineColourId, juce::Colour(255, 215, 0)); // Gold outline
+    setColour(juce::Label::textColourId, juce::Colour(255, 255, 255)); // White text
+    setColour(juce::ToggleButton::tickColourId, juce::Colour(255, 215, 0)); // Gold tick
+    setColour(juce::ToggleButton::tickDisabledColourId, juce::Colour(100, 100, 100)); // Gray disabled
+    setColour(juce::ToggleButton::textColourId, juce::Colour(255, 255, 255)); // White text
 }
 
 void AamatiAudioProcessorEditor::CustomLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, int width, int height,
@@ -23,32 +27,56 @@ void AamatiAudioProcessorEditor::CustomLookAndFeel::drawRotarySlider(juce::Graph
     auto rw = radius * 2.0f;
     auto angle = rotaryStartAngle + sliderPosProportional * (rotaryEndAngle - rotaryStartAngle);
 
-    // Fill
-    g.setColour(findColour(juce::Slider::rotarySliderFillColourId));
+    // Outer ring (dark)
+    g.setColour(juce::Colour(20, 20, 20));
+    g.fillEllipse(rx - 2, ry - 2, rw + 4, rw + 4);
+    
+    // Main background (dark gray)
+    g.setColour(juce::Colour(40, 40, 40));
     g.fillEllipse(rx, ry, rw, rw);
 
-    // Outline
-    g.setColour(findColour(juce::Slider::rotarySliderOutlineColourId));
-    g.drawEllipse(rx, ry, rw, rw, 3.0f);
+    // Gold arc fill
+    g.setColour(findColour(juce::Slider::rotarySliderFillColourId));
+    juce::Path arcPath;
+    arcPath.addCentredArc(centreX, centreY, radius, radius, 0, rotaryStartAngle, angle, true);
+    g.strokePath(arcPath, juce::PathStrokeType(8.0f, juce::PathStrokeType::curved, juce::PathStrokeType::rounded));
 
-    // Center cutout
-    g.setColour(juce::Colour(40, 40, 40));
-    g.fillEllipse(centreX - radius * 0.7f, centreY - radius * 0.7f, radius * 1.4f, radius * 1.4f);
+    // Inner ring (dark)
+    g.setColour(juce::Colour(30, 30, 30));
+    g.fillEllipse(centreX - radius * 0.8f, centreY - radius * 0.8f, radius * 1.6f, radius * 1.6f);
 
-    // Pointer
+    // Center dot
+    g.setColour(juce::Colour(60, 60, 60));
+    g.fillEllipse(centreX - 3, centreY - 3, 6, 6);
+
+    // Gold pointer
     juce::Path p;
-    auto pointerLength = radius * 0.5f;
-    auto pointerThickness = 3.0f;
-    p.addRectangle(-pointerThickness * 0.5f, -radius, pointerThickness, pointerLength);
+    auto pointerLength = radius * 0.6f;
+    auto pointerThickness = 4.0f;
+    p.addRectangle(-pointerThickness * 0.5f, -radius + 4, pointerThickness, pointerLength);
     p.applyTransform(juce::AffineTransform::rotation(angle).translated(centreX, centreY));
     g.setColour(findColour(juce::Slider::thumbColourId));
     g.fillPath(p);
 
-    // Value display
+    // Glow effect on pointer
+    g.setColour(juce::Colour(255, 215, 0).withAlpha(0.3f));
+    g.strokePath(p, juce::PathStrokeType(6.0f));
+
+    // Value display with enhanced styling
     g.setColour(findColour(juce::Slider::textBoxTextColourId));
-    g.setFont(juce::Font(juce::FontOptions().withHeight(14.0f).withStyle("Bold")));
+    g.setFont(juce::Font(juce::FontOptions().withHeight(16.0f).withStyle("Bold")));
     auto text = juce::String(slider.getValue(), 0) + " Hz";
-    g.drawText(text, rx, ry + rw + 5, rw, 20, juce::Justification::centred);
+    auto textBounds = juce::Rectangle<int>(rx, ry + rw + 5, rw, 25);
+    
+    // Text background
+    g.setColour(juce::Colour(20, 20, 20).withAlpha(0.8f));
+    g.fillRoundedRectangle(textBounds.toFloat().expanded(4), 4.0f);
+    
+    // Text border
+    g.setColour(findColour(juce::Slider::textBoxOutlineColourId));
+    g.drawRoundedRectangle(textBounds.toFloat().expanded(4), 4.0f, 1.0f);
+    
+    g.drawText(text, textBounds, juce::Justification::centred);
 }
 
 AamatiAudioProcessorEditor::AamatiAudioProcessorEditor(AamatiAudioProcessor& p)
@@ -169,16 +197,48 @@ void AamatiAudioProcessorEditor::timerCallback()
 
 void AamatiAudioProcessorEditor::paint(juce::Graphics& g)
 {
-    // Gradient background
+    // Stunning Aamati gradient background
     juce::ColourGradient gradient(
-        juce::Colour(30, 30, 40), 0.0f, 0.0f,
-        juce::Colour(10, 10, 20), 0.0f, (float)getHeight(), false);
+        juce::Colour(15, 15, 25), 0.0f, 0.0f,
+        juce::Colour(5, 5, 10), 0.0f, (float)getHeight(), false);
     g.setGradientFill(gradient);
     g.fillAll();
 
-    // Border
-    g.setColour(juce::Colour(60, 60, 70));
-    g.drawRect(getLocalBounds(), 2);
+    // Gold accent border
+    g.setColour(juce::Colour(255, 215, 0));
+    g.drawRect(getLocalBounds(), 3);
+    
+    // Inner dark border
+    g.setColour(juce::Colour(30, 30, 30));
+    g.drawRect(getLocalBounds().reduced(3), 1);
+    
+    // Decorative corner accents
+    auto bounds = getLocalBounds();
+    auto cornerSize = 20;
+    
+    // Top-left corner
+    g.setColour(juce::Colour(255, 215, 0).withAlpha(0.3f));
+    g.fillEllipse(0, 0, cornerSize * 2, cornerSize * 2);
+    
+    // Top-right corner
+    g.fillEllipse(bounds.getWidth() - cornerSize * 2, 0, cornerSize * 2, cornerSize * 2);
+    
+    // Bottom-left corner
+    g.fillEllipse(0, bounds.getHeight() - cornerSize * 2, cornerSize * 2, cornerSize * 2);
+    
+    // Bottom-right corner
+    g.fillEllipse(bounds.getWidth() - cornerSize * 2, bounds.getHeight() - cornerSize * 2, cornerSize * 2, cornerSize * 2);
+    
+    // Subtle grid pattern
+    g.setColour(juce::Colour(255, 215, 0).withAlpha(0.05f));
+    for (int x = 0; x < bounds.getWidth(); x += 40)
+    {
+        g.drawVerticalLine(x, 0, bounds.getHeight());
+    }
+    for (int y = 0; y < bounds.getHeight(); y += 40)
+    {
+        g.drawHorizontalLine(y, 0, bounds.getWidth());
+    }
 }
 
 void AamatiAudioProcessorEditor::resized()

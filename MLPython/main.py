@@ -43,7 +43,7 @@ def main():
                        help="Run in non-interactive mode")
     parser.add_argument("--midi-folder", default="MusicGroovesMIDI/TrainingMIDIs",
                        help="Path to MIDI folder")
-    parser.add_argument("--csv-file", default="groove_features_log_for_pred.csv",
+    parser.add_argument("--csv-file", default="data/csv/groove_features_log_for_pred.csv",
                        help="CSV file for prediction")
     
     args = parser.parse_args()

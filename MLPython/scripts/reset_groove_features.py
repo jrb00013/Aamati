@@ -14,7 +14,7 @@ sys.path.append(str(Path(__file__).parent.parent))
 
 def clear_log():
     """Clear the groove_features_log.csv file."""
-    log_file = "groove_features_log.csv"
+    log_file = "data/csv/groove_features_log.csv"
     
     if os.path.exists(log_file):
         os.remove(log_file)

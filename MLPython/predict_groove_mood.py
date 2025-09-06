@@ -132,7 +132,7 @@ def predict_from_csv(csv_file, models):
 def main():
     """Main entry point for prediction."""
     parser = argparse.ArgumentParser(description="Aamati Mood Prediction")
-    parser.add_argument("--csv-file", default="groove_features_log_for_pred.csv",
+    parser.add_argument("--csv-file", default="data/csv/groove_features_log_for_pred.csv",
                        help="CSV file to predict from")
     parser.add_argument("--verbose", "-v", action="store_true",
                        help="Enable verbose output")

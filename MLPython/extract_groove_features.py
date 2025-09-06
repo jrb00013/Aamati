@@ -18,8 +18,11 @@ from src.core.extract_groove_features import main as extract_main
 
 def copy_log_to_pred():
     """Copy groove_features_log.csv to groove_features_log_for_pred.csv before clearing."""
-    log_file = "groove_features_log.csv"
-    pred_file = "groove_features_log_for_pred.csv"
+    log_file = "data/csv/groove_features_log.csv"
+    pred_file = "data/csv/groove_features_log_for_pred.csv"
+    
+    # Ensure directories exist
+    os.makedirs("data/csv", exist_ok=True)
     
     if os.path.exists(log_file):
         shutil.copy2(log_file, pred_file)
@@ -31,7 +34,7 @@ def copy_log_to_pred():
 
 def clear_log():
     """Clear the groove_features_log.csv file."""
-    log_file = "groove_features_log.csv"
+    log_file = "data/csv/groove_features_log.csv"
     if os.path.exists(log_file):
         os.remove(log_file)
         print(f"🧹 Cleared {log_file}")
@@ -44,11 +47,11 @@ def main():
     parser = argparse.ArgumentParser(description="Aamati Main Feature Extraction")
     parser.add_argument("--midi-folder", default="MusicGroovesMIDI/TrainingMIDIs",
                        help="Path to MIDI training folder")
-    parser.add_argument("--output-csv", default="current_groove_features.csv",
+    parser.add_argument("--output-csv", default="data/csv/current_groove_features.csv",
                        help="Output CSV file")
-    parser.add_argument("--log-csv", default="groove_features_log.csv",
+    parser.add_argument("--log-csv", default="data/csv/groove_features_log.csv",
                        help="Log CSV file")
-    parser.add_argument("--pred-csv", default="groove_features_log_for_pred.csv",
+    parser.add_argument("--pred-csv", default="data/csv/groove_features_log_for_pred.csv",
                        help="Prediction CSV file")
     parser.add_argument("--interactive", action="store_true", default=True,
                        help="Run in interactive mode")
@@ -58,11 +61,22 @@ def main():
                        help="Clear log file before starting")
     parser.add_argument("--copy-to-pred", action="store_true",
                        help="Copy log to pred file after extraction")
+    parser.add_argument("--batch-size", type=int, default=50,
+                       help="Number of files to process in each batch")
+    parser.add_argument("--max-files", type=int, default=None,
+                       help="Maximum number of files to process")
+    parser.add_argument("--verbose", "-v", action="store_true",
+                       help="Enable verbose output")
     
     args = parser.parse_args()
     
     print("🎵 Aamati Main Feature Extraction")
     print("=" * 50)
+    
+    # Ensure data directories exist
+    os.makedirs("data/csv", exist_ok=True)
+    os.makedirs("data/logs", exist_ok=True)
+    os.makedirs("data/exports", exist_ok=True)
     
     # Determine interactive mode
     interactive = args.interactive and not args.non_interactive
@@ -75,9 +89,19 @@ def main():
     # Run the main extraction
     print(f"📊 Extracting features from: {args.midi_folder}")
     print(f"📝 Interactive mode: {interactive}")
+    print(f"📦 Batch size: {args.batch_size}")
+    if args.max_files:
+        print(f"🔢 Max files: {args.max_files}")
     
     try:
-        extract_main(args.midi_folder, args.output_csv, args.log_csv)
+        extract_main(
+            args.midi_folder, 
+            args.output_csv, 
+            args.log_csv,
+            interactive=interactive,
+            batch_size=args.batch_size,
+            max_files=args.max_files
+        )
         print("✅ Feature extraction completed successfully!")
         
         # Copy log to pred after extraction (if requested)
@@ -88,6 +112,9 @@ def main():
             
     except Exception as e:
         print(f"❌ Feature extraction failed: {e}")
+        if args.verbose:
+            import traceback
+            traceback.print_exc()
         sys.exit(1)
 
 

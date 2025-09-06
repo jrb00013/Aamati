@@ -48,6 +48,27 @@ private:
     // Timer for updating UI
     juce::Timer updateTimer;
     void timerCallback() override;
+    
+    // Custom look and feel
+    class AamatiLookAndFeel : public juce::LookAndFeel_V4
+    {
+    public:
+        AamatiLookAndFeel();
+        void drawRotarySlider(juce::Graphics& g, int x, int y, int width, int height,
+                            float sliderPos, float rotaryStartAngle, float rotaryEndAngle,
+                            juce::Slider& slider) override;
+        void drawButtonBackground(juce::Graphics& g, juce::Button& button,
+                                const juce::Colour& backgroundColour,
+                                bool shouldDrawButtonAsHighlighted,
+                                bool shouldDrawButtonAsDown) override;
+        void drawLabel(juce::Graphics& g, juce::Label& label) override;
+        juce::Font getLabelFont(juce::Label& label) override;
+        void drawLinearSlider(juce::Graphics& g, int x, int y, int width, int height,
+                            float sliderPos, float minSliderPos, float maxSliderPos,
+                            const juce::Slider::SliderStyle style, juce::Slider& slider) override;
+    };
+    
+    AamatiLookAndFeel aamatiLookAndFeel;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AamatiAudioProcessorEditor)
 };

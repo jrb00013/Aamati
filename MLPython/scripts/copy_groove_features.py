@@ -15,8 +15,11 @@ sys.path.append(str(Path(__file__).parent.parent))
 
 def copy_log_to_pred():
     """Copy groove_features_log.csv to groove_features_log_for_pred.csv."""
-    log_file = "groove_features_log.csv"
-    pred_file = "groove_features_log_for_pred.csv"
+    log_file = "data/csv/groove_features_log.csv"
+    pred_file = "data/csv/groove_features_log_for_pred.csv"
+    
+    # Ensure directories exist
+    os.makedirs("data/csv", exist_ok=True)
     
     if os.path.exists(log_file):
         shutil.copy2(log_file, pred_file)

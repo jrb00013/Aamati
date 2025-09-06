@@ -298,48 +298,88 @@ def append_to_log(new_data: pd.DataFrame, log_csv: str, current_csv: str):
 
 #     return features
         
-def main(midi_folder, output_csv, log_csv):
+def main(midi_folder, output_csv, log_csv, interactive=True, batch_size=50, max_files=None):
     records = []
     moods = list(mood_feature_map.keys())
+    
+    # Ensure output directories exist
+    os.makedirs(os.path.dirname(output_csv), exist_ok=True)
+    os.makedirs(os.path.dirname(log_csv), exist_ok=True)
 
     inactive_folder = os.path.join(os.path.dirname(midi_folder), "ProcessedMIDIs")
     os.makedirs(inactive_folder, exist_ok=True)
 
-    for filename in os.listdir(midi_folder):
-        if filename.lower().endswith(('.mid', '.midi')):
+    # Get list of MIDI files
+    midi_files = [f for f in os.listdir(midi_folder) if f.lower().endswith(('.mid', '.midi'))]
+    
+    if max_files:
+        midi_files = midi_files[:max_files]
+    
+    total_files = len(midi_files)
+    print(f"📁 Found {total_files} MIDI files to process")
+    
+    if total_files == 0:
+        print("⚠️ No MIDI files found in the specified folder")
+        return
+
+    # Process files in batches
+    for batch_start in range(0, total_files, batch_size):
+        batch_end = min(batch_start + batch_size, total_files)
+        batch_files = midi_files[batch_start:batch_end]
+        
+        print(f"\n📦 Processing batch {batch_start//batch_size + 1}/{(total_files-1)//batch_size + 1}")
+        print(f"   Files {batch_start + 1}-{batch_end} of {total_files}")
+        
+        for i, filename in enumerate(batch_files):
+            file_num = batch_start + i + 1
+            print(f"\n🎵 [{file_num}/{total_files}] Processing: {filename}")
+            
             midi_path = os.path.join(midi_folder, filename)
-            features = extract_features(midi_path)
-            if features:
-                print(f"\n{filename} summary:")
-                for k, v in features.items():
-                    print(f"  {k}: {v:.4f}" if isinstance(v, float) else f"  {k}: {v}")
+            
+            try:
+                features = extract_features(midi_path)
+                if features:
+                    print(f"   ✅ Features extracted successfully")
+                    if interactive:
+                        print(f"   📊 Feature summary:")
+                        for k, v in features.items():
+                            if isinstance(v, float):
+                                print(f"      {k}: {v:.4f}")
+                            else:
+                                print(f"      {k}: {v}")
 
-                while True:
-                    primary_mood = input(f"🎯 Choose **primary** mood ({'/'.join(moods)}): ").strip().lower()
-                    if primary_mood in mood_feature_map:
-                        break
+                    # Get mood labels
+                    if interactive:
+                        while True:
+                            primary_mood = input(f"🎯 Choose **primary** mood ({'/'.join(moods)}): ").strip().lower()
+                            if primary_mood in mood_feature_map:
+                                break
+                            print("Invalid mood, please try again.")
 
-                while True:
-                    secondary_mood = input(f"🎨 Choose **secondary** mood ({'/'.join(moods)}), or press Enter to default to primary mood: ").strip().lower()
-                    if not secondary_mood:  # If user just hits Enter
-                        secondary_mood = primary_mood
-                        break
-                    elif secondary_mood in mood_feature_map:
-                        break
+                        while True:
+                            secondary_mood = input(f"🎨 Choose **secondary** mood ({'/'.join(moods)}), or press Enter to default to primary mood: ").strip().lower()
+                            if not secondary_mood:  # If user just hits Enter
+                                secondary_mood = primary_mood
+                                break
+                            elif secondary_mood in mood_feature_map:
+                                break
+                            else:
+                                print("Invalid secondary mood, try again.")
                     else:
-                        print("Invalid secondary mood, try again.")
+                        # Non-interactive mode - use default mood or auto-detect
+                        primary_mood = "unknown"
+                        secondary_mood = "unknown"
+                        print(f"   🤖 Using default mood: {primary_mood}")
 
-                features['primary_mood'] = primary_mood
-                features['secondary_mood'] = secondary_mood if secondary_mood else ''
+                    features['primary_mood'] = primary_mood
+                    features['secondary_mood'] = secondary_mood if secondary_mood else primary_mood
 
-                # mood = "chill"
-                # features['mood'] = mood
-                description = mood_feature_map[primary_mood]
+                    description = mood_feature_map.get(primary_mood, {})
 
-                syncopation = features['syncopation']
-                onset_entropy = features['onset_entropy']
-                pitch_range = features['pitch_range']
-                density = features['density']
+                    syncopation = features['syncopation']
+                    onset_entropy = features['onset_entropy']
+                    pitch_range = features['pitch_range']
+                    density = features['density']
                 
                 # Extraction
                 # Estimate Rhythmic Density
