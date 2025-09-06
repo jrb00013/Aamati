@@ -1,40 +1,9 @@
-# 🎵 Aamati - AI-Powered Music Mood Analysis & Processing
+#  Aamati - AI-Powered Music Mood Analysis & Processing
 
 Aamati is a comprehensive system that combines machine learning with real-time audio processing to analyze musical mood and apply intelligent effects. It consists of a Python-based ML training pipeline and a JUCE-based audio plugin for real-time processing.
 
-## 🏗️ Project Structure
 
-```
-Aamati/
-├── 📁 MLPython/                    # Machine Learning Components
-│   ├── 📁 src/                     # Source code
-│   │   ├── 📁 core/               # Core ML functionality
-│   │   │   ├── feature_extractor.py
-│   │   │   └── training_pipeline.py
-│   │   ├── 📁 models/             # Model training scripts
-│   │   ├── 📁 utils/              # Utility functions
-│   │   └── 📁 data/               # Data processing
-│   ├── 📁 scripts/                # Automation scripts
-│   │   ├── automation_manager.py
-│   │   ├── extract_features.py
-│   │   ├── train_models.py
-│   │   └── generate_predictions.py
-│   ├── 📁 models/                 # Trained models
-│   ├── 📁 MusicGroovesMIDI/       # MIDI training data
-│   └── main.py                    # ML system entry point
-├── 📁 Source/                     # JUCE Plugin Source
-│   ├── PluginProcessor.cpp/h
-│   ├── PluginEditor.cpp/h
-│   ├── ModelRunner.cpp/h
-│   └── FeatureExtractor.cpp/h
-├── 📁 Resources/                  # Plugin resources
-├── setup_aamati.py               # Complete setup script
-├── run_aamati.py                 # Master run script
-├── test_aamati.py                # Comprehensive test suite
-└── CMakeLists.txt                # Build configuration
-```
-
-## 🚀 Quick Start
+## Start
 
 ### 1. Complete Setup
 ```bash
@@ -78,7 +47,7 @@ python3 test_aamati.py --test ml
 python3 test_aamati.py --test juc
 ```
 
-## 🧠 ML System Usage
+## ML System Usage
 
 ### Feature Extraction
 ```bash
@@ -116,7 +85,7 @@ python3 MLPython/main.py --mode automate --workflow data-management
 python3 MLPython/main.py --mode status
 ```
 
-## 🎛️ JUCE Plugin Features
+## JUCE Plugin Features
 
 ### Audio Processing
 - **Real-time feature extraction**: Analyzes audio in real-time
@@ -138,7 +107,7 @@ python3 MLPython/main.py --mode status
 - **ML Enabled**: Toggle for ML processing
 - **Live Status**: Model status, predicted mood, feature extraction status
 
-## 🔧 Development
+## Development
 
 ### Adding New Features
 1. **ML Features**: Update `src/core/feature_extractor.py`
@@ -192,7 +161,7 @@ The system uses multiple ML models:
 | 🌀 Frantic | Chaotic, rapid, wild | 160-250 | 22-40 | 14-17 |
 | 🎯 Focused | Steady, repetitive, precise | 83-135 | 8-22 | 8-11 |
 
-## 🛠️ Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -211,13 +180,13 @@ python3 test_aamati.py --verbose
 ### Logs
 Check logs in `MLPython/logs/` for detailed information about ML operations.
 
-## 📚 Documentation
+## Documentation
 
 - **Setup Guide**: `JUCE_PLUGIN_SETUP.md`
 - **ML Documentation**: `MLPython/README.md`
 - **API Reference**: See docstrings in source files
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch
@@ -229,14 +198,10 @@ Check logs in `MLPython/logs/` for detailed information about ML operations.
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - JUCE framework for audio plugin development
 - ONNX Runtime for model inference
 - Pretty MIDI for MIDI file processing
 - Scikit-learn for machine learning
 - All contributors and testers
-
----
-
-**🎵 Happy creating with Aamati! 🎵**
