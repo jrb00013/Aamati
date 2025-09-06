@@ -56,10 +56,14 @@ AamatiAudioProcessorEditor::AamatiAudioProcessorEditor(AamatiAudioProcessor& p)
       highPassAttachment(std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
           audioProcessor.parameters, "highPass", highPassSlider)),
       lowPassAttachment(std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
-          audioProcessor.parameters, "lowPass", lowPassSlider))
+          audioProcessor.parameters, "lowPass", lowPassSlider)),
+      mlSensitivityAttachment(std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+          audioProcessor.parameters, "mlSensitivity", mlSensitivitySlider)),
+      mlEnabledAttachment(std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(
+          audioProcessor.parameters, "mlEnabled", mlEnabledButton))
 {
     setLookAndFeel(&customLookAndFeel);
-    setSize(500, 400);
+    setSize(600, 500);
 
     // Title
     titleLabel.setText("AAMATI", juce::dontSendNotification);
@@ -91,11 +95,76 @@ AamatiAudioProcessorEditor::AamatiAudioProcessorEditor(AamatiAudioProcessor& p)
     lowPassLabel.setFont(juce::Font(juce::FontOptions().withHeight(16.0f).withStyle("Bold")));
     lowPassLabel.setJustificationType(juce::Justification::centred);
     addAndMakeVisible(lowPassLabel);
+
+    // ML Sensitivity slider setup
+    mlSensitivitySlider.setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
+    mlSensitivitySlider.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
+    mlSensitivitySlider.setRange(0.1f, 2.0f, 0.1f);
+    mlSensitivitySlider.setPopupDisplayEnabled(true, false, this);
+    addAndMakeVisible(mlSensitivitySlider);
+
+    mlSensitivityLabel.setText("ML SENSITIVITY", juce::dontSendNotification);
+    mlSensitivityLabel.setFont(juce::Font(juce::FontOptions().withHeight(16.0f).withStyle("Bold")));
+    mlSensitivityLabel.setJustificationType(juce::Justification::centred);
+    addAndMakeVisible(mlSensitivityLabel);
+
+    // ML Enabled button setup
+    mlEnabledButton.setButtonText("ML ENABLED");
+    mlEnabledButton.setColour(juce::ToggleButton::textColourId, juce::Colours::white);
+    mlEnabledButton.setColour(juce::ToggleButton::tickColourId, juce::Colour(255, 128, 0));
+    addAndMakeVisible(mlEnabledButton);
+
+    // Mood display label
+    moodLabel.setText("MOOD: --", juce::dontSendNotification);
+    moodLabel.setFont(juce::Font(juce::FontOptions().withHeight(20.0f).withStyle("Bold")));
+    moodLabel.setJustificationType(juce::Justification::centred);
+    moodLabel.setColour(juce::Label::textColourId, juce::Colour(100, 255, 100));
+    addAndMakeVisible(moodLabel);
+
+    // Model status label
+    modelStatusLabel.setText("MODEL: LOADING...", juce::dontSendNotification);
+    modelStatusLabel.setFont(juce::Font(juce::FontOptions().withHeight(14.0f)));
+    modelStatusLabel.setJustificationType(juce::Justification::centred);
+    modelStatusLabel.setColour(juce::Label::textColourId, juce::Colour(255, 200, 100));
+    addAndMakeVisible(modelStatusLabel);
+
+    // Features display label
+    featuresLabel.setText("FEATURES: --", juce::dontSendNotification);
+    featuresLabel.setFont(juce::Font(juce::FontOptions().withHeight(12.0f)));
+    featuresLabel.setJustificationType(juce::Justification::centred);
+    featuresLabel.setColour(juce::Label::textColourId, juce::Colour(200, 200, 200));
+    addAndMakeVisible(featuresLabel);
+
+    // Start update timer
+    updateTimer.startTimer(100); // Update every 100ms
 }
 
 AamatiAudioProcessorEditor::~AamatiAudioProcessorEditor()
 {
+    updateTimer.stopTimer();
     setLookAndFeel(nullptr);
+}
+
+void AamatiAudioProcessorEditor::timerCallback()
+{
+    // Update model status
+    if (audioProcessor.modelRunner && audioProcessor.modelRunner->isModelLoaded())
+    {
+        modelStatusLabel.setText("MODEL: LOADED", juce::dontSendNotification);
+        modelStatusLabel.setColour(juce::Label::textColourId, juce::Colour(100, 255, 100));
+    }
+    else
+    {
+        modelStatusLabel.setText("MODEL: NOT LOADED", juce::dontSendNotification);
+        modelStatusLabel.setColour(juce::Label::textColourId, juce::Colour(255, 100, 100));
+    }
+    
+    // Update mood display (this would need to be implemented in the processor)
+    // For now, just show a placeholder
+    moodLabel.setText("MOOD: ANALYZING...", juce::dontSendNotification);
+    
+    // Update features display
+    featuresLabel.setText("FEATURES: EXTRACTING...", juce::dontSendNotification);
 }
 
 void AamatiAudioProcessorEditor::paint(juce::Graphics& g)
@@ -115,18 +184,45 @@ void AamatiAudioProcessorEditor::paint(juce::Graphics& g)
 void AamatiAudioProcessorEditor::resized()
 {
     auto bounds = getLocalBounds().reduced(20);
-    auto topSection = bounds.removeFromTop(60);
-    titleLabel.setBounds(topSection);
-
-    auto controlArea = bounds.withSizeKeepingCentre(400, 300);
-    auto highPassArea = controlArea.removeFromLeft(controlArea.getWidth() / 2).reduced(10);
-    auto lowPassArea = controlArea.reduced(10);
-
+    
+    // Title section
+    auto titleSection = bounds.removeFromTop(60);
+    titleLabel.setBounds(titleSection);
+    
+    // Status section
+    auto statusSection = bounds.removeFromTop(80);
+    auto moodArea = statusSection.removeFromTop(30);
+    moodLabel.setBounds(moodArea);
+    
+    auto modelArea = statusSection.removeFromTop(25);
+    modelStatusLabel.setBounds(modelArea);
+    
+    auto featuresArea = statusSection.removeFromTop(25);
+    featuresLabel.setBounds(featuresArea);
+    
+    // Control section
+    auto controlArea = bounds.withSizeKeepingCentre(500, 300);
+    
+    // Top row: High Pass and Low Pass
+    auto topRow = controlArea.removeFromTop(150);
+    auto highPassArea = topRow.removeFromLeft(topRow.getWidth() / 2).reduced(10);
+    auto lowPassArea = topRow.reduced(10);
+    
     highPassLabel.setBounds(highPassArea.removeFromTop(30));
     highPassSlider.setBounds(highPassArea);
-
+    
     lowPassLabel.setBounds(lowPassArea.removeFromTop(30));
     lowPassSlider.setBounds(lowPassArea);
+    
+    // Bottom row: ML Sensitivity and ML Enabled
+    auto bottomRow = controlArea.removeFromTop(150);
+    auto mlSensitivityArea = bottomRow.removeFromLeft(bottomRow.getWidth() / 2).reduced(10);
+    auto mlEnabledArea = bottomRow.reduced(10);
+    
+    mlSensitivityLabel.setBounds(mlSensitivityArea.removeFromTop(30));
+    mlSensitivitySlider.setBounds(mlSensitivityArea);
+    
+    mlEnabledButton.setBounds(mlEnabledArea.removeFromTop(50).reduced(20));
 }
 
 
