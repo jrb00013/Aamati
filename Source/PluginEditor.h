@@ -104,6 +104,15 @@ private:
     std::string currentSecondaryMood = "unknown";
     float currentConfidence = 0.0f;
     
+    // Advanced Processing Components
+    std::unique_ptr<ModernUI> modernUI;
+    std::unique_ptr<EmotionalOptimizer> emotionalOptimizer;
+    std::unique_ptr<GrooveShaper> grooveShaper;
+    std::unique_ptr<AIMidiGenerator> aiMidiGenerator;
+    
+    // UI Mode
+    bool useModernUI = true;
+    
     // Custom look and feel
     class AamatiLookAndFeel : public juce::LookAndFeel_V4
     {

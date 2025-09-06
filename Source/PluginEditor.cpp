@@ -91,7 +91,28 @@ AamatiAudioProcessorEditor::AamatiAudioProcessorEditor(AamatiAudioProcessor& p)
           audioProcessor.parameters, "mlEnabled", mlEnabledButton))
 {
     setLookAndFeel(&customLookAndFeel);
-    setSize(600, 500);
+    
+    // Initialize advanced processing components
+    emotionalOptimizer = std::make_unique<EmotionalOptimizer>();
+    grooveShaper = std::make_unique<GrooveShaper>();
+    aiMidiGenerator = std::make_unique<AIMidiGenerator>();
+    
+    // Initialize modern UI
+    modernUI = std::make_unique<ModernUI>();
+    addAndMakeVisible(modernUI.get());
+    
+    // Set up modern UI callbacks
+    setupModernUICallbacks();
+    
+    // Set size based on UI mode
+    if (useModernUI)
+    {
+        setSize(1200, 800);
+    }
+    else
+    {
+        setSize(600, 500);
+    }
 
     // Title
     titleLabel.setText("AAMATI", juce::dontSendNotification);
@@ -167,6 +188,36 @@ AamatiAudioProcessorEditor::AamatiAudioProcessorEditor(AamatiAudioProcessor& p)
     updateTimer.startTimer(100); // Update every 100ms
 }
 
+void AamatiAudioProcessorEditor::setupModernUICallbacks()
+{
+    if (!modernUI) return;
+    
+    // Set up feature callbacks
+    modernUI->onEmotionalOptimization = [this]() {
+        if (emotionalOptimizer) {
+            emotionalOptimizer->setMoodProfile(currentMood, currentSecondaryMood);
+        }
+    };
+    
+    modernUI->onGrooveShaping = [this]() {
+        if (grooveShaper) {
+            grooveShaper->setGrooveProfile(currentMood, 0.8f);
+        }
+    };
+    
+    modernUI->onAIMidiGeneration = [this]() {
+        if (aiMidiGenerator) {
+            AIMidiGenerator::GenerationContext context;
+            context.primaryMood = currentMood;
+            context.secondaryMood = currentSecondaryMood;
+            context.tempo = 120.0f; // Get from processor
+            aiMidiGenerator->setGenerationContext(context);
+        }
+    };
+    
+    // Add more callbacks for other features...
+}
+
 AamatiAudioProcessorEditor::~AamatiAudioProcessorEditor()
 {
     updateTimer.stopTimer();
@@ -187,12 +238,46 @@ void AamatiAudioProcessorEditor::timerCallback()
         modelStatusLabel.setColour(juce::Label::textColourId, juce::Colour(255, 100, 100));
     }
     
-    // Update mood display (this would need to be implemented in the processor)
-    // For now, just show a placeholder
-    moodLabel.setText("MOOD: ANALYZING...", juce::dontSendNotification);
+    // Update mood display
+    if (audioProcessor.currentMood != currentMood)
+    {
+        currentMood = audioProcessor.currentMood;
+        moodLabel.setText("MOOD: " + currentMood, juce::dontSendNotification);
+        
+        // Update modern UI if available
+        if (modernUI)
+        {
+            ModernUI::MoodDisplay moodDisplay;
+            moodDisplay.primaryMood = currentMood;
+            moodDisplay.secondaryMood = currentSecondaryMood;
+            moodDisplay.confidence = currentConfidence;
+            moodDisplay.tags = {"analyzing", "processing"};
+            moodDisplay.analysis = "Real-time analysis active";
+            
+            modernUI->updateMoodDisplay(moodDisplay);
+        }
+    }
+    else
+    {
+        moodLabel.setText("MOOD: ANALYZING...", juce::dontSendNotification);
+    }
     
     // Update features display
-    featuresLabel.setText("FEATURES: EXTRACTING...", juce::dontSendNotification);
+    if (audioProcessor.featureExtractor)
+    {
+        auto features = audioProcessor.featureExtractor->getLastFeatures();
+        if (features)
+        {
+            juce::String featuresText = "TEMPO: " + juce::String(features->tempo, 1) + 
+                                      " | SWING: " + juce::String(features->swing, 2) +
+                                      " | DENSITY: " + juce::String(features->density, 1);
+            featuresLabel.setText(featuresText, juce::dontSendNotification);
+        }
+    }
+    else
+    {
+        featuresLabel.setText("FEATURES: EXTRACTING...", juce::dontSendNotification);
+    }
 }
 
 void AamatiAudioProcessorEditor::paint(juce::Graphics& g)
@@ -243,46 +328,55 @@ void AamatiAudioProcessorEditor::paint(juce::Graphics& g)
 
 void AamatiAudioProcessorEditor::resized()
 {
-    auto bounds = getLocalBounds().reduced(20);
-    
-    // Title section
-    auto titleSection = bounds.removeFromTop(60);
-    titleLabel.setBounds(titleSection);
-    
-    // Status section
-    auto statusSection = bounds.removeFromTop(80);
-    auto moodArea = statusSection.removeFromTop(30);
-    moodLabel.setBounds(moodArea);
-    
-    auto modelArea = statusSection.removeFromTop(25);
-    modelStatusLabel.setBounds(modelArea);
-    
-    auto featuresArea = statusSection.removeFromTop(25);
-    featuresLabel.setBounds(featuresArea);
-    
-    // Control section
-    auto controlArea = bounds.withSizeKeepingCentre(500, 300);
-    
-    // Top row: High Pass and Low Pass
-    auto topRow = controlArea.removeFromTop(150);
-    auto highPassArea = topRow.removeFromLeft(topRow.getWidth() / 2).reduced(10);
-    auto lowPassArea = topRow.reduced(10);
-    
-    highPassLabel.setBounds(highPassArea.removeFromTop(30));
-    highPassSlider.setBounds(highPassArea);
-    
-    lowPassLabel.setBounds(lowPassArea.removeFromTop(30));
-    lowPassSlider.setBounds(lowPassArea);
-    
-    // Bottom row: ML Sensitivity and ML Enabled
-    auto bottomRow = controlArea.removeFromTop(150);
-    auto mlSensitivityArea = bottomRow.removeFromLeft(bottomRow.getWidth() / 2).reduced(10);
-    auto mlEnabledArea = bottomRow.reduced(10);
-    
-    mlSensitivityLabel.setBounds(mlSensitivityArea.removeFromTop(30));
-    mlSensitivitySlider.setBounds(mlSensitivityArea);
-    
-    mlEnabledButton.setBounds(mlEnabledArea.removeFromTop(50).reduced(20));
+    if (useModernUI && modernUI)
+    {
+        // Use modern UI layout
+        modernUI->setBounds(getLocalBounds());
+    }
+    else
+    {
+        // Use classic UI layout
+        auto bounds = getLocalBounds().reduced(20);
+        
+        // Title section
+        auto titleSection = bounds.removeFromTop(60);
+        titleLabel.setBounds(titleSection);
+        
+        // Status section
+        auto statusSection = bounds.removeFromTop(80);
+        auto moodArea = statusSection.removeFromTop(30);
+        moodLabel.setBounds(moodArea);
+        
+        auto modelArea = statusSection.removeFromTop(25);
+        modelStatusLabel.setBounds(modelArea);
+        
+        auto featuresArea = statusSection.removeFromTop(25);
+        featuresLabel.setBounds(featuresArea);
+        
+        // Control section
+        auto controlArea = bounds.withSizeKeepingCentre(500, 300);
+        
+        // Top row: High Pass and Low Pass
+        auto topRow = controlArea.removeFromTop(150);
+        auto highPassArea = topRow.removeFromLeft(topRow.getWidth() / 2).reduced(10);
+        auto lowPassArea = topRow.reduced(10);
+        
+        highPassLabel.setBounds(highPassArea.removeFromTop(30));
+        highPassSlider.setBounds(highPassArea);
+        
+        lowPassLabel.setBounds(lowPassArea.removeFromTop(30));
+        lowPassSlider.setBounds(lowPassArea);
+        
+        // Bottom row: ML Sensitivity and ML Enabled
+        auto bottomRow = controlArea.removeFromTop(150);
+        auto mlSensitivityArea = bottomRow.removeFromLeft(bottomRow.getWidth() / 2).reduced(10);
+        auto mlEnabledArea = bottomRow.reduced(10);
+        
+        mlSensitivityLabel.setBounds(mlSensitivityArea.removeFromTop(30));
+        mlSensitivitySlider.setBounds(mlSensitivityArea);
+        
+        mlEnabledButton.setBounds(mlEnabledArea.removeFromTop(50).reduced(20));
+    }
 }
 
 
