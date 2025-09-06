@@ -286,6 +286,10 @@ def main():
                        help="Run only ML training")
     parser.add_argument("--build-only", action="store_true",
                        help="Run only JUCE build")
+    parser.add_argument("--full-pipeline", action="store_true",
+                       help="Run complete ML pipeline (extract, train, predict)")
+    parser.add_argument("--test-only", action="store_true",
+                       help="Run only integration tests")
     
     args = parser.parse_args()
     
@@ -294,19 +298,32 @@ def main():
     
     runner = AamatiRunner()
     
-    if args.ml_only:
+    if args.test_only:
+        # Run only integration tests
+        if not runner.run_integration_tests():
+            sys.exit(1)
+    
+    elif args.ml_only:
         # Run only ML training
         if not runner.run_ml_training(interactive=interactive, 
                                     midi_folder=args.midi_folder):
             sys.exit(1)
+    
     elif args.build_only:
         # Run only JUCE build
         if not runner.export_models():
             sys.exit(1)
         if not runner.build_juce_plugin(build_type=args.build_type):
             sys.exit(1)
+    
+    elif args.full_pipeline:
+        # Run complete ML pipeline
+        if not runner.run_ml_pipeline(interactive=interactive, 
+                                    midi_folder=args.midi_folder):
+            sys.exit(1)
+    
     else:
-        # Run complete pipeline
+        # Run complete pipeline (ML + JUCE)
         if not runner.run_complete_pipeline(
             interactive=interactive,
             midi_folder=args.midi_folder,
