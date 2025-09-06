@@ -1,24 +1,31 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 #include "ModelRunner.h"
+#include "FeatureExtractor.h"
 
 #include <onnxruntime/core/providers/shared_library/provider_api.h>
 #include <vector>
 #include <string>
 #include <iostream>
 
-
-
-// mood enum
-
+// Mood enum
 enum class Mood {
     Calm,
     Tense,
-    Explosive
+    Explosive,
+    Chill,
+    Energetic,
+    Suspenseful,
+    Uplifting,
+    Ominous,
+    Romantic,
+    Gritty,
+    Dreamy,
+    Frantic,
+    Focused
 };
 
-Mood currentMood = Mood::Calm; // example current mood 
-
+Mood currentMood = Mood::Calm;
 
 AamatiAudioProcessor::AamatiAudioProcessor()
     : AudioProcessor(BusesProperties()
@@ -30,7 +37,12 @@ AamatiAudioProcessor::AamatiAudioProcessor()
             juce::NormalisableRange<float>(20.0f, 5000.0f, 0.1f, 0.3f), 200.0f),
         std::make_unique<juce::AudioParameterFloat>(
             "lowPass", "Low Pass Frequency",
-            juce::NormalisableRange<float>(5000.0f, 22000.0f, 0.1f, 0.3f), 12000.0f)
+            juce::NormalisableRange<float>(5000.0f, 22000.0f, 0.1f, 0.3f), 12000.0f),
+        std::make_unique<juce::AudioParameterBool>(
+            "mlEnabled", "ML Processing Enabled", true),
+        std::make_unique<juce::AudioParameterFloat>(
+            "mlSensitivity", "ML Sensitivity",
+            juce::NormalisableRange<float>(0.1f, 2.0f, 0.1f), 1.0f)
     })
 {
 }
@@ -54,7 +66,6 @@ void AamatiAudioProcessor::changeProgramName(int, const juce::String&) {}
 
 void AamatiAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
-
     juce::ignoreUnused(sampleRate, samplesPerBlock);
 
     // Find executable directory
@@ -64,7 +75,18 @@ void AamatiAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
     auto modelFile = exeDir.getChildFile("Resources/groove_mood_model.onnx");
 
     // Create ModelRunner instance
-    modelRunner = std::make_unique<ModelRunner>(modelFile.getFullPathName().toStdString());
+    if (modelFile.exists())
+    {
+        modelRunner = std::make_unique<ModelRunner>(modelFile.getFullPathName().toStdString());
+        DBG("ML Model loaded successfully");
+    }
+    else
+    {
+        DBG("ML Model file not found: " << modelFile.getFullPathName());
+    }
+
+    // Initialize feature extractor
+    featureExtractor = std::make_unique<FeatureExtractor>();
 
     juce::dsp::ProcessSpec spec;
     spec.sampleRate = sampleRate;
@@ -100,18 +122,6 @@ bool AamatiAudioProcessor::isBusesLayoutSupported(const juce::AudioProcessor::Bu
 
 void AamatiAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
-     // Processing usage of modelRunner
-    if (modelRunner)
-    {
-        std::array<float, 5> features = { /* fill with your input features for the model */ };
-
-        std::string predictedMood = modelRunner->predict(features);
-
-        // Use predictedMood for whatever logic you want
-        // print debugging 
-        DBG("Predicted Mood: " << predictedMood);
-    }
-
     juce::ScopedNoDenormals noDenormals;
     
     // Update filters if necessary
@@ -123,6 +133,23 @@ void AamatiAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
     
     // Process the DSP chain
     processorChain.process(context);
+    
+    // ML Processing
+    bool mlEnabled = parameters.getRawParameterValue("mlEnabled")->load() > 0.5f;
+    if (mlEnabled && modelRunner && featureExtractor)
+    {
+        // Extract features from current audio buffer
+        auto features = featureExtractor->extractFeaturesFromAudio(buffer, getSampleRate());
+        
+        if (features.has_value())
+        {
+            // Get ML sensitivity parameter
+            float sensitivity = parameters.getRawParameterValue("mlSensitivity")->load();
+            
+            // Apply ML-based processing
+            applyMLProcessing(buffer, features.value(), sensitivity);
+        }
+    }
     
     // Mid/Side processing
     for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
@@ -178,46 +205,70 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
     return new AamatiAudioProcessor();
 }
 
-void updateMoodFromModel(juce::AudioBuffer<float>& buffer) {
-    // This is a placeholder function, you need to pass the features extracted from the audio
-    // to the model and get the predicted mood (like Calm, Tense, Explosive)
+void AamatiAudioProcessor::applyMLProcessing(juce::AudioBuffer<float>& buffer, const GrooveFeatures& features, float sensitivity)
+{
+    // Convert features to array format expected by model
+    std::array<float, 5> featureArray = {
+        static_cast<float>(features.tempo),
+        static_cast<float>(features.swing),
+        static_cast<float>(features.density),
+        static_cast<float>(features.dynamicRange),
+        static_cast<float>(features.energy)
+    };
 
-    // Extract features (for example, features from your audio buffer)
-    std::vector<float> features = extractGrooveFeatures(buffer);
-
-    // Map features to input data for model prediction (you may need to preprocess the features)
-    // Call the model prediction function here and set the mood accordingly
-    currentMood = predictMood(features);
+    // Get mood prediction
+    std::string predictedMood = modelRunner->predict(featureArray);
+    
+    // Apply mood-based processing
+    applyMoodProcessing(buffer, predictedMood, sensitivity);
+    
+    // Debug output
+    DBG("Predicted Mood: " << predictedMood);
 }
 
-
-
-
-
-onnx::Model* MoodPredictor::model = nullptr;
-
-onnx::Model* MoodPredictor::loadModel(const std::string& modelPath) {
-    try {
-        model = new onnx::Model(modelPath);
-    } catch (const std::exception& e) {
-        std::cerr << "Error loading model: " << e.what() << std::endl;
+void AamatiAudioProcessor::applyMoodProcessing(juce::AudioBuffer<float>& buffer, const std::string& mood, float sensitivity)
+{
+    // Apply different processing based on predicted mood
+    if (mood == "energetic" || mood == "frantic")
+    {
+        // Add brightness and punch
+        for (int channel = 0; channel < buffer.getNumChannels(); ++channel)
+        {
+            for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
+            {
+                float sampleValue = buffer.getSample(channel, sample);
+                // Apply slight saturation and high-frequency emphasis
+                sampleValue = juce::jlimit(-1.0f, 1.0f, sampleValue * (1.0f + sensitivity * 0.1f));
+                buffer.setSample(channel, sample, sampleValue);
+            }
+        }
     }
-    return model;
-}
-
-Mood MoodPredictor::predictMood(const std::vector<float>& features) {
-    // Assuming you already have a way to create an ONNX session
-    std::vector<onnx::Value> input = {onnx::Value::FromVector(features)};
-    auto result = model->Run(input);
-
-    // Assuming output is a classification result (0 = Calm, 1 = Tense, 2 = Explosive)
-    int moodIndex = result[0].get<int>();
-
-    // Map the result to a Mood enum
-    switch (moodIndex) {
-        case 0: return Mood::Calm;
-        case 1: return Mood::Tense;
-        case 2: return Mood::Explosive;
-        default: return Mood::Calm;
+    else if (mood == "chill" || mood == "dreamy")
+    {
+        // Apply gentle filtering and reverb-like processing
+        for (int channel = 0; channel < buffer.getNumChannels(); ++channel)
+        {
+            for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
+            {
+                float sampleValue = buffer.getSample(channel, sample);
+                // Apply gentle low-pass filtering effect
+                sampleValue *= (1.0f - sensitivity * 0.05f);
+                buffer.setSample(channel, sample, sampleValue);
+            }
+        }
+    }
+    else if (mood == "ominous" || mood == "suspenseful")
+    {
+        // Add dark character with low-end emphasis
+        for (int channel = 0; channel < buffer.getNumChannels(); ++channel)
+        {
+            for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
+            {
+                float sampleValue = buffer.getSample(channel, sample);
+                // Apply slight low-frequency emphasis
+                sampleValue *= (1.0f + sensitivity * 0.05f);
+                buffer.setSample(channel, sample, sampleValue);
+            }
+        }
     }
 }

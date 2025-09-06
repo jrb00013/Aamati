@@ -41,6 +41,9 @@ public:
     juce::AudioProcessorValueTreeState parameters;
 
 private:
+    void applyMLProcessing(juce::AudioBuffer<float>& buffer, const GrooveFeatures& features, float sensitivity);
+    void applyMoodProcessing(juce::AudioBuffer<float>& buffer, const std::string& mood, float sensitivity);
+
     juce::dsp::ProcessorChain<
         juce::dsp::IIR::Filter<float>,  // High-pass
         juce::dsp::IIR::Filter<float>,  // Low-pass
@@ -48,6 +51,7 @@ private:
     > processorChain;
 
     std::unique_ptr<ModelRunner> modelRunner;
+    std::unique_ptr<FeatureExtractor> featureExtractor;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AamatiAudioProcessor)
 
