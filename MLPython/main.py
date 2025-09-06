@@ -5,69 +5,121 @@ Main entry point for the Aamati ML system.
 
 import sys
 import argparse
+import subprocess
 from pathlib import Path
 
-# Add src to path
-sys.path.append(str(Path(__file__).parent / "src"))
 
-from src.core.training_pipeline import TrainingPipeline
-from scripts.automation_manager import AutomationManager
+def run_script(script_name, args=None):
+    """Run a script with proper error handling."""
+    if args is None:
+        args = []
+    
+    script_path = Path(__file__).parent / script_name
+    
+    if not script_path.exists():
+        print(f"❌ Script not found: {script_path}")
+        return False
+    
+    try:
+        result = subprocess.run(
+            [sys.executable, str(script_path)] + args,
+            cwd=Path(__file__).parent
+        )
+        return result.returncode == 0
+    except Exception as e:
+        print(f"❌ Error running {script_name}: {e}")
+        return False
 
 
 def main():
     """Main entry point for ML system."""
     parser = argparse.ArgumentParser(description="Aamati ML System")
     parser.add_argument("--mode", choices=[
-        "extract", "train", "predict", "automate", "status"
+        "extract", "train", "predict", "copy-log", "clear-log", "full-pipeline"
     ], required=True, help="Operation mode")
     parser.add_argument("--interactive", action="store_true", default=True,
                        help="Run in interactive mode")
-    parser.add_argument("--midi-folder", 
+    parser.add_argument("--non-interactive", action="store_true",
+                       help="Run in non-interactive mode")
+    parser.add_argument("--midi-folder", default="MusicGroovesMIDI/TrainingMIDIs",
                        help="Path to MIDI folder")
-    parser.add_argument("--output-csv", 
-                       help="Output CSV file")
-    parser.add_argument("--workflow", 
-                       help="Automation workflow to run")
+    parser.add_argument("--csv-file", default="groove_features_log_for_pred.csv",
+                       help="CSV file for prediction")
     
     args = parser.parse_args()
     
+    print("🎵 Aamati ML System")
+    print("=" * 50)
+    
+    # Determine interactive mode
+    interactive = args.interactive and not args.non_interactive
+    
+    success = True
+    
     if args.mode == "extract":
         # Run feature extraction
-        pipeline = TrainingPipeline(
-            midi_folder=args.midi_folder or "MusicGroovesMIDI/TrainingMIDIs",
-            output_csv=args.output_csv or "current_groove_features.csv"
-        )
-        pipeline.run_training(interactive=args.interactive)
+        print("📊 Running feature extraction...")
+        extract_args = ["--interactive"] if interactive else ["--non-interactive"]
+        extract_args.extend(["--midi-folder", args.midi_folder])
+        success = run_script("extract_groove_features.py", extract_args)
         
     elif args.mode == "train":
         # Run model training
-        from scripts.train_models import main as train_main
-        train_main()
+        print("🤖 Running model training...")
+        success = run_script("train_models.py")
         
     elif args.mode == "predict":
         # Run predictions
-        from scripts.generate_predictions import main as predict_main
-        predict_main()
+        print("🔮 Running mood prediction...")
+        success = run_script("predict_groove_mood.py", ["--csv-file", args.csv_file])
         
-    elif args.mode == "automate":
-        # Run automation
-        manager = AutomationManager()
-        if args.workflow:
-            if args.workflow == "training":
-                manager.run_training_workflow(interactive=args.interactive)
-            elif args.workflow == "model-update":
-                manager.run_model_update_workflow()
-            elif args.workflow == "data-management":
-                manager.run_data_management_workflow()
-            elif args.workflow == "cleanup":
-                manager.run_cleanup_workflow()
-        else:
-            print("Please specify --workflow")
-            
-    elif args.mode == "status":
-        # Show status
-        manager = AutomationManager()
-        manager.print_status()
+    elif args.mode == "copy-log":
+        # Copy log to pred
+        print("📋 Copying log to prediction file...")
+        success = run_script("scripts/copy_groove_features.py")
+        
+    elif args.mode == "clear-log":
+        # Clear log
+        print("🧹 Clearing log file...")
+        success = run_script("scripts/reset_groove_features.py")
+        
+    elif args.mode == "full-pipeline":
+        # Run complete pipeline
+        print("🚀 Running full ML pipeline...")
+        
+        # Step 1: Copy existing log to pred
+        print("1️⃣ Copying existing log to prediction file...")
+        if not run_script("scripts/copy_groove_features.py"):
+            print("⚠️ No existing log to copy, continuing...")
+        
+        # Step 2: Clear log
+        print("2️⃣ Clearing log file...")
+        run_script("scripts/reset_groove_features.py")
+        
+        # Step 3: Extract features
+        print("3️⃣ Extracting features...")
+        extract_args = ["--interactive"] if interactive else ["--non-interactive"]
+        extract_args.extend(["--midi-folder", args.midi_folder, "--copy-to-pred"])
+        if not run_script("extract_groove_features.py", extract_args):
+            success = False
+        
+        # Step 4: Train models
+        if success:
+            print("4️⃣ Training models...")
+            if not run_script("train_models.py"):
+                success = False
+        
+        # Step 5: Generate predictions
+        if success:
+            print("5️⃣ Generating predictions...")
+            if not run_script("predict_groove_mood.py", ["--csv-file", args.csv_file]):
+                success = False
+    
+    if success:
+        print("\n✅ Operation completed successfully!")
+    else:
+        print("\n❌ Operation failed!")
+        sys.exit(1)
 
 
 if __name__ == "__main__":

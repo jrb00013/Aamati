@@ -80,28 +80,16 @@ class AamatiRunner:
             # Change to ML directory
             os.chdir(self.ml_dir)
             
-            # Run feature extraction
-            print("📊 Extracting features...")
-            cmd = ["python3", "scripts/extract_features.py"]
+            # Run full ML pipeline
+            print("🚀 Running full ML pipeline...")
+            cmd = ["python3", "main.py", "--mode", "full-pipeline"]
             if not interactive:
                 cmd.append("--non-interactive")
             if midi_folder:
                 cmd.extend(["--midi-folder", midi_folder])
             
             result = subprocess.run(cmd, check=True)
-            print("✅ Feature extraction completed")
-            
-            # Run model training
-            print("🤖 Training models...")
-            cmd = ["python3", "scripts/train_models.py"]
-            result = subprocess.run(cmd, check=True)
-            print("✅ Model training completed")
-            
-            # Run prediction generation
-            print("🔮 Generating predictions...")
-            cmd = ["python3", "scripts/generate_predictions.py"]
-            result = subprocess.run(cmd, check=True)
-            print("✅ Prediction generation completed")
+            print("✅ ML pipeline completed")
             
             self.run_status["ml_training"] = True
             return True
@@ -122,27 +110,29 @@ class AamatiRunner:
         print("=" * 40)
         
         try:
-            # Copy ONNX model
-            onnx_source = self.ml_dir / "groove_mood_model.onnx"
-            if onnx_source.exists():
-                shutil.copy2(onnx_source, self.resources_dir)
-                print("✅ ONNX model copied to Resources")
+            # Run the setup script to copy models
+            setup_script = self.base_dir / "setup_ml_models.py"
+            if setup_script.exists():
+                result = subprocess.run([sys.executable, str(setup_script)], 
+                                      cwd=self.base_dir, check=True)
+                print("✅ Models copied to Resources directory")
             else:
-                print("⚠️ ONNX model not found, creating placeholder...")
-                self._create_placeholder_model()
-            
-            # Copy other model files
-            models_source = self.ml_dir / "models"
-            if models_source.exists():
-                for model_file in models_source.glob("*.joblib"):
-                    shutil.copy2(model_file, self.resources_dir)
-                    print(f"✅ Copied {model_file.name}")
-            
-            # Copy mood feature map
-            mood_map_source = self.ml_dir / "mood_feature_map.json"
-            if mood_map_source.exists():
-                shutil.copy2(mood_map_source, self.resources_dir)
-                print("✅ Mood feature map copied")
+                print("⚠️ Setup script not found, copying manually...")
+                
+                # Copy ONNX model
+                onnx_source = self.ml_dir / "groove_mood_model.onnx"
+                if onnx_source.exists():
+                    shutil.copy2(onnx_source, self.resources_dir)
+                    print("✅ ONNX model copied to Resources")
+                else:
+                    print("⚠️ ONNX model not found")
+                
+                # Copy other model files
+                models_source = self.ml_dir / "ModelClassificationScripts" / "models"
+                if models_source.exists():
+                    for model_file in models_source.glob("*.joblib"):
+                        shutil.copy2(model_file, self.resources_dir)
+                        print(f"✅ Copied {model_file.name}")
             
             self.run_status["model_export"] = True
             return True
