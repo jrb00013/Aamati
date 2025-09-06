@@ -199,7 +199,7 @@ def extract_features(midi_path):
         else:
             swing = 0.0
 
-        return {
+        features = {
             'tempo': tempo,
             'swing': swing,
             'density': density,
@@ -217,9 +217,15 @@ def extract_features(midi_path):
             'instrument_count': len(pm.instruments),
             'timestamp': datetime.datetime.now().isoformat()
         }
+        
+        # Log feature extraction
+        logger.log_feature_extraction(midi_path, features)
+        logger.info(f"Successfully extracted features for: {midi_path}")
+        
+        return features
 
     except Exception as e:
-        print(f"Error processing {midi_path}: {e}")
+        logger.error(f"Error processing {midi_path}: {e}")
         return None
 
 def append_to_log(new_data: pd.DataFrame, log_csv: str, current_csv: str):
