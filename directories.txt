@@ -1,6 +1,8 @@
 .
 ├── CMakeLists.txt
+├── COMPLETE_USAGE_GUIDE.md
 ├── CommandForStarting.txt
+├── INTEGRATION_TESTING_GUIDE.md
 ├── JUCE
 ├── JUCE_PLUGIN_SETUP.md
 ├── LICENSE
@@ -579,19 +581,27 @@
 │   ├── README.md
 │   ├── categorical_encoder.pkl
 │   ├── config
-│   ├── current_groove_features.csv
+│   ├── data
+│   │   ├── csv
+│   │   │   ├── current_groove_features.csv
+│   │   │   ├── groove_features_log.csv
+│   │   │   ├── groove_features_log_for_pred.csv
+│   │   │   └── raw_features.csv
+│   │   ├── exports
+│   │   └── logs
 │   ├── estimate_features.py
 │   ├── extract_energy_features.py
 │   ├── extract_groove_features.py
 │   ├── fixed_midi_compliance.py
-│   ├── groove_features_log.csv
-│   ├── groove_features_log_for_pred.csv
-│   ├── groove_mood_model.onnx
-│   ├── groove_mood_model.pkl
 │   ├── main.py
+│   ├── models
+│   │   ├── checkpoints
+│   │   └── trained
+│   │       ├── groove_mood_model.onnx
+│   │       └── groove_mood_model.pkl
 │   ├── mood_feature_map.json
+│   ├── optimized_mood_classifier.py
 │   ├── predict_groove_mood.py
-│   ├── raw_features.csv
 │   ├── scripts
 │   │   ├── automation_manager.py
 │   │   ├── copy_groove_features.py
@@ -616,14 +626,23 @@
 │   └── train_models.py
 ├── README.md
 ├── Source
+│   ├── AIMidiGenerator.cpp
+│   ├── AIMidiGenerator.h
+│   ├── EmotionalOptimizer.cpp
+│   ├── EmotionalOptimizer.h
 │   ├── FeatureExtractor.cpp
 │   ├── FeatureExtractor.h
+│   ├── GrooveShaper.cpp
+│   ├── GrooveShaper.h
 │   ├── ModelRunner.cpp
 │   ├── ModelRunner.h
+│   ├── ModernUI.cpp
+│   ├── ModernUI.h
 │   ├── PluginEditor.cpp
 │   ├── PluginEditor.h
 │   ├── PluginProcessor.cpp
 │   └── PluginProcessor.h
+├── TRAINING_GUIDE.md
 ├── build
 │   └── CMakeFiles
 │       ├── 3.22.1
@@ -646,12 +665,16 @@
 │   ├── EULA.txt
 │   ├── PRIVACY_POLICY.txt
 │   └── TERMS_OF_SERVICE.txt
+├── logging_config.py
 ├── midifile
 ├── onnxruntime
 ├── requirements.txt
 ├── run_aamati.py
+├── run_tests.py
 ├── setup_aamati.py
 ├── setup_ml_models.py
+├── startAamati.sh
+├── system_health.py
 └── test_aamati.py
 
-29 directories, 626 files
+36 directories, 642 files

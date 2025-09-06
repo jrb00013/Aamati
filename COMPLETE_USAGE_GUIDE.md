@@ -1,10 +1,10 @@
 # Aamati Complete Usage Guide
 
-## 🎵 The Ultimate AI-Powered Music Production Suite
+## The Ultimate AI-Powered Music Production Suite
 
 Aamati is a revolutionary JUCE audio plugin that combines machine learning, real-time MIDI processing, and AI-driven music generation to create an unparalleled music production experience.
 
-## 🚀 Quick Start
+## Quick Start
 
 ### 1. Setup Everything
 ```bash
@@ -38,7 +38,7 @@ cmake -B build -S . -DCMAKE_BUILD_TYPE=Release
 cmake --build build --config Release
 ```
 
-## 🎛️ Plugin Features
+## Plugin Features
 
 ### Core Features
 - **Real-time Mood Analysis**: AI-powered mood detection from MIDI input
@@ -57,7 +57,7 @@ cmake --build build --config Release
 - **Groove Humanizer**: Add human feel to mechanical sequences
 - **Dynamic Range Balancer**: Balance energy levels automatically
 
-## 🎨 Modern UI
+## UI
 
 The plugin features a stunning modern interface with:
 - **Black, White, and Gold Theme**: Professional Aamati branding
@@ -67,7 +67,7 @@ The plugin features a stunning modern interface with:
 - **Visual Feedback**: Progress bars, confidence indicators, and tags
 - **Download Reports**: Export analysis results
 
-## 🧠 Machine Learning Pipeline
+## ML Extraction Pipeline
 
 ### 1. Feature Extraction
 ```bash
@@ -97,7 +97,7 @@ python3 MLPython/optimized_mood_classifier.py
 python3 MLPython/predict_groove_mood.py --csv-file data/csv/groove_features_log_for_pred.csv
 ```
 
-## 📊 Data Management
+## Data Management
 
 ### CSV Files
 - `data/csv/groove_features_log.csv`: Current session data (cleared each time)
@@ -121,7 +121,7 @@ python3 MLPython/scripts/reset_groove_features.py
 python3 MLPython/scripts/automation_manager.py
 ```
 
-## 🔧 Configuration
+## Configuration
 
 ### Environment Variables
 ```bash
@@ -135,7 +135,7 @@ export AAMATI_MAX_BATCH_SIZE="50"
 - `MLPython/config/mood_mappings.json`: Mood definitions
 - `Aamati/Resources/`: Plugin resources and models
 
-## 🎵 Usage Examples
+## Usage Examples
 
 ### 1. Basic Mood Analysis
 1. Load a MIDI file into your DAW
@@ -161,7 +161,7 @@ export AAMATI_MAX_BATCH_SIZE="50"
 3. Set accent patterns
 4. Hear more natural, human-like rhythm
 
-## 🧪 Testing and Validation
+## Testing and Validation
 
 ### Run Integration Tests
 ```bash
@@ -183,7 +183,7 @@ python3 system_health.py
 python3 system_health.py --monitor
 ```
 
-## 📈 Performance Optimization
+## Performance Optimization
 
 ### ML Pipeline
 - Use `--batch-size` parameter for memory management
@@ -195,7 +195,7 @@ python3 system_health.py --monitor
 - Use Release build for production
 - Monitor CPU usage with system health tools
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -235,7 +235,7 @@ export AAMATI_LOG_LEVEL="DEBUG"
 python3 run_aamati.py --verbose
 ```
 
-## 📚 Advanced Usage
+## Advanced Usage
 
 ### Custom Mood Definitions
 Edit `MLPython/config/mood_mappings.json`:
@@ -266,7 +266,7 @@ def extract_custom_feature(midi_data):
 # CC 3: AI Generation Level
 ```
 
-## 🎯 Best Practices
+## Best Practices
 
 ### 1. Training Data
 - Use diverse MIDI files for better model accuracy
@@ -283,7 +283,7 @@ def extract_custom_feature(midi_data):
 - Experiment with different mood combinations
 - Save successful presets
 
-## 📞 Support
+## Support
 
 ### Documentation
 - `README.md`: Project overview
@@ -305,7 +305,7 @@ python3 system_health.py --monitor --interval 5
 python3 test_aamati.py --suite performance
 ```
 
-## 🚀 Future Features
+## Future Features
 
 - **Cloud Integration**: Upload models and presets to cloud
 - **Collaborative Features**: Share mood analyses with team
@@ -323,5 +323,3 @@ Aamati is your gateway to AI-powered music production. With its advanced machine
 ```bash
 python3 run_aamati.py --full-pipeline
 ```
-
-*Happy creating! 🎵✨*
