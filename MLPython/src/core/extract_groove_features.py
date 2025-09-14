@@ -522,6 +522,10 @@ def main(midi_folder, output_csv, log_csv, interactive=True, batch_size=50, max_
                 new_path = os.path.join(inactive_folder, filename)
                 os.rename(midi_path, new_path)
                 print(f"🗂️  Moved {filename} to InactiveMIDIs.\n")
+                
+            except Exception as e:
+                print(f"❌ Error processing {filename}: {e}")
+                continue
 
     print(f"Finished processing {len(records)} MIDI files.")
     df_all = pd.DataFrame(records)

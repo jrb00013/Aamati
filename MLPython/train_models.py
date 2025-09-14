@@ -101,8 +101,8 @@ def train_main_mood_model():
     print("=" * 50)
     
     # This would train the main mood model that outputs both .joblib and .onnx
-    # For now, we'll use the existing MachineLearningModel.py
-    script_path = Path(__file__).parent / "MachineLearningModel.py"
+    # For now, we'll use the existing mood_classification_model.py
+    script_path = Path(__file__).parent / "mood_classification_model.py"
     
     if not script_path.exists():
         print(f"❌ Main model script not found: {script_path}")

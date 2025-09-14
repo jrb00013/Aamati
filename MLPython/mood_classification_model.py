@@ -16,10 +16,10 @@ from imblearn.over_sampling import SMOTE
 
 
 # Load data
-data = pd.read_csv('groove_features_log_for_pred.csv')
+data = pd.read_csv('data/csv/groove_features_log_for_pred.csv')
 
 print("Total samples:", len(data))
-print("Class distribution:\n", data['mood'].value_counts())
+print("Class distribution:\n", data['primary_mood'].value_counts())
 
 numerical_features = [
     'tempo', 'swing', 'density', 'dynamic_range', 'energy',
@@ -34,12 +34,12 @@ categorical_features = [
 ]
 
 # Drop rows with missing values in features or label
-data = data.dropna(subset=numerical_features + categorical_features + ['mood'])
+data = data.dropna(subset=numerical_features + categorical_features + ['primary_mood'])
 
 X_num = data[numerical_features].values
 X_cat = data[categorical_features]
 
-y = data['mood'] # May have to update this to account for primary and secondary moods eventually
+y = data['primary_mood'] # Using primary mood as the main classification target
 
 # Fit OneHotEncoder on categorical features
 encoder = OneHotEncoder(handle_unknown='ignore', sparse_output=False)
@@ -55,9 +55,13 @@ y_encoded = label_encoder.fit_transform(y)
 # Train/test split
 X_train, X_test, y_train, y_test = train_test_split(X_all, y_encoded, test_size=0.2, random_state=42,stratify=y_encoded)
 
-# Apply SMOTE to training set only
-smote = SMOTE(random_state=42)
-X_train_resampled, y_train_resampled = smote.fit_resample(X_train, y_train)
+# Apply SMOTE to training set only if we have enough samples
+if len(X_train) >= 6:  # SMOTE requires at least 6 samples
+    smote = SMOTE(random_state=42)
+    X_train_resampled, y_train_resampled = smote.fit_resample(X_train, y_train)
+else:
+    print("⚠️ Insufficient samples for SMOTE, using original training data")
+    X_train_resampled, y_train_resampled = X_train, y_train
 
 # Train RandomForestClassifier on numeric input only
 model = RandomForestClassifier(n_estimators=100,random_state=42) # model = RandomForestClassifier(n_estimators=100,class_weight='balanced' ,random_state=42)
