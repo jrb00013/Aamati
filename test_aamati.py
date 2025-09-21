@@ -283,11 +283,7 @@ class AamatiTester:
             
             # Run feature extraction on test file
             cmd = [
-                "python3", "extract_groove_features.py",
-                "--midi-folder", "MusicGroovesMIDI/TrainingMIDIs",
-                "--max-files", "1",
-                "--non-interactive",
-                "--verbose"
+                "python3", "extract_groove_features.py"
             ]
             
             result = subprocess.run(cmd, capture_output=True, text=True, timeout=60)

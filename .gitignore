@@ -4,3 +4,4 @@ MusicGroovesMidi/ProcessedMIDIs/*.midi
 MusicGroovesMidi/ProcessedMIDIs/*.mid
 MusicGroovesMidi/TrainingMIDIs/*.mid
 MusicGroovesMidi/TrainingMIDIs/*.midi
+__pycache__/

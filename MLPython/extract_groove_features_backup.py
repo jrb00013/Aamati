@@ -1,8 +1,4 @@
 #!/usr/bin/env python3
-"""
-Simple extract_groove_features.py - matches your old workflow exactly
-This is a direct replacement for your old extract_groove_features.py
-"""
 
 import os
 import pretty_midi

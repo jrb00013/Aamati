@@ -62,9 +62,7 @@ def main():
     if args.mode == "extract":
         # Run feature extraction
         print("📊 Running feature extraction...")
-        extract_args = ["--interactive"] if interactive else ["--non-interactive"]
-        extract_args.extend(["--midi-folder", args.midi_folder])
-        success = run_script("extract_groove_features.py", extract_args)
+        success = run_script("extract_groove_features.py", [])
         
     elif args.mode == "train":
         # Run model training
@@ -96,9 +94,7 @@ def main():
             
             # Step 1: Extract features
             print("1️⃣ Extracting features...")
-            extract_args = ["--interactive"] if interactive else ["--non-interactive"]
-            extract_args.extend(["--midi-folder", args.midi_folder])
-            if not run_script("extract_groove_features.py", extract_args):
+            if not run_script("extract_groove_features.py", []):
                 success = False
             
             # Step 2: Copy log to pred
@@ -140,9 +136,7 @@ def main():
             
             # Step 3: Extract features
             print("3️⃣ Extracting features...")
-            extract_args = ["--interactive"] if interactive else ["--non-interactive"]
-            extract_args.extend(["--midi-folder", args.midi_folder, "--copy-to-pred"])
-            if not run_script("extract_groove_features.py", extract_args):
+            if not run_script("extract_groove_features.py", []):
                 success = False
             
             # Step 4: Train models
@@ -172,9 +166,7 @@ def main():
         
         # Step 3: Extract features
         print("3️⃣ Extracting features...")
-        extract_args = ["--interactive"] if interactive else ["--non-interactive"]
-        extract_args.extend(["--midi-folder", args.midi_folder, "--copy-to-pred"])
-        if not run_script("extract_groove_features.py", extract_args):
+        if not run_script("extract_groove_features.py", []):
             success = False
         
         # Step 4: Train models

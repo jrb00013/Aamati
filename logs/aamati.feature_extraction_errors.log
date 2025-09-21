@@ -1,0 +1,104 @@
+2025-09-20 19:48:40,236 - aamati.feature_extraction - ERROR - error:95 - Error processing MusicGroovesMIDI/TrainingMIDIs/Elvis Presley - Jailhouse Rock.mid: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- onset_entropy
+- syncopation
+- tempo
+
+2025-09-20 19:48:40,265 - aamati.feature_extraction - ERROR - error:95 - Error processing MusicGroovesMIDI/TrainingMIDIs/Eminem - Detroit Vs. Everybody.mid: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- onset_entropy
+- syncopation
+- tempo
+
+2025-09-20 19:48:40,397 - aamati.feature_extraction - ERROR - error:95 - Error processing MusicGroovesMIDI/TrainingMIDIs/Eminem - Guilty Conscience.mid: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- onset_entropy
+- syncopation
+- tempo
+
+2025-09-20 19:48:40,541 - aamati.feature_extraction - ERROR - error:95 - Error processing MusicGroovesMIDI/TrainingMIDIs/eminem-mockingbird.mid: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- onset_entropy
+- syncopation
+- tempo
+
+2025-09-20 19:48:40,700 - aamati.feature_extraction - ERROR - error:95 - Error processing MusicGroovesMIDI/TrainingMIDIs/Endless-Love.mid: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- onset_entropy
+- syncopation
+- tempo
+
+2025-09-20 19:48:40,893 - aamati.feature_extraction - ERROR - error:95 - Error processing MusicGroovesMIDI/TrainingMIDIs/ENEMY.MID: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- onset_entropy
+- syncopation
+- tempo
+
+2025-09-20 19:48:41,082 - aamati.feature_extraction - ERROR - error:95 - Error processing MusicGroovesMIDI/TrainingMIDIs/Enjoy-The-Silence.mid: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- onset_entropy
+- syncopation
+- tempo
+
+2025-09-20 19:48:41,256 - aamati.feature_extraction - ERROR - error:95 - Error processing MusicGroovesMIDI/TrainingMIDIs/Ennio-Morricone-Medley-(Westerns).mid: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- onset_entropy
+- syncopation
+- tempo
+
+2025-09-20 19:48:41,346 - aamati.feature_extraction - ERROR - error:95 - Error processing MusicGroovesMIDI/TrainingMIDIs/entertainer-scott_joplin.mid: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- onset_entropy
+- syncopation
+- tempo
+
+2025-09-20 19:48:41,478 - aamati.feature_extraction - ERROR - error:95 - Error processing MusicGroovesMIDI/TrainingMIDIs/Eric Clapton - Tears In Heaven.mid: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- onset_entropy
+- syncopation
+- tempo
+
+2025-09-20 19:48:41,620 - aamati.feature_extraction - ERROR - error:95 - Error in extract_features: 
+2025-09-20 19:49:05,279 - aamati.feature_extraction - ERROR - error:95 - Error processing MusicGroovesMIDI/TrainingMIDIs/Elvis Presley - Jailhouse Rock.mid: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- onset_entropy
+- syncopation
+- tempo
+
+2025-09-20 19:49:05,311 - aamati.feature_extraction - ERROR - error:95 - Error processing MusicGroovesMIDI/TrainingMIDIs/Eminem - Detroit Vs. Everybody.mid: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- onset_entropy
+- syncopation
+- tempo
+
+2025-09-20 19:49:05,453 - aamati.feature_extraction - ERROR - error:95 - Error processing MusicGroovesMIDI/TrainingMIDIs/Eminem - Guilty Conscience.mid: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- onset_entropy
+- syncopation
+- tempo
+
+2025-09-20 19:49:05,553 - aamati.feature_extraction - ERROR - error:95 - Error processing MusicGroovesMIDI/TrainingMIDIs/eminem-mockingbird.mid: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- onset_entropy
+- syncopation
+- tempo
+
+2025-09-20 19:49:05,674 - aamati.feature_extraction - ERROR - error:95 - Error processing MusicGroovesMIDI/TrainingMIDIs/Endless-Love.mid: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- onset_entropy
+- syncopation
+- tempo
+
+2025-09-20 19:49:05,815 - aamati.feature_extraction - ERROR - error:95 - Error processing MusicGroovesMIDI/TrainingMIDIs/ENEMY.MID: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- onset_entropy
+- syncopation
+- tempo
+
+2025-09-20 19:49:05,973 - aamati.feature_extraction - ERROR - error:95 - Error processing MusicGroovesMIDI/TrainingMIDIs/Enjoy-The-Silence.mid: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- onset_entropy
+- syncopation
+- tempo
+
+2025-09-20 19:49:05,999 - aamati.feature_extraction - ERROR - error:95 - Error in extract_features: 

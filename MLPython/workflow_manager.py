@@ -67,10 +67,6 @@ def format_midis():
 def extract_features(interactive=True, max_files=None):
     """Extract features from MIDI files"""
     cmd = "python3 extract_groove_features.py"
-    if not interactive:
-        cmd += " --non-interactive"
-    if max_files:
-        cmd += f" --max-files {max_files}"
     
     return run_command(cmd, "Feature extraction")
 

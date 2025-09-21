@@ -1,680 +1,625 @@
 .
-├── CMakeLists.txt
-├── COMPLETE_USAGE_GUIDE.md
-├── CommandForStarting.txt
-├── INTEGRATION_TESTING_GUIDE.md
-├── JUCE
-├── JUCE_PLUGIN_SETUP.md
-├── LICENSE
-├── MLPython
-│   ├── AutomationScripts
-│   │   ├── compare_mood_data.py
-│   │   ├── copy_groove_features.py
-│   │   ├── filter_new_midis.py
-│   │   ├── reset_groove_features.py
-│   │   ├── run_after_extraction.py
-│   │   ├── update_class_models_1.py
-│   │   ├── update_class_models_2.py
-│   │   └── update_class_models_3.py
-│   ├── MachineLearningModel.py
-│   ├── ModelClassificationScripts
-│   │   ├── confusion_matrix.png
-│   │   ├── dynamic_intensity_randomforest.py
-│   │   ├── energy_randomforest.py
-│   │   ├── fill_activity_randomforest.py
-│   │   ├── fx_character_rfclassifier.py
-│   │   ├── models
-│   │   │   ├── classification_reports.txt
-│   │   │   ├── dynamic_intensity_randomforest.joblib
-│   │   │   ├── energy_random_forest.joblib
-│   │   │   ├── fill_activity_confusion_matrix.png
-│   │   │   ├── fill_activity_feature_importance.png
-│   │   │   ├── fill_activity_randomforest.joblib
-│   │   │   ├── fx_character_classifier.joblib
-│   │   │   ├── fx_character_features.txt
-│   │   │   ├── fx_character_label_classes.npy
-│   │   │   ├── rhythmic_density_confusion_matrix.png
-│   │   │   ├── rhythmic_density_ordinal_regression.joblib
-│   │   │   ├── swing_random_forest.joblib
-│   │   │   ├── timing_feel_confusion_matrix.png
-│   │   │   ├── timing_feel_feature_importance.png
-│   │   │   └── timing_feel_randomforest.joblib
-│   │   ├── rhythmic_density_ordinal_regression.py
-│   │   ├── swing_randomforest.py
-│   │   └── timing_feel_randomforest.py
-│   ├── MusicGroovesMIDI
-│   │   ├── FixedMIDIs
-│   │   │   └── 00placeholder00.txt
-│   │   ├── InputMIDI
-│   │   │   ├── 00placeholder00.txt
-│   │   │   └── adele-someone_like_you.mid
-│   │   ├── NewMIDIs
-│   │   │   └── 00placeholder00.txt
-│   │   ├── ProcessedMIDIs
-│   │   │   ├── 00placeholder00.txt
-│   │   │   ├── 1st-Movement-(From-'Eine-Kleine-Nachtmusik').mid
-│   │   │   ├── 2nd Hungarian Rhapsody.mid
-│   │   │   ├── 4 strings - Take me away.mid
-│   │   │   ├── 73561_08.mid.mid
-│   │   │   ├── 8-Beat-Pop.mid
-│   │   │   ├── A HA.Take on me  K.mid
-│   │   │   ├── A-Man-This-Lonely.mid
-│   │   │   ├── ABBA.Lay all your love on me k.mid
-│   │   │   ├── ABBA.Mamma Mia K.mid
-│   │   │   ├── ACDC.Rock' n roll damnation.mid
-│   │   │   ├── ADAMS.Christmas time.mid
-│   │   │   ├── ALPHAVILLE.Big in Japan K.mid
-│   │   │   ├── ALPHAVILLE.Forever young L.mid
-│   │   │   ├── ARMSTRONG.What wonderful world 2 K.MID
-│   │   │   ├── ATC.My heart beats like a drum K.MID
-│   │   │   ├── Aalto - Rush (Super 8 Remix).mid
-│   │   │   ├── Above & Beyond - Good For Me (Above & Beyond Club Mix).mid
-│   │   │   ├── Above & Beyond - Sirens of the Sea.mid
-│   │   │   ├── Advance Wars - Eagles Theme.mid
-│   │   │   ├── Advance Wars 2 Black Hole Rising - Ending Theme.mid
-│   │   │   ├── Advance Wars 2 Black Hole Rising - Hawke Theme.mid
-│   │   │   ├── Advance Wars 2 Black Hole Rising - Senseis Theme.mid
-│   │   │   ├── Africa-1.mid
-│   │   │   ├── Agadou-Medley-Nr-2-(Medley).mid
-│   │   │   ├── Agadou-Medley-Nr-3-(Medley).mid
-│   │   │   ├── Agadou-Medley-Nr-5-(Medley).mid
-│   │   │   ├── Agadou-Medley-Nr-6-(Medley).mid
-│   │   │   ├── Ah! My Goddess! - Piano Sonata - Heavens.mid
-│   │   │   ├── Ain't-No-Sunshine.mid
-│   │   │   ├── Aladdin(AFriendLikeMe).mid
-│   │   │   ├── Aladdin(PrinceAli).mid
-│   │   │   ├── Amazing Grace (Gospel) (Seq Harry Todd) amagrace_ht.mid
-│   │   │   ├── Angel Beats! - Brave Song.mid
-│   │   │   ├── Angel Of Death - Angel's Return.mid
-│   │   │   ├── Animal Crossing New Leaf - 100 AM.mid
-│   │   │   ├── Another-Brick-In-The-Wall-4.mid
-│   │   │   ├── Anthem 140 BPM @prod.aamatii.mid
-│   │   │   ├── Aqua - Barbie Girl.mid
-│   │   │   ├── Assassin's Creed_ Rogue - Main Theme.mid
-│   │   │   ├── Attack on Titan - Jiyuu no Tsubasa.mid
-│   │   │   ├── Attack on Titan - Vogel im K%E4fig.mid
-│   │   │   ├── Avicii - Dancing In My Head (Cursed).mid
-│   │   │   ├── Ayla - Angelfalls (Piano Melody).mid
-│   │   │   ├── Azure-Bossa-Nova.mid
-│   │   │   ├── B.HELMS.Jingle bell rock K.mid
-│   │   │   ├── BERLIN.White Christmas.MID
-│   │   │   ├── BLACK SABBATH.Electric funeral.mid
-│   │   │   ├── BLACK SABBATH.Paranoid.mid
-│   │   │   ├── BLACK SABBATH.War pigs.mid
-│   │   │   ├── BONEY M.Daddy cool K.mid
-│   │   │   ├── BRAXTON.Another sad love song.MID
-│   │   │   ├── BREAD.Guitar man K.mid
-│   │   │   ├── BT - Force Of Gravity.mid
-│   │   │   ├── Bad-To-The-Bone.mid
-│   │   │   ├── Bakemonogatari - ep 4 BG Music.mid
-│   │   │   ├── Bang-Bang-(My-Baby-Shot-Me-Down).mid
-│   │   │   ├── BanjoKazooie - Freezeezy Peak Boggys Igloo  Sad.mid
-│   │   │   ├── Basshunter - Russia Privjet.mid
-│   │   │   ├── Battlefield.mid
-│   │   │   ├── Beach Boys - California Girls.mid
-│   │   │   ├── Benny Hill - Theme.mid
-│   │   │   ├── Besame-Mucho-1.mid
-│   │   │   ├── Besame-Mucho-2-(Jazz-Gitaar-Trio).mid
-│   │   │   ├── Billy Joel - It's Still Rock and Roll to Me.mid
-│   │   │   ├── Billy Joel - Just the Way You Are.mid
-│   │   │   ├── Bleach - Aoi Tori.mid
-│   │   │   ├── Bleach - D-Tecnolife.mid
-│   │   │   ├── Blue-Monday.mid
-│   │   │   ├── Blues-For-Piano-2.mid
-│   │   │   ├── Bohemian-Rhapsody-1.mid
-│   │   │   ├── Bohemian-Rhapsody-3.mid
-│   │   │   ├── Bon Jovi - Bed of Roses.mid
-│   │   │   ├── Boogie-Woogie.mid
-│   │   │   ├── Boom-Boom-Boom.mid
-│   │   │   ├── Brave 150 BPM [emin] @prod.aamatii.mid
-│   │   │   ├── Bridge-Over-Troubled-Water-(Piano).mid
-│   │   │   ├── Bridge-Over-Troubled-Water-1.mid
-│   │   │   ├── Butterfly.mid
-│   │   │   ├── Bwv0593 Vivaldi Concerto Arrangement RV522.mid
-│   │   │   ├── C.COREA.Spain.mid
-│   │   │   ├── CHAPMAN.Fast car K.mid
-│   │   │   ├── CHARLES.Hit the road Jack.mid
-│   │   │   ├── CLASSIC IV.Spooky.mid
-│   │   │   ├── CREEDENCE C.R.Have you ever seen the rain K.mid
-│   │   │   ├── Call of Duty_ Modern Warfare 3 - MW3 End Credit.mid
-│   │   │   ├── Calvin Harris - Bounce.mid
-│   │   │   ├── Calvin Harris - Fell So Close.mid
-│   │   │   ├── Calvin Harris - Flashback.mid
-│   │   │   ├── Calvin Harris - ID.mid
-│   │   │   ├── Can't-Help-Falling-In-Love-With-You-1.mid
-│   │   │   ├── Can't-Take-My-Eyes-Off-You-1.mid
-│   │   │   ├── Card Captor Sakura - Arigatou.mid
-│   │   │   ├── Card Captor Sakura - Dreaming (A minor).mid
-│   │   │   ├── Carol-Of-The-Bells-1.mid
-│   │   │   ├── Carol-Of-The-Bells.mid
-│   │   │   ├── Cascada - Everytime We Touch.mid
-│   │   │   ├── Castlevania - Opening Theme.mid
-│   │   │   ├── Castlevania Dawn of Sorrow - Demon Castle Pinnacle.mid
-│   │   │   ├── Castlevania II Simons Quest - Bloody Tears.mid
-│   │   │   ├── Channel.mid
-│   │   │   ├── Chant-Sans-Parole.mid
-│   │   │   ├── Charlie Daniels Band - The Devil Went Down to Georgia L.mid
-│   │   │   ├── Chicken-Dance.mid
-│   │   │   ├── Christmas-Song.mid
-│   │   │   ├── Circle-Of-Life-(From-'The-Lion-King')-1.mid
-│   │   │   ├── Circle-Of-Life-(From-'The-Lion-King')-2.mid
-│   │   │   ├── Clair-De-Lune-Opus-46-Nr-2.mid
-│   │   │   ├── Clannad - Dango Daikazoku.mid
-│   │   │   ├── Clokx - Overdrive (Ron van den Beuken Remix).mid
-│   │   │   ├── Cold-As-Ice-2.mid
-│   │   │   ├── Coldplay - The Scientist.mid
-│   │   │   ├── Coldplay - Trouble (RalphE's Full Club Remix).mid
-│   │   │   ├── Come-And-Get-Your-Love.mid
-│   │   │   ├── Cotton-Eye-Joe-2.mid
-│   │   │   ├── Country-&-Western-(Medley).mid
-│   │   │   ├── Cowboy Bebop - Cat Blues.mid
-│   │   │   ├── Cowboy Bebop - The Real Folk Blues.mid
-│   │   │   ├── Cranberries - Zombie.mid
-│   │   │   ├── Creep.mid
-│   │   │   ├── DR.DRE.Murderink.mid
-│   │   │   ├── Da Boy Tommy - Halloween.mid
-│   │   │   ├── Daft Punk - Digital Love.mid
-│   │   │   ├── Daft Punk - One More Time.mid
-│   │   │   ├── Dancing-In-The-Moonlight.mid
-│   │   │   ├── Dancing-Queen-1.mid
-│   │   │   ├── Dark Cloud - Dark Cloud Main Theme.mid
-│   │   │   ├── Dark Souls II - Menu Theme (1).mid
-│   │   │   ├── Dark Souls II - Menu Theme.mid
-│   │   │   ├── Darude - Bitter Sweet.mid
-│   │   │   ├── Darude - Calm Before The Storm (BTS Mix).mid
-│   │   │   ├── David Guetta - Love Is Gone.mid
-│   │   │   ├── Death Note - Light's Theme.mid
-│   │   │   ├── Deep Purple - Hallelujah.mid
-│   │   │   ├── Depeche Mode - Halo.mid
-│   │   │   ├── Depeche Mode - Just Can't Get Enough.mid
-│   │   │   ├── Digimon-BraveHeart.mid
-│   │   │   ├── Dire Straits - Walk of Life.mid
-│   │   │   ├── Do You Remember My Lullaby - Lullaby Music Box.mid
-│   │   │   ├── Do-Re-Mi-(From-'The-Sound-Of-Music').mid
-│   │   │   ├── Donkey Kong Country - Aquatic Ambience.mid
-│   │   │   ├── Donkey Kong Country - Main Theme.mid
-│   │   │   ├── Donkey Kong Country 2 Diddys Kong Quest - Forest Interlude.mid
-│   │   │   ├── Donkey Kong Country 2 Diddys Kong Quest - Ice.mid
-│   │   │   ├── Donkey Kong Country 2 Diddys Kong Quest - Island Map.mid
-│   │   │   ├── Dougal and Gammer - The 6th Gate.mid.mid
-│   │   │   ├── Dr Dre - Still Dre.mid
-│   │   │   ├── Dragon - The Dragon (Fridge Mix).mid
-│   │   │   ├── Dragon Ball Z - Boku-tachi Wa Tenshi Datta.mid
-│   │   │   ├── Dragonball - Makafushigi adobenchaa!.mid
-│   │   │   ├── Duarte_Russiana_Op.119_3.Kalinka.mid
-│   │   │   ├── Eine-Kleine-Nachtmusik-2.mid
-│   │   │   ├── El-Condor-Pasa (1).mid
-│   │   │   ├── El-Condor-Pasa.mid
-│   │   │   ├── Elfen Lied - Elfen Lied - Be Your Girl.mid
-│   │   │   ├── Elfen Lied - Hanayou.mid
-│   │   │   ├── Elfen Lied - Uso Sora.mid
-│   │   │   ├── Elvis Presley - Blue Suede Shoes.mid
-│   │   │   ├── akon-lonely.mid
-│   │   │   ├── avicii-wake_me_up.mid
-│   │   │   ├── avicii-wake_me_up_version_2.mid
-│   │   │   ├── banjo.mid
-│   │   │   ├── bastille-pompeii.mid
-│   │   │   ├── batman-movie-theme_en.mid
-│   │   │   ├── beatles-believer.mid
-│   │   │   ├── beatles-hey_jude.mid
-│   │   │   ├── beatles-let_it_be.mid
-│   │   │   ├── beatles-yesterday.mid
-│   │   │   ├── beethoven-sonata17.mid
-│   │   │   ├── beethoven-sonata23.mid
-│   │   │   ├── beethoven-symphony9-4-ode-to-joy-bassoon-piano.mid
-│   │   │   ├── bones.mid
-│   │   │   ├── brahms-lullaby-wiegenlied-piano.mid
-│   │   │   ├── bwv987.mid
-│   │   │   ├── calm.mid
-│   │   │   ├── canon-3.mid
-│   │   │   ├── cantina-4.mid
-│   │   │   ├── china-3.mid
-│   │   │   ├── chopin-ballade1.mid
-│   │   │   ├── coldplay-viva_la_vida.mid
-│   │   │   ├── coolio-gangstas_paradise.mid
-│   │   │   ├── countdown.MID
-│   │   │   ├── darude-sandstorm.mid
-│   │   │   ├── debussy-clair-de-lune.mid
-│   │   │   ├── disney.mid
-│   │   │   ├── dixie.mid
-│   │   │   ├── doom.mid
-│   │   │   └── drake-find_your_love.mid
-│   │   └── TrainingMIDIs
-│   │       ├── 00placeholder00.txt
-│   │       ├── ENEMY.MID
-│   │       ├── EUROPE.The final countdown K.mid
-│   │       ├── Elvis Presley - Jailhouse Rock.mid
-│   │       ├── Eminem - Detroit Vs. Everybody.mid
-│   │       ├── Eminem - Guilty Conscience.mid
-│   │       ├── Endless-Love.mid
-│   │       ├── Enjoy-The-Silence.mid
-│   │       ├── Ennio-Morricone-Medley-(Westerns).mid
-│   │       ├── Eric Clapton - Tears In Heaven.mid
-│   │       ├── Eric Clapton - Wonderful Tonight.mid
-│   │       ├── Etude op25 n11 ''Winter Wind''.mid
-│   │       ├── Evangelion - Good or Don't Be.mid
-│   │       ├── Evangelion - Misato.mid
-│   │       ├── FOOL'S GARDEN.Lemon tree.mid
-│   │       ├── FREEBIRD.MID
-│   │       ├── Fairy Tail - Main Theme (Piano Ver).mid
-│   │       ├── Fairy Tail - Sad Theme (Piano).mid
-│   │       ├── Fate Stay Night - OP 2 - Brave Shine.mid
-│   │       ├── Final Fantasy - Prelude.mid
-│   │       ├── Final Fantasy I - Final Fantasy.mid
-│   │       ├── Final Fantasy V - Victory Fanfare.mid
-│   │       ├── Final Fantasy VII - Aeris' Theme.mid
-│   │       ├── Final Fantasy VII - Main Theme.mid
-│   │       ├── Final Fantasy VII_ AC - Tifa's Theme Piano Version.mid
-│   │       ├── Flank 150 BPM [bmin] @prod.aamatii.mid
-│   │       ├── Flo Rida feat. Sia - Wild Ones (David Guetta & Nicky Romero Remix).mid
-│   │       ├── For-Whom-The-Bell-Tolls.mid
-│   │       ├── Forever-Young.mid
-│   │       ├── Full Metal Alchemist - Brothers.mid
-│   │       ├── Full Metal Alchemist_ Brotherhood - Hum of the Streets.mid
-│   │       ├── FunkyTown.mid
-│   │       ├── Fur Elise.mid
-│   │       ├── Fur-Elise-2.mid
-│   │       ├── Fur-Elise-3.mid
-│   │       ├── GAYNOR.I will survive K.mid
-│   │       ├── GERMANY.MID
-│   │       ├── GREENDAY.Basket case K (1).mid
-│   │       ├── GREENDAY.Basket case K.mid
-│   │       ├── Gareth Emery - Tokyo (Ben Gold Remix).mid
-│   │       ├── Gladiator - Now We Are Free.mid
-│   │       ├── Golden-Brown.mid
-│   │       ├── Golden-Eye-(Theme-Of-The-Film-'Golden-Eye')-1.mid
-│   │       ├── Gravity Falls - Made Me Realize.mid
-│   │       ├── Great-Balls-Of-Fire.mid
-│   │       ├── Greensleeves.mid
-│   │       ├── Guns n Roses - Live and Let Die.mid
-│   │       ├── H.H.BAND.Country roads K.mid
-│   │       ├── HAIDUCII.Dragostea din tei K.MID
-│   │       ├── Habanera-(from-Carmen).mid
-│   │       ├── Hallelujah (Psalm 150).mid
-│   │       ├── Halloween.mid
-│   │       ├── Halo - Siege of Madrigal.mid
-│   │       ├── Halo 2 - Menu.mid
-│   │       ├── Hans Zimmer - Time.mid
-│   │       ├── Happy-Birthday-Sweet-Sixteen.mid
-│   │       ├── Happy-Birthday-To-You-1.mid
-│   │       ├── Here-Comes-The-Sun-2.mid
-│   │       ├── High-Hopes.mid
-│   │       ├── Hopeful-Monsters.mid
-│   │       ├── Hotel-California.mid
-│   │       ├── House-Of-The-Rising-Sun-&-Love-Is-In-The-Air-(Medley).mid
-│   │       ├── Hurt.mid
-│   │       ├── I-Feel-Good.mid
-│   │       ├── I-Just-Died-In-Your-Arms.mid
-│   │       ├── I-Like-To-Move-It.mid
-│   │       ├── I-Love-You-Baby.mid
-│   │       ├── IGGY POP.The passenger.mid
-│   │       ├── IRON MADEN.The trooper K.mid
-│   │       ├── Ice-Ice-Baby.mid
-│   │       ├── In-The-Air-Tonight-2.mid
-│   │       ├── Initial D - Rage Your Dream.mid
-│   │       ├── J.CASH.Ring of fire.mid
-│   │       ├── J.DENVER.Country roads.MID
-│   │       ├── JACKSON FIVE.I want you back.mid
-│   │       ├── JACKSON.Thriller k.mid
-│   │       ├── Jaws.mid
-│   │       ├── Jingle-Bells.mid
-│   │       ├── Joe Hisaishi - Merry Go Round Of Life (Howl's Moving Castle).mid
-│   │       ├── John Denver - Take Me Home Country Roads.mid
-│   │       ├── Juice.mid
-│   │       ├── Jup 150 BPM @prod.aamatii.mid
-│   │       ├── KICKS.MID
-│   │       ├── Kansas - Carry On My Wayward Son.mid
-│   │       ├── Kaoma - Lambada.mid
-│   │       ├── Katy Perry - I Kissed A Girl.mid
-│   │       ├── Killer-Queen-1.mid
-│   │       ├── Killing-Me-Softly-1.mid
-│   │       ├── Kimi ni Todoke - Kimi ni Todoke.mid
-│   │       ├── Kingdom Hearts - Dearly Beloved.mid
-│   │       ├── Kingdom Hearts II - Dearly Beloved II.mid
-│   │       ├── Kirbys Dream Land - Green Greens.mid
-│   │       ├── LAUPER.Girls just want to have fun K.mid
-│   │       ├── LAUPER.Time after time  K.mid
-│   │       ├── LED ZEPPELIN.Stairway to heaven K.mid
-│   │       ├── LENNON.Imagine K.mid
-│   │       ├── La-Bamba-1.mid
-│   │       ├── La-Cucaracha.mid
-│   │       ├── La-Vie-En-Rose.mid
-│   │       ├── Laputa - Castle in the Sky - Gakkou no unkai.mid
-│   │       ├── Laputa - Castle in the Sky - Innocent (Main Theme).mid
-│   │       ├── Layla.mid
-│   │       ├── Led Zeppelin - Immigrant Song.mid
-│   │       ├── Let-It-Snow-Let-It-Snow.mid
-│   │       ├── Linkin Park - Numb (Tim Dawes Remix).mid
-│   │       ├── Lionel Richie - Hello.mid
-│   │       ├── Love-Story-(From-'Love-Story')-2.mid
-│   │       ├── M.Younus_(younusmusic@yahoo.com)_-_Is_parcham_k_sae..¥.S829.MID.mid
-│   │       ├── MAROON 5.Sunday morning K.MID
-│   │       ├── METALLICA.Master of puppets K.mid
-│   │       ├── MODERN TALKING.Cheri cher lady K.mid
-│   │       ├── MODERN TALKING.You're my heart,you're my soul K.mid
-│   │       ├── MR.PRESIDENT.Coco jambo  K.MID
-│   │       ├── March-A-La-Turca-(Mozart-Disco).mid
-│   │       ├── Marilyn Manson - Sweet Dreams.mid
-│   │       ├── Mauro Picotto - Back To Cali (Push Remix).mid
-│   │       ├── Mauro Picotto - Back To Cali.mid
-│   │       ├── Mauro Picotto - Like This Like That.mid
-│   │       ├── Mauro Picotto - Lizard.mid
-│   │       ├── Mega Man Zero - Theme of ZERO from Mega Man X.mid
-│   │       ├── Memories Off 1 - Memories Off.mid
-│   │       ├── Metal Gear Solid 2 Sons of Liberty - Main Theme.mid
-│   │       ├── Metallica - Master Of Puppets.mid
-│   │       ├── Metallica-Enter_Sandman.mid
-│   │       ├── Michael Jackson - Billie Jean.mid
-│   │       ├── Michael Jackson - Rock with You.mid
-│   │       ├── Michael Jackson - Thriller.mid
-│   │       ├── Michael Woods - First aid.mid
-│   │       ├── Michael Woods - If You Want Me 'if'.mid
-│   │       ├── Mike Morasky - Portal 2 Main theme.mid
-│   │       ├── Minuet-in-Mozart.mid
-│   │       ├── Money-Money-Money-3.mid
-│   │       ├── Moon-River-2.mid
-│   │       ├── Motley Crue - Home Sweet Home.mid
-│   │       ├── Naruto - Narutimate Shippuden Accel Ending (better version).mid
-│   │       ├── Naruto - Naruto Main Theme-Short Version.mid
-│   │       ├── Naruto - sadness and sorrow.mid
-│   │       ├── Naruto Shippuden - Akatsuki Theme.mid
-│   │       ├── Naruto Shippuden - Blue Bird.mid
-│   │       ├── Naruto Shippuden - Cascade.mid
-│   │       ├── Naruto Shippuden - Decision.mid
-│   │       ├── Naruto Shippuden - Sasuke's Retribution.mid
-│   │       ├── Naruto Shippuden - Senya (Updated version) (1).mid
-│   │       ├── Naruto Shippuden - Senya (Updated version).mid
-│   │       ├── Naruto Shippuden - Sore Dewa Ashita Mata.mid
-│   │       ├── Naruto Shippuden - Tsuki no Okisa.mid
-│   │       ├── Naruto Shippuden_ Ultimate Ninja 2 - End Credits.mid
-│   │       ├── National Anthem - India.mid
-│   │       ├── Never-Gonna-Give-You-Up-1.mid
-│   │       ├── New Super Mario Bros Wii - Underwater.mid
-│   │       ├── Nirvana - About A Girl.mid
-│   │       ├── Nocturne op09 n2.mid
-│   │       ├── Norman Bass - How U Like Bass.mid
-│   │       ├── Nothing-Gonna-Change-My-Love-For-You-2.mid
-│   │       ├── OPUS.Life is life K.mid
-│   │       ├── One Piece - dear friends.mid
-│   │       ├── Over-The-Rainbow.mid
-│   │       ├── P.FLOYD.Another brick in the wall K.mid
-│   │       ├── P.FLOYD.Comfortably numb.mid
-│   │       ├── P.FLOYD.Wish you were here K.MID
-│   │       ├── P.SIMON-GARFUNKEL.Sound of silence K.mid
-│   │       ├── PIRATE.MID
-│   │       ├── POPCORN.MID
-│   │       ├── PRINCE.Let's go crazy K.mid
-│   │       ├── Passacaglia.mid
-│   │       ├── Peer Gynt Suite No. 1, Morning Mood.mid
-│   │       ├── Phoenix Wright Ace Attorney - Investigation  Cornered.mid
-│   │       ├── Phoenix Wright Ace Attorney - Turnabout Sisters Theme.mid
-│   │       ├── Piano Sonata n14 op27 1mov ''Moonlight''.mid
-│   │       ├── Pirates Of The Caribbean - Davy Jones.mid
-│   │       ├── Polka-Polka-1.mid
-│   │       ├── Portal 2 - Cara Mia.mid
-│   │       ├── Portal 2 - Turret Wife Serenade.mid
-│   │       ├── Portal 2 - Want You Gone.mid
-│   │       ├── Porter Robinson - Goodbye To A World.mid
-│   │       ├── Power-Of-Love-(Love-Power).mid
-│   │       ├── Prelude n20 op28 ''Funeral March''.mid
-│   │       ├── Prince - Purple Rain.mid
-│   │       ├── Que-Sera-Sera-2.mid
-│   │       ├── Queen - Killer Queen.mid
-│   │       ├── R.I.O. - Like I Love You(Geomix Feat Libra)2011.mi - R.I.O. - Like I Love You(Geomix Feat Libra)2011.mi.mid
-│   │       ├── ROXETTE.Listen to your heart.mid
-│   │       ├── RUNAWAY.MID
-│   │       ├── RUSH.MID
-│   │       ├── Ragnarok Online - Ragnarok Online Title.mid
-│   │       ├── Randy Katana - In Silence (Ron Van Den Beuken Remix).mid
-│   │       ├── Red Hot Chili Peppers - Aeroplane.mid
-│   │       ├── Richard Marx - Right Here Waiting For You.mid
-│   │       ├── Riders-On-The-Storm-1.mid
-│   │       ├── Rihanna ft Calvin Harris - We Found Love.mid
-│   │       ├── Rockin'-Around-The-Christmas-Tree.mid
-│   │       ├── Rocky-(Theme)-2.mid
-│   │       ├── Romantic-Piano.mid
-│   │       ├── Rudolph-The-Red-Nosed-Reindeer.mid
-│   │       ├── Rush-Rush.mid
-│   │       ├── Russian dance from Petroushka.mid
-│   │       ├── S-Barber-(Adagio).mid
-│   │       ├── SANDMAN.MID
-│   │       ├── SMASH MOUTH.All star.mid
-│   │       ├── Sade - Smooth Operator.mid
-│   │       ├── Sailor Moon - Sailor Saturn's Theme.mid
-│   │       ├── Sailor Moon - Sailor Stars Song.mid
-│   │       ├── Saint Seiya - Ikki's theme (aka Brother's Theme, Shun's Theme, Shinreii Prayer, Andromeda's Theme).mid
-│   │       ├── Saint Seiya - Inside a Dream.mid
-│   │       ├── Sakura-Sakura.mid
-│   │       ├── Santana - Black Magic Woman.mid
-│   │       ├── Serial Experiments Lain - Duvet.mid
-│   │       ├── Seven_Nation_Army.mid
-│   │       ├── Simpsons.mid
-│   │       ├── Skrillex - First Of The Year.mid
-│   │       ├── Skrillex - Scary Monsters and nice splities (all parts) (1).mid
-│   │       ├── Skrillex - Scary Monsters and nice splities (all parts).mid
-│   │       ├── Skyline 145 BPM @prod.aamatii.mid
-│   │       ├── Smashing Pumpkins - 1979.mid
-│   │       ├── Smashing Pumpkins - Tonight Tonight.mid
-│   │       ├── Smells-Like-Teen-Spirit-2.mid
-│   │       ├── Smoke-On-The-Water-2.mid
-│   │       ├── Snoop Dogg - GZ and Hustlerz.mid
-│   │       ├── Snoop Dogg - Murder Was The Case.mid
-│   │       ├── Somebody-To-Love-3.mid
-│   │       ├── Sonata No.14 Op 27 Moonlight Sonata.mid
-│   │       ├── Song-Within-A-Song.mid
-│   │       ├── Sonic the Hedgehog - Labyrinth Zone.mid
-│   │       ├── Sonic the Hedgehog - Scrap Brain Zone.mid
-│   │       ├── Soundgarden - Black Hole Sun.mid
-│   │       ├── Spirited Away - Boiler Mushi.mid
-│   │       ├── Spirited Away - Itsumo Nando Demo.mid
-│   │       ├── Spirited Away - Ryuu no Shounen - from the Official Piano Solo Album.mid
-│   │       ├── Star-Spangled-Banner.mid
-│   │       ├── Stromae - Alors on danse.mid
-│   │       ├── Studio Ghibli - Ghibli Medley.mid
-│   │       ├── Super Mario 64 - Medley.mid
-│   │       ├── Super Mario World - Ending Theme.mid
-│   │       ├── Super Mario World 2 Yoshis Island - Big Boss.mid
-│   │       ├── Super Smash Bros Brawl - Final Destination.mid
-│   │       ├── Sword Art Online - A Tender Feeling (Lisbeth's Theme).mid
-│   │       ├── THE ANIMALS.The lion sleeps tonight.mid
-│   │       ├── THE BEATLES.Back in USSR.mid
-│   │       ├── THE EAGLES.Hotel California K.mid
-│   │       ├── THE SCORPIONS.Wind Of Change L.mid
-│   │       ├── THE SMASHING PUMPKINS.Ava adore.mid
-│   │       ├── THE SMASHING PUMPKINS.Bullet with butterfly wings.mid
-│   │       ├── THE VERVE.Bitter sweet simphony K.mid
-│   │       ├── TURKISH.MID
-│   │       ├── TV_Themes_-_Bob_The_Builder.mid
-│   │       ├── Take-Five-1.mid
-│   │       ├── TakeMyHand-FromDune-Toto.mid
-│   │       ├── Taps.mid
-│   │       ├── Tetris - Tetris Main Theme.mid
-│   │       ├── The Beatles - You Never Give Me Your Money.mid
-│   │       ├── The Elder Scrolls V Skyrim - Dragonborn Theme.mid
-│   │       ├── The Four Seasons op8 n4 RV297 ''Winter'' 3mov Allegro.mid
-│   │       ├── The Kovenant - Star By Star.mid
-│   │       ├── The Legend of Zelda A Link to the Past - Boss Victory Fanfare.mid
-│   │       ├── The Legend of Zelda A Link to the Past - Overworld.mid
-│   │       ├── The Who - Baba O'Riley.mid
-│   │       ├── The Witcher 2 - Assassins of Kings.mid
-│   │       ├── The Witcher 3 - Bonny At Morn.mid
-│   │       ├── The Witcher 3 - The Fields of Ard Skellig.mid
-│   │       ├── The-Avengers.mid
-│   │       ├── The-Blue-Danube-Waltz.mid
-│   │       ├── The-Final-Countdown.mid
-│   │       ├── The-Four-Seasons.mid
-│   │       ├── The-Girl-From-Ipanema.mid
-│   │       ├── The-Man-With-The-Harmonica.mid
-│   │       ├── The-Phantom-Of-The-Opera.mid
-│   │       ├── The-Way-You-Look-Tonight-(From-'The-Way-You-Look-Tonight').mid
-│   │       ├── Theme-From-'The-Pink-Panther'-1.mid
-│   │       ├── Tom-And-Jerry.mid
-│   │       ├── Touhou 6 The Embodiment of Scarlet Devil - Lunar Clock  Luna Dial.mid
-│   │       ├── Twinkle-Little-Star (Long Version).mid
-│   │       ├── Unchained-Melody-2.mid
-│   │       ├── Under-The-Sea-(From-'The-Little-Mermaid')-1.mid
-│   │       ├── VANGELIS.Chariots of Fire.mid
-│   │       ├── VENGA BOYS.Boom Boom k.mid
-│   │       ├── Vanilla Ice - Ice Ice Baby.mid
-│   │       ├── WEEZER.buddy holly k.mid
-│   │       ├── We-Wish-You-A-Merry-Christmas-1.mid
-│   │       ├── Wedding Procession from the Wedding Music.mid
-│   │       ├── Welcome-To-The-Jungle.mid
-│   │       ├── Western.mid
-│   │       ├── While-My-Guitar-Gently-Weeps-1.mid
-│   │       ├── White-Christmas.mid
-│   │       ├── Wild-Wild-Life.mid
-│   │       ├── Wonderwall.mid
-│   │       ├── Yakety-Sax-2.mid
-│   │       ├── Zelda - Ocarina of Time - Gerudo Valley, from The Hyrule Symphony.mid
-│   │       ├── Zelda - the Wind Waker - Wind God's Aria.mid
-│   │       ├── Zombie Nation - Kernkraft 400.mid
-│   │       ├── eminem-mockingbird.mid
-│   │       ├── entertainer-scott_joplin.mid
-│   │       ├── funeral-march.mid
-│   │       ├── gorillaz-clint_eastwood.mid
-│   │       ├── gotye-somebody_that_i_used_to_know.mid
-│   │       ├── greensleeves-guitar.mid
-│   │       ├── horror.mid
-│   │       ├── i want you i need you i love you L.mid
-│   │       ├── imperialmarch.mid
-│   │       ├── jeopardy.mid
-│   │       ├── jojo-leave_get_out.mid
-│   │       ├── joy-to-the-world.mid
-│   │       ├── kENNY G.Silhouette.mid
-│   │       ├── kalinka.mid
-│   │       ├── linkin_park-numb.mid
-│   │       ├── mariachi.mid
-│   │       ├── mid-xmas-have-yrselfamerry.mid
-│   │       ├── mortal.mid
-│   │       ├── mozart-clarinet-concerto-2-piano-and-clarinet.mid
-│   │       ├── mozart-piano-concerto-21-2-elvira-madigan.mid
-│   │       ├── mozart-symphony40-1-piano-solo.mid
-│   │       ├── mozart-symphony40-1.mid
-│   │       ├── muse-hysteria.mid
-│   │       ├── my_chemical_romance-cancer.mid
-│   │       ├── outkast-hey_ya.mid
-│   │       ├── overlord.mid
-│   │       ├── radiohead-creep.mid
-│   │       ├── rave.mid
-│   │       ├── rihanna-diamonds.mid
-│   │       ├── rule-britannia.mid
-│   │       ├── scotland-the-brave.mid
-│   │       ├── silent-night.mid
-│   │       ├── simpsons-5.mid
-│   │       ├── simpsons-8.mid
-│   │       ├── terminator.mid
-│   │       ├── the-british-grenadiers.mid
-│   │       ├── titanic-4.mid
-│   │       ├── titanic-end_theme.mid
-│   │       ├── tokyo.mid
-│   │       ├── topgun.mid
-│   │       ├── toto-africa.mid
-│   │       ├── toto-rosanna.mid
-│   │       ├── toxicity.mid
-│   │       ├── ussranthem.mid
-│   │       ├── vivaldi-.mid
-│   │       ├── vivaldi.spring.mid
-│   │       ├── weezer-beverly_hills.mid
-│   │       ├── when-johnny-comes-marching-home.mid
-│   │       └── wonderwall-oasis.mid
-│   ├── README.md
-│   ├── categorical_encoder.pkl
-│   ├── config
-│   ├── data
-│   │   ├── csv
-│   │   │   ├── current_groove_features.csv
-│   │   │   ├── groove_features_log.csv
-│   │   │   ├── groove_features_log_for_pred.csv
-│   │   │   └── raw_features.csv
-│   │   ├── exports
-│   │   └── logs
-│   ├── estimate_features.py
-│   ├── extract_energy_features.py
-│   ├── extract_groove_features.py
-│   ├── fixed_midi_compliance.py
-│   ├── main.py
+├── AutomationScripts
+│   ├── compare_mood_data.py
+│   ├── copy_groove_features.py
+│   ├── filter_new_midis.py
+│   ├── reset_groove_features.py
+│   ├── run_after_extraction.py
+│   ├── update_class_models_1.py
+│   ├── update_class_models_2.py
+│   └── update_class_models_3.py
+├── ModelClassificationScripts
+│   ├── confusion_matrix.png
+│   ├── dynamic_intensity_randomforest.py
+│   ├── energy_randomforest.py
+│   ├── fill_activity_randomforest.py
+│   ├── fx_character_rfclassifier.py
 │   ├── models
-│   │   ├── checkpoints
-│   │   └── trained
-│   │       ├── groove_mood_model.onnx
-│   │       └── groove_mood_model.pkl
-│   ├── mood_feature_map.json
-│   ├── optimized_mood_classifier.py
-│   ├── predict_groove_mood.py
-│   ├── scripts
-│   │   ├── automation_manager.py
-│   │   ├── copy_groove_features.py
-│   │   ├── extract_features.py
-│   │   ├── reset_groove_features.py
-│   │   └── train_models.py
-│   ├── src
-│   │   ├── __init__.py
-│   │   ├── core
-│   │   │   ├── __init__.py
-│   │   │   ├── extract_groove_features.py
-│   │   │   ├── feature_extractor.py
-│   │   │   └── training_pipeline.py
-│   │   ├── data
-│   │   │   └── __init__.py
-│   │   ├── models
-│   │   │   └── __init__.py
-│   │   └── utils
-│   │       ├── __init__.py
-│   │       └── mood_mappings.py
-│   ├── tests
-│   └── train_models.py
+│   │   ├── classification_reports.txt
+│   │   ├── dynamic_intensity_randomforest.joblib
+│   │   ├── energy_random_forest.joblib
+│   │   ├── fill_activity_confusion_matrix.png
+│   │   ├── fill_activity_feature_importance.png
+│   │   ├── fill_activity_randomforest.joblib
+│   │   ├── fx_character_classifier.joblib
+│   │   ├── fx_character_features.txt
+│   │   ├── fx_character_label_classes.npy
+│   │   ├── rhythmic_density_confusion_matrix.png
+│   │   ├── rhythmic_density_ordinal_regression.joblib
+│   │   ├── swing_random_forest.joblib
+│   │   ├── timing_feel_confusion_matrix.png
+│   │   ├── timing_feel_feature_importance.png
+│   │   └── timing_feel_randomforest.joblib
+│   ├── rhythmic_density_ordinal_regression.py
+│   ├── swing_randomforest.py
+│   └── timing_feel_randomforest.py
+├── MusicGroovesMIDI
+│   ├── FixedMIDIs
+│   │   └── 00placeholder00.txt
+│   ├── InputMIDI
+│   │   ├── 00placeholder00.txt
+│   │   └── adele-someone_like_you.mid
+│   ├── NewMIDIs
+│   │   └── 00placeholder00.txt
+│   ├── ProcessedMIDIs
+│   │   ├── 00placeholder00.txt
+│   │   ├── 1st-Movement-(From-'Eine-Kleine-Nachtmusik').mid
+│   │   ├── 2nd Hungarian Rhapsody.mid
+│   │   ├── 4 strings - Take me away.mid
+│   │   ├── 73561_08.mid.mid
+│   │   ├── 8-Beat-Pop.mid
+│   │   ├── A HA.Take on me  K.mid
+│   │   ├── A-Man-This-Lonely.mid
+│   │   ├── ABBA.Lay all your love on me k.mid
+│   │   ├── ABBA.Mamma Mia K.mid
+│   │   ├── ACDC.Rock' n roll damnation.mid
+│   │   ├── ADAMS.Christmas time.mid
+│   │   ├── ALPHAVILLE.Big in Japan K.mid
+│   │   ├── ALPHAVILLE.Forever young L.mid
+│   │   ├── ARMSTRONG.What wonderful world 2 K.MID
+│   │   ├── ATC.My heart beats like a drum K.MID
+│   │   ├── Aalto - Rush (Super 8 Remix).mid
+│   │   ├── Above & Beyond - Good For Me (Above & Beyond Club Mix).mid
+│   │   ├── Above & Beyond - Sirens of the Sea.mid
+│   │   ├── Advance Wars - Eagles Theme.mid
+│   │   ├── Advance Wars 2 Black Hole Rising - Ending Theme.mid
+│   │   ├── Advance Wars 2 Black Hole Rising - Hawke Theme.mid
+│   │   ├── Advance Wars 2 Black Hole Rising - Senseis Theme.mid
+│   │   ├── Africa-1.mid
+│   │   ├── Agadou-Medley-Nr-2-(Medley).mid
+│   │   ├── Agadou-Medley-Nr-3-(Medley).mid
+│   │   ├── Agadou-Medley-Nr-5-(Medley).mid
+│   │   ├── Agadou-Medley-Nr-6-(Medley).mid
+│   │   ├── Ah! My Goddess! - Piano Sonata - Heavens.mid
+│   │   ├── Ain't-No-Sunshine.mid
+│   │   ├── Aladdin(AFriendLikeMe).mid
+│   │   ├── Aladdin(PrinceAli).mid
+│   │   ├── Amazing Grace (Gospel) (Seq Harry Todd) amagrace_ht.mid
+│   │   ├── Angel Beats! - Brave Song.mid
+│   │   ├── Angel Of Death - Angel's Return.mid
+│   │   ├── Animal Crossing New Leaf - 100 AM.mid
+│   │   ├── Another-Brick-In-The-Wall-4.mid
+│   │   ├── Anthem 140 BPM @prod.aamatii.mid
+│   │   ├── Aqua - Barbie Girl.mid
+│   │   ├── Assassin's Creed_ Rogue - Main Theme.mid
+│   │   ├── Attack on Titan - Jiyuu no Tsubasa.mid
+│   │   ├── Attack on Titan - Vogel im K%E4fig.mid
+│   │   ├── Avicii - Dancing In My Head (Cursed).mid
+│   │   ├── Ayla - Angelfalls (Piano Melody).mid
+│   │   ├── Azure-Bossa-Nova.mid
+│   │   ├── B.HELMS.Jingle bell rock K.mid
+│   │   ├── BERLIN.White Christmas.MID
+│   │   ├── BLACK SABBATH.Electric funeral.mid
+│   │   ├── BLACK SABBATH.Paranoid.mid
+│   │   ├── BLACK SABBATH.War pigs.mid
+│   │   ├── BONEY M.Daddy cool K.mid
+│   │   ├── BRAXTON.Another sad love song.MID
+│   │   ├── BREAD.Guitar man K.mid
+│   │   ├── BT - Force Of Gravity.mid
+│   │   ├── Bad-To-The-Bone.mid
+│   │   ├── Bakemonogatari - ep 4 BG Music.mid
+│   │   ├── Bang-Bang-(My-Baby-Shot-Me-Down).mid
+│   │   ├── BanjoKazooie - Freezeezy Peak Boggys Igloo  Sad.mid
+│   │   ├── Basshunter - Russia Privjet.mid
+│   │   ├── Battlefield.mid
+│   │   ├── Beach Boys - California Girls.mid
+│   │   ├── Benny Hill - Theme.mid
+│   │   ├── Besame-Mucho-1.mid
+│   │   ├── Besame-Mucho-2-(Jazz-Gitaar-Trio).mid
+│   │   ├── Billy Joel - It's Still Rock and Roll to Me.mid
+│   │   ├── Billy Joel - Just the Way You Are.mid
+│   │   ├── Bleach - Aoi Tori.mid
+│   │   ├── Bleach - D-Tecnolife.mid
+│   │   ├── Blue-Monday.mid
+│   │   ├── Blues-For-Piano-2.mid
+│   │   ├── Bohemian-Rhapsody-1.mid
+│   │   ├── Bohemian-Rhapsody-3.mid
+│   │   ├── Bon Jovi - Bed of Roses.mid
+│   │   ├── Boogie-Woogie.mid
+│   │   ├── Boom-Boom-Boom.mid
+│   │   ├── Brave 150 BPM [emin] @prod.aamatii.mid
+│   │   ├── Bridge-Over-Troubled-Water-(Piano).mid
+│   │   ├── Bridge-Over-Troubled-Water-1.mid
+│   │   ├── Butterfly.mid
+│   │   ├── Bwv0593 Vivaldi Concerto Arrangement RV522.mid
+│   │   ├── C.COREA.Spain.mid
+│   │   ├── CHAPMAN.Fast car K.mid
+│   │   ├── CHARLES.Hit the road Jack.mid
+│   │   ├── CLASSIC IV.Spooky.mid
+│   │   ├── CREEDENCE C.R.Have you ever seen the rain K.mid
+│   │   ├── Call of Duty_ Modern Warfare 3 - MW3 End Credit.mid
+│   │   ├── Calvin Harris - Bounce.mid
+│   │   ├── Calvin Harris - Fell So Close.mid
+│   │   ├── Calvin Harris - Flashback.mid
+│   │   ├── Calvin Harris - ID.mid
+│   │   ├── Can't-Help-Falling-In-Love-With-You-1.mid
+│   │   ├── Can't-Take-My-Eyes-Off-You-1.mid
+│   │   ├── Card Captor Sakura - Arigatou.mid
+│   │   ├── Card Captor Sakura - Dreaming (A minor).mid
+│   │   ├── Carol-Of-The-Bells-1.mid
+│   │   ├── Carol-Of-The-Bells.mid
+│   │   ├── Cascada - Everytime We Touch.mid
+│   │   ├── Castlevania - Opening Theme.mid
+│   │   ├── Castlevania Dawn of Sorrow - Demon Castle Pinnacle.mid
+│   │   ├── Castlevania II Simons Quest - Bloody Tears.mid
+│   │   ├── Channel.mid
+│   │   ├── Chant-Sans-Parole.mid
+│   │   ├── Charlie Daniels Band - The Devil Went Down to Georgia L.mid
+│   │   ├── Chicken-Dance.mid
+│   │   ├── Christmas-Song.mid
+│   │   ├── Circle-Of-Life-(From-'The-Lion-King')-1.mid
+│   │   ├── Circle-Of-Life-(From-'The-Lion-King')-2.mid
+│   │   ├── Clair-De-Lune-Opus-46-Nr-2.mid
+│   │   ├── Clannad - Dango Daikazoku.mid
+│   │   ├── Clokx - Overdrive (Ron van den Beuken Remix).mid
+│   │   ├── Cold-As-Ice-2.mid
+│   │   ├── Coldplay - The Scientist.mid
+│   │   ├── Coldplay - Trouble (RalphE's Full Club Remix).mid
+│   │   ├── Come-And-Get-Your-Love.mid
+│   │   ├── Cotton-Eye-Joe-2.mid
+│   │   ├── Country-&-Western-(Medley).mid
+│   │   ├── Cowboy Bebop - Cat Blues.mid
+│   │   ├── Cowboy Bebop - The Real Folk Blues.mid
+│   │   ├── Cranberries - Zombie.mid
+│   │   ├── Creep.mid
+│   │   ├── DR.DRE.Murderink.mid
+│   │   ├── Da Boy Tommy - Halloween.mid
+│   │   ├── Daft Punk - Digital Love.mid
+│   │   ├── Daft Punk - One More Time.mid
+│   │   ├── Dancing-In-The-Moonlight.mid
+│   │   ├── Dancing-Queen-1.mid
+│   │   ├── Dark Cloud - Dark Cloud Main Theme.mid
+│   │   ├── Dark Souls II - Menu Theme (1).mid
+│   │   ├── Dark Souls II - Menu Theme.mid
+│   │   ├── Darude - Bitter Sweet.mid
+│   │   ├── Darude - Calm Before The Storm (BTS Mix).mid
+│   │   ├── David Guetta - Love Is Gone.mid
+│   │   ├── Death Note - Light's Theme.mid
+│   │   ├── Deep Purple - Hallelujah.mid
+│   │   ├── Depeche Mode - Halo.mid
+│   │   ├── Depeche Mode - Just Can't Get Enough.mid
+│   │   ├── Digimon-BraveHeart.mid
+│   │   ├── Dire Straits - Walk of Life.mid
+│   │   ├── Do You Remember My Lullaby - Lullaby Music Box.mid
+│   │   ├── Do-Re-Mi-(From-'The-Sound-Of-Music').mid
+│   │   ├── Donkey Kong Country - Aquatic Ambience.mid
+│   │   ├── Donkey Kong Country - Main Theme.mid
+│   │   ├── Donkey Kong Country 2 Diddys Kong Quest - Forest Interlude.mid
+│   │   ├── Donkey Kong Country 2 Diddys Kong Quest - Ice.mid
+│   │   ├── Donkey Kong Country 2 Diddys Kong Quest - Island Map.mid
+│   │   ├── Dougal and Gammer - The 6th Gate.mid.mid
+│   │   ├── Dr Dre - Still Dre.mid
+│   │   ├── Dragon - The Dragon (Fridge Mix).mid
+│   │   ├── Dragon Ball Z - Boku-tachi Wa Tenshi Datta.mid
+│   │   ├── Dragonball - Makafushigi adobenchaa!.mid
+│   │   ├── Duarte_Russiana_Op.119_3.Kalinka.mid
+│   │   ├── Eine-Kleine-Nachtmusik-2.mid
+│   │   ├── El-Condor-Pasa (1).mid
+│   │   ├── El-Condor-Pasa.mid
+│   │   ├── Elfen Lied - Elfen Lied - Be Your Girl.mid
+│   │   ├── Elfen Lied - Hanayou.mid
+│   │   ├── Elfen Lied - Uso Sora.mid
+│   │   ├── Elvis Presley - Blue Suede Shoes.mid
+│   │   ├── akon-lonely.mid
+│   │   ├── avicii-wake_me_up.mid
+│   │   ├── avicii-wake_me_up_version_2.mid
+│   │   ├── banjo.mid
+│   │   ├── bastille-pompeii.mid
+│   │   ├── batman-movie-theme_en.mid
+│   │   ├── beatles-believer.mid
+│   │   ├── beatles-hey_jude.mid
+│   │   ├── beatles-let_it_be.mid
+│   │   ├── beatles-yesterday.mid
+│   │   ├── beethoven-sonata17.mid
+│   │   ├── beethoven-sonata23.mid
+│   │   ├── beethoven-symphony9-4-ode-to-joy-bassoon-piano.mid
+│   │   ├── bones.mid
+│   │   ├── brahms-lullaby-wiegenlied-piano.mid
+│   │   ├── bwv987.mid
+│   │   ├── calm.mid
+│   │   ├── canon-3.mid
+│   │   ├── cantina-4.mid
+│   │   ├── china-3.mid
+│   │   ├── chopin-ballade1.mid
+│   │   ├── coldplay-viva_la_vida.mid
+│   │   ├── coolio-gangstas_paradise.mid
+│   │   ├── countdown.MID
+│   │   ├── darude-sandstorm.mid
+│   │   ├── debussy-clair-de-lune.mid
+│   │   ├── disney.mid
+│   │   ├── dixie.mid
+│   │   ├── doom.mid
+│   │   └── drake-find_your_love.mid
+│   └── TrainingMIDIs
+│       ├── 00placeholder00.txt
+│       ├── ENEMY.MID
+│       ├── EUROPE.The final countdown K.mid
+│       ├── Elvis Presley - Jailhouse Rock.mid
+│       ├── Eminem - Detroit Vs. Everybody.mid
+│       ├── Eminem - Guilty Conscience.mid
+│       ├── Endless-Love.mid
+│       ├── Enjoy-The-Silence.mid
+│       ├── Ennio-Morricone-Medley-(Westerns).mid
+│       ├── Eric Clapton - Tears In Heaven.mid
+│       ├── Eric Clapton - Wonderful Tonight.mid
+│       ├── Etude op25 n11 ''Winter Wind''.mid
+│       ├── Evangelion - Good or Don't Be.mid
+│       ├── Evangelion - Misato.mid
+│       ├── FOOL'S GARDEN.Lemon tree.mid
+│       ├── FREEBIRD.MID
+│       ├── Fairy Tail - Main Theme (Piano Ver).mid
+│       ├── Fairy Tail - Sad Theme (Piano).mid
+│       ├── Fate Stay Night - OP 2 - Brave Shine.mid
+│       ├── Final Fantasy - Prelude.mid
+│       ├── Final Fantasy I - Final Fantasy.mid
+│       ├── Final Fantasy V - Victory Fanfare.mid
+│       ├── Final Fantasy VII - Aeris' Theme.mid
+│       ├── Final Fantasy VII - Main Theme.mid
+│       ├── Final Fantasy VII_ AC - Tifa's Theme Piano Version.mid
+│       ├── Flank 150 BPM [bmin] @prod.aamatii.mid
+│       ├── Flo Rida feat. Sia - Wild Ones (David Guetta & Nicky Romero Remix).mid
+│       ├── For-Whom-The-Bell-Tolls.mid
+│       ├── Forever-Young.mid
+│       ├── Full Metal Alchemist - Brothers.mid
+│       ├── Full Metal Alchemist_ Brotherhood - Hum of the Streets.mid
+│       ├── FunkyTown.mid
+│       ├── Fur Elise.mid
+│       ├── Fur-Elise-2.mid
+│       ├── Fur-Elise-3.mid
+│       ├── GAYNOR.I will survive K.mid
+│       ├── GERMANY.MID
+│       ├── GREENDAY.Basket case K (1).mid
+│       ├── GREENDAY.Basket case K.mid
+│       ├── Gareth Emery - Tokyo (Ben Gold Remix).mid
+│       ├── Gladiator - Now We Are Free.mid
+│       ├── Golden-Brown.mid
+│       ├── Golden-Eye-(Theme-Of-The-Film-'Golden-Eye')-1.mid
+│       ├── Gravity Falls - Made Me Realize.mid
+│       ├── Great-Balls-Of-Fire.mid
+│       ├── Greensleeves.mid
+│       ├── Guns n Roses - Live and Let Die.mid
+│       ├── H.H.BAND.Country roads K.mid
+│       ├── HAIDUCII.Dragostea din tei K.MID
+│       ├── Habanera-(from-Carmen).mid
+│       ├── Hallelujah (Psalm 150).mid
+│       ├── Halloween.mid
+│       ├── Halo - Siege of Madrigal.mid
+│       ├── Halo 2 - Menu.mid
+│       ├── Hans Zimmer - Time.mid
+│       ├── Happy-Birthday-Sweet-Sixteen.mid
+│       ├── Happy-Birthday-To-You-1.mid
+│       ├── Here-Comes-The-Sun-2.mid
+│       ├── High-Hopes.mid
+│       ├── Hopeful-Monsters.mid
+│       ├── Hotel-California.mid
+│       ├── House-Of-The-Rising-Sun-&-Love-Is-In-The-Air-(Medley).mid
+│       ├── Hurt.mid
+│       ├── I-Feel-Good.mid
+│       ├── I-Just-Died-In-Your-Arms.mid
+│       ├── I-Like-To-Move-It.mid
+│       ├── I-Love-You-Baby.mid
+│       ├── IGGY POP.The passenger.mid
+│       ├── IRON MADEN.The trooper K.mid
+│       ├── Ice-Ice-Baby.mid
+│       ├── In-The-Air-Tonight-2.mid
+│       ├── Initial D - Rage Your Dream.mid
+│       ├── J.CASH.Ring of fire.mid
+│       ├── J.DENVER.Country roads.MID
+│       ├── JACKSON FIVE.I want you back.mid
+│       ├── JACKSON.Thriller k.mid
+│       ├── Jaws.mid
+│       ├── Jingle-Bells.mid
+│       ├── Joe Hisaishi - Merry Go Round Of Life (Howl's Moving Castle).mid
+│       ├── John Denver - Take Me Home Country Roads.mid
+│       ├── Juice.mid
+│       ├── Jup 150 BPM @prod.aamatii.mid
+│       ├── KICKS.MID
+│       ├── Kansas - Carry On My Wayward Son.mid
+│       ├── Kaoma - Lambada.mid
+│       ├── Katy Perry - I Kissed A Girl.mid
+│       ├── Killer-Queen-1.mid
+│       ├── Killing-Me-Softly-1.mid
+│       ├── Kimi ni Todoke - Kimi ni Todoke.mid
+│       ├── Kingdom Hearts - Dearly Beloved.mid
+│       ├── Kingdom Hearts II - Dearly Beloved II.mid
+│       ├── Kirbys Dream Land - Green Greens.mid
+│       ├── LAUPER.Girls just want to have fun K.mid
+│       ├── LAUPER.Time after time  K.mid
+│       ├── LED ZEPPELIN.Stairway to heaven K.mid
+│       ├── LENNON.Imagine K.mid
+│       ├── La-Bamba-1.mid
+│       ├── La-Cucaracha.mid
+│       ├── La-Vie-En-Rose.mid
+│       ├── Laputa - Castle in the Sky - Gakkou no unkai.mid
+│       ├── Laputa - Castle in the Sky - Innocent (Main Theme).mid
+│       ├── Layla.mid
+│       ├── Led Zeppelin - Immigrant Song.mid
+│       ├── Let-It-Snow-Let-It-Snow.mid
+│       ├── Linkin Park - Numb (Tim Dawes Remix).mid
+│       ├── Lionel Richie - Hello.mid
+│       ├── Love-Story-(From-'Love-Story')-2.mid
+│       ├── M.Younus_(younusmusic@yahoo.com)_-_Is_parcham_k_sae..¥.S829.MID.mid
+│       ├── MAROON 5.Sunday morning K.MID
+│       ├── METALLICA.Master of puppets K.mid
+│       ├── MODERN TALKING.Cheri cher lady K.mid
+│       ├── MODERN TALKING.You're my heart,you're my soul K.mid
+│       ├── MR.PRESIDENT.Coco jambo  K.MID
+│       ├── March-A-La-Turca-(Mozart-Disco).mid
+│       ├── Marilyn Manson - Sweet Dreams.mid
+│       ├── Mauro Picotto - Back To Cali (Push Remix).mid
+│       ├── Mauro Picotto - Back To Cali.mid
+│       ├── Mauro Picotto - Like This Like That.mid
+│       ├── Mauro Picotto - Lizard.mid
+│       ├── Mega Man Zero - Theme of ZERO from Mega Man X.mid
+│       ├── Memories Off 1 - Memories Off.mid
+│       ├── Metal Gear Solid 2 Sons of Liberty - Main Theme.mid
+│       ├── Metallica - Master Of Puppets.mid
+│       ├── Metallica-Enter_Sandman.mid
+│       ├── Michael Jackson - Billie Jean.mid
+│       ├── Michael Jackson - Rock with You.mid
+│       ├── Michael Jackson - Thriller.mid
+│       ├── Michael Woods - First aid.mid
+│       ├── Michael Woods - If You Want Me 'if'.mid
+│       ├── Mike Morasky - Portal 2 Main theme.mid
+│       ├── Minuet-in-Mozart.mid
+│       ├── Money-Money-Money-3.mid
+│       ├── Moon-River-2.mid
+│       ├── Motley Crue - Home Sweet Home.mid
+│       ├── Naruto - Narutimate Shippuden Accel Ending (better version).mid
+│       ├── Naruto - Naruto Main Theme-Short Version.mid
+│       ├── Naruto - sadness and sorrow.mid
+│       ├── Naruto Shippuden - Akatsuki Theme.mid
+│       ├── Naruto Shippuden - Blue Bird.mid
+│       ├── Naruto Shippuden - Cascade.mid
+│       ├── Naruto Shippuden - Decision.mid
+│       ├── Naruto Shippuden - Sasuke's Retribution.mid
+│       ├── Naruto Shippuden - Senya (Updated version) (1).mid
+│       ├── Naruto Shippuden - Senya (Updated version).mid
+│       ├── Naruto Shippuden - Sore Dewa Ashita Mata.mid
+│       ├── Naruto Shippuden - Tsuki no Okisa.mid
+│       ├── Naruto Shippuden_ Ultimate Ninja 2 - End Credits.mid
+│       ├── National Anthem - India.mid
+│       ├── Never-Gonna-Give-You-Up-1.mid
+│       ├── New Super Mario Bros Wii - Underwater.mid
+│       ├── Nirvana - About A Girl.mid
+│       ├── Nocturne op09 n2.mid
+│       ├── Norman Bass - How U Like Bass.mid
+│       ├── Nothing-Gonna-Change-My-Love-For-You-2.mid
+│       ├── OPUS.Life is life K.mid
+│       ├── One Piece - dear friends.mid
+│       ├── Over-The-Rainbow.mid
+│       ├── P.FLOYD.Another brick in the wall K.mid
+│       ├── P.FLOYD.Comfortably numb.mid
+│       ├── P.FLOYD.Wish you were here K.MID
+│       ├── P.SIMON-GARFUNKEL.Sound of silence K.mid
+│       ├── PIRATE.MID
+│       ├── POPCORN.MID
+│       ├── PRINCE.Let's go crazy K.mid
+│       ├── Passacaglia.mid
+│       ├── Peer Gynt Suite No. 1, Morning Mood.mid
+│       ├── Phoenix Wright Ace Attorney - Investigation  Cornered.mid
+│       ├── Phoenix Wright Ace Attorney - Turnabout Sisters Theme.mid
+│       ├── Piano Sonata n14 op27 1mov ''Moonlight''.mid
+│       ├── Pirates Of The Caribbean - Davy Jones.mid
+│       ├── Polka-Polka-1.mid
+│       ├── Portal 2 - Cara Mia.mid
+│       ├── Portal 2 - Turret Wife Serenade.mid
+│       ├── Portal 2 - Want You Gone.mid
+│       ├── Porter Robinson - Goodbye To A World.mid
+│       ├── Power-Of-Love-(Love-Power).mid
+│       ├── Prelude n20 op28 ''Funeral March''.mid
+│       ├── Prince - Purple Rain.mid
+│       ├── Que-Sera-Sera-2.mid
+│       ├── Queen - Killer Queen.mid
+│       ├── R.I.O. - Like I Love You(Geomix Feat Libra)2011.mi - R.I.O. - Like I Love You(Geomix Feat Libra)2011.mi.mid
+│       ├── ROXETTE.Listen to your heart.mid
+│       ├── RUNAWAY.MID
+│       ├── RUSH.MID
+│       ├── Ragnarok Online - Ragnarok Online Title.mid
+│       ├── Randy Katana - In Silence (Ron Van Den Beuken Remix).mid
+│       ├── Red Hot Chili Peppers - Aeroplane.mid
+│       ├── Richard Marx - Right Here Waiting For You.mid
+│       ├── Riders-On-The-Storm-1.mid
+│       ├── Rihanna ft Calvin Harris - We Found Love.mid
+│       ├── Rockin'-Around-The-Christmas-Tree.mid
+│       ├── Rocky-(Theme)-2.mid
+│       ├── Romantic-Piano.mid
+│       ├── Rudolph-The-Red-Nosed-Reindeer.mid
+│       ├── Rush-Rush.mid
+│       ├── Russian dance from Petroushka.mid
+│       ├── S-Barber-(Adagio).mid
+│       ├── SANDMAN.MID
+│       ├── SMASH MOUTH.All star.mid
+│       ├── Sade - Smooth Operator.mid
+│       ├── Sailor Moon - Sailor Saturn's Theme.mid
+│       ├── Sailor Moon - Sailor Stars Song.mid
+│       ├── Saint Seiya - Ikki's theme (aka Brother's Theme, Shun's Theme, Shinreii Prayer, Andromeda's Theme).mid
+│       ├── Saint Seiya - Inside a Dream.mid
+│       ├── Sakura-Sakura.mid
+│       ├── Santana - Black Magic Woman.mid
+│       ├── Serial Experiments Lain - Duvet.mid
+│       ├── Seven_Nation_Army.mid
+│       ├── Simpsons.mid
+│       ├── Skrillex - First Of The Year.mid
+│       ├── Skrillex - Scary Monsters and nice splities (all parts) (1).mid
+│       ├── Skrillex - Scary Monsters and nice splities (all parts).mid
+│       ├── Skyline 145 BPM @prod.aamatii.mid
+│       ├── Smashing Pumpkins - 1979.mid
+│       ├── Smashing Pumpkins - Tonight Tonight.mid
+│       ├── Smells-Like-Teen-Spirit-2.mid
+│       ├── Smoke-On-The-Water-2.mid
+│       ├── Snoop Dogg - GZ and Hustlerz.mid
+│       ├── Snoop Dogg - Murder Was The Case.mid
+│       ├── Somebody-To-Love-3.mid
+│       ├── Sonata No.14 Op 27 Moonlight Sonata.mid
+│       ├── Song-Within-A-Song.mid
+│       ├── Sonic the Hedgehog - Labyrinth Zone.mid
+│       ├── Sonic the Hedgehog - Scrap Brain Zone.mid
+│       ├── Soundgarden - Black Hole Sun.mid
+│       ├── Spirited Away - Boiler Mushi.mid
+│       ├── Spirited Away - Itsumo Nando Demo.mid
+│       ├── Spirited Away - Ryuu no Shounen - from the Official Piano Solo Album.mid
+│       ├── Star-Spangled-Banner.mid
+│       ├── Stromae - Alors on danse.mid
+│       ├── Studio Ghibli - Ghibli Medley.mid
+│       ├── Super Mario 64 - Medley.mid
+│       ├── Super Mario World - Ending Theme.mid
+│       ├── Super Mario World 2 Yoshis Island - Big Boss.mid
+│       ├── Super Smash Bros Brawl - Final Destination.mid
+│       ├── Sword Art Online - A Tender Feeling (Lisbeth's Theme).mid
+│       ├── THE ANIMALS.The lion sleeps tonight.mid
+│       ├── THE BEATLES.Back in USSR.mid
+│       ├── THE EAGLES.Hotel California K.mid
+│       ├── THE SCORPIONS.Wind Of Change L.mid
+│       ├── THE SMASHING PUMPKINS.Ava adore.mid
+│       ├── THE SMASHING PUMPKINS.Bullet with butterfly wings.mid
+│       ├── THE VERVE.Bitter sweet simphony K.mid
+│       ├── TURKISH.MID
+│       ├── TV_Themes_-_Bob_The_Builder.mid
+│       ├── Take-Five-1.mid
+│       ├── TakeMyHand-FromDune-Toto.mid
+│       ├── Taps.mid
+│       ├── Tetris - Tetris Main Theme.mid
+│       ├── The Beatles - You Never Give Me Your Money.mid
+│       ├── The Elder Scrolls V Skyrim - Dragonborn Theme.mid
+│       ├── The Four Seasons op8 n4 RV297 ''Winter'' 3mov Allegro.mid
+│       ├── The Kovenant - Star By Star.mid
+│       ├── The Legend of Zelda A Link to the Past - Boss Victory Fanfare.mid
+│       ├── The Legend of Zelda A Link to the Past - Overworld.mid
+│       ├── The Who - Baba O'Riley.mid
+│       ├── The Witcher 2 - Assassins of Kings.mid
+│       ├── The Witcher 3 - Bonny At Morn.mid
+│       ├── The Witcher 3 - The Fields of Ard Skellig.mid
+│       ├── The-Avengers.mid
+│       ├── The-Blue-Danube-Waltz.mid
+│       ├── The-Final-Countdown.mid
+│       ├── The-Four-Seasons.mid
+│       ├── The-Girl-From-Ipanema.mid
+│       ├── The-Man-With-The-Harmonica.mid
+│       ├── The-Phantom-Of-The-Opera.mid
+│       ├── The-Way-You-Look-Tonight-(From-'The-Way-You-Look-Tonight').mid
+│       ├── Theme-From-'The-Pink-Panther'-1.mid
+│       ├── Tom-And-Jerry.mid
+│       ├── Touhou 6 The Embodiment of Scarlet Devil - Lunar Clock  Luna Dial.mid
+│       ├── Twinkle-Little-Star (Long Version).mid
+│       ├── Unchained-Melody-2.mid
+│       ├── Under-The-Sea-(From-'The-Little-Mermaid')-1.mid
+│       ├── VANGELIS.Chariots of Fire.mid
+│       ├── VENGA BOYS.Boom Boom k.mid
+│       ├── Vanilla Ice - Ice Ice Baby.mid
+│       ├── WEEZER.buddy holly k.mid
+│       ├── We-Wish-You-A-Merry-Christmas-1.mid
+│       ├── Wedding Procession from the Wedding Music.mid
+│       ├── Welcome-To-The-Jungle.mid
+│       ├── Western.mid
+│       ├── While-My-Guitar-Gently-Weeps-1.mid
+│       ├── White-Christmas.mid
+│       ├── Wild-Wild-Life.mid
+│       ├── Wonderwall.mid
+│       ├── Yakety-Sax-2.mid
+│       ├── Zelda - Ocarina of Time - Gerudo Valley, from The Hyrule Symphony.mid
+│       ├── Zelda - the Wind Waker - Wind God's Aria.mid
+│       ├── Zombie Nation - Kernkraft 400.mid
+│       ├── eminem-mockingbird.mid
+│       ├── entertainer-scott_joplin.mid
+│       ├── funeral-march.mid
+│       ├── gorillaz-clint_eastwood.mid
+│       ├── gotye-somebody_that_i_used_to_know.mid
+│       ├── greensleeves-guitar.mid
+│       ├── horror.mid
+│       ├── i want you i need you i love you L.mid
+│       ├── imperialmarch.mid
+│       ├── jeopardy.mid
+│       ├── jojo-leave_get_out.mid
+│       ├── joy-to-the-world.mid
+│       ├── kENNY G.Silhouette.mid
+│       ├── kalinka.mid
+│       ├── linkin_park-numb.mid
+│       ├── mariachi.mid
+│       ├── mid-xmas-have-yrselfamerry.mid
+│       ├── mortal.mid
+│       ├── mozart-clarinet-concerto-2-piano-and-clarinet.mid
+│       ├── mozart-piano-concerto-21-2-elvira-madigan.mid
+│       ├── mozart-symphony40-1-piano-solo.mid
+│       ├── mozart-symphony40-1.mid
+│       ├── muse-hysteria.mid
+│       ├── my_chemical_romance-cancer.mid
+│       ├── outkast-hey_ya.mid
+│       ├── overlord.mid
+│       ├── radiohead-creep.mid
+│       ├── rave.mid
+│       ├── rihanna-diamonds.mid
+│       ├── rule-britannia.mid
+│       ├── scotland-the-brave.mid
+│       ├── silent-night.mid
+│       ├── simpsons-5.mid
+│       ├── simpsons-8.mid
+│       ├── terminator.mid
+│       ├── the-british-grenadiers.mid
+│       ├── titanic-4.mid
+│       ├── titanic-end_theme.mid
+│       ├── tokyo.mid
+│       ├── topgun.mid
+│       ├── toto-africa.mid
+│       ├── toto-rosanna.mid
+│       ├── toxicity.mid
+│       ├── ussranthem.mid
+│       ├── vivaldi-.mid
+│       ├── vivaldi.spring.mid
+│       ├── weezer-beverly_hills.mid
+│       ├── when-johnny-comes-marching-home.mid
+│       └── wonderwall-oasis.mid
 ├── README.md
-├── Source
-│   ├── AIMidiGenerator.cpp
-│   ├── AIMidiGenerator.h
-│   ├── EmotionalOptimizer.cpp
-│   ├── EmotionalOptimizer.h
-│   ├── FeatureExtractor.cpp
-│   ├── FeatureExtractor.h
-│   ├── GrooveShaper.cpp
-│   ├── GrooveShaper.h
-│   ├── ModelRunner.cpp
-│   ├── ModelRunner.h
-│   ├── ModernUI.cpp
-│   ├── ModernUI.h
-│   ├── PluginEditor.cpp
-│   ├── PluginEditor.h
-│   ├── PluginProcessor.cpp
-│   └── PluginProcessor.h
-├── TRAINING_GUIDE.md
-├── build
-│   └── CMakeFiles
-│       ├── 3.22.1
-│       │   ├── CMakeCCompiler.cmake
-│       │   ├── CMakeCXXCompiler.cmake
-│       │   ├── CMakeDetermineCompilerABI_C.bin
-│       │   ├── CMakeDetermineCompilerABI_CXX.bin
-│       │   ├── CMakeSystem.cmake
-│       │   ├── CompilerIdC
-│       │   │   ├── CMakeCCompilerId.c
-│       │   │   └── a.out
-│       │   └── CompilerIdCXX
-│       │       ├── CMakeCXXCompilerId.cpp
-│       │       └── a.out
-│       └── CMakeOutput.log
+├── categorical_encoder.pkl
+├── data
+│   ├── csv
+│   │   ├── current_groove_features.csv
+│   │   ├── groove_features_log.csv
+│   │   ├── groove_features_log_for_pred.csv
+│   │   └── raw_features.csv
+│   ├── exports
+│   └── logs
 ├── directories.txt
-├── install_commands.txt
-├── licenses
-│   ├── DISCLAIMER.txt
-│   ├── EULA.txt
-│   ├── PRIVACY_POLICY.txt
-│   └── TERMS_OF_SERVICE.txt
-├── logging_config.py
-├── midifile
-├── onnxruntime
-├── requirements.txt
-├── run_aamati.py
-├── run_tests.py
-├── setup_aamati.py
-├── setup_ml_models.py
-├── startAamati.sh
-├── system_health.py
-└── test_aamati.py
+├── estimate_features.py
+├── extract_energy_features.py
+├── extract_groove_features.py
+├── extract_groove_features_old.py
+├── fixed_midi_compliance.py
+├── main.py
+├── models
+│   └── trained
+│       ├── groove_mood_model.onnx
+│       └── groove_mood_model.pkl
+├── mood_classification_model.py
+├── mood_feature_map.json
+├── optimized_mood_classifier.py
+├── predict_groove_mood.py
+├── scripts
+│   ├── automation_manager.py
+│   ├── copy_groove_features.py
+│   ├── extract_features.py
+│   ├── reset_groove_features.py
+│   └── train_models.py
+├── src
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   └── __init__.cpython-310.pyc
+│   ├── core
+│   │   ├── __init__.py
+│   │   ├── __pycache__
+│   │   │   ├── __init__.cpython-310.pyc
+│   │   │   └── extract_groove_features.cpython-310.pyc
+│   │   ├── extract_groove_features.py
+│   │   ├── feature_extractor.py
+│   │   └── training_pipeline.py
+│   ├── data
+│   │   └── __init__.py
+│   ├── models
+│   │   └── __init__.py
+│   └── utils
+│       ├── __init__.py
+│       └── mood_mappings.py
+├── train_models.py
+└── workflow_manager.py
 
-36 directories, 642 files
+23 directories, 599 files
