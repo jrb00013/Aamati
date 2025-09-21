@@ -5,3 +5,11 @@ MusicGroovesMidi/ProcessedMIDIs/*.mid
 MusicGroovesMidi/TrainingMIDIs/*.mid
 MusicGroovesMidi/TrainingMIDIs/*.midi
 __pycache__/
+.csv
+.cursor 
+.vscode
+.log
+.midi
+.mid
+.joblib
+.onnx
