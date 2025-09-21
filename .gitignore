@@ -8,8 +8,8 @@ __pycache__/
 .csv
 .cursor 
 .vscode
-.log
-.midi
-.mid
-.joblib
-.onnx
+*.log
+*.midi
+*.mid
+*.joblib
+*.onnx

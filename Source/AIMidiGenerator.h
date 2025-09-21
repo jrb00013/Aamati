@@ -43,6 +43,13 @@ public:
         std::map<std::string, float> parameters;
     };
     
+    struct HybridMood
+    {
+        std::vector<std::string> moods;
+        std::vector<float> weights;
+        std::string description;
+    };
+    
     AIMidiGenerator();
     ~AIMidiGenerator();
     
@@ -60,6 +67,31 @@ public:
     // Pattern generation based on mood
     GeneratedPattern generateMoodPattern(const std::string& mood, double duration, const std::string& patternType);
     GeneratedPattern generateTransitionPattern(const std::string& fromMood, const std::string& toMood, double duration);
+    
+    // Hybrid mood system
+    GeneratedPattern generateHybridPattern(const std::vector<std::string>& moods, const std::vector<float>& weights, double duration);
+    GeneratedPattern generatePredefinedHybrid(const std::string& hybridName, double duration);
+    GeneratedPattern blendPatterns(const std::vector<GeneratedPattern>& patterns, const std::vector<float>& weights);
+    std::vector<juce::MidiMessage> mergeOverlappingNotes(const std::vector<juce::MidiMessage>& messages);
+    
+    // Hybrid mood management
+    std::vector<std::string> getAvailableHybridMoods() const;
+    HybridMood getHybridMoodInfo(const std::string& hybridName) const;
+    void addCustomHybridMood(const std::string& name, const HybridMood& hybridMood);
+    GeneratedPattern generateSameMoodPattern(const std::string& mood, int repetitions, double duration);
+    
+    // Transition generation
+    std::vector<int> generateTransitionNotes(const std::string& fromMood, const std::string& toMood, float progress, int count);
+    std::vector<double> generateTransitionRhythm(const std::string& fromMood, const std::string& toMood, float progress, int count);
+    std::vector<int> generateTransitionVelocities(const std::string& fromMood, const std::string& toMood, float progress, int count);
+    
+    // Mood characteristics
+    std::vector<int> getMoodScale(const std::string& mood);
+    double getMoodRhythm(const std::string& mood);
+    int getMoodVelocity(const std::string& mood);
+    float calculateHybridConfidence(const std::vector<std::string>& moods, const std::vector<float>& weights);
+    GeneratedPattern generateDefaultPattern(double duration);
+    GeneratedPattern generateIntensifiedMoodPattern(const std::string& mood, int intensity, double duration);
     
     // Instrumentation guidance
     void setInstrumentPreset(int channel, const InstrumentPreset& preset);
@@ -89,6 +121,7 @@ private:
     // Pattern libraries
     std::map<std::string, std::vector<GeneratedPattern>> patternLibraries;
     std::map<std::string, GeneratedPattern> customPatterns;
+    std::map<std::string, HybridMood> hybridMoods;
     
     // Random number generation
     juce::Random random;
@@ -96,6 +129,7 @@ private:
     // Internal generation functions
     void initializePatternLibraries();
     void initializeInstrumentPresets();
+    void initializeHybridMoods();
     
     // Melody generation
     std::vector<int> generateMelodyNotes(int length, int key, const std::string& scale);

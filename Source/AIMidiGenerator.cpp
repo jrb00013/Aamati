@@ -20,6 +20,85 @@ void AIMidiGenerator::initializePatternLibraries()
     {
         patternLibraries[mood] = std::vector<GeneratedPattern>();
     }
+    
+    // Initialize hybrid mood combinations
+    initializeHybridMoods();
+}
+
+void AIMidiGenerator::initializeHybridMoods()
+{
+    // Define 30+ hybrid mood combinations with their characteristics
+    
+    // Single mood intensifications (same mood repeated)
+    hybridMoods["romantic-romantic"] = {"romantic", "romantic", {0.5f, 0.5f}, "deep-romance"};
+    hybridMoods["dreamy-dreamy"] = {"dreamy", "dreamy", {0.5f, 0.5f}, "ethereal-bliss"};
+    hybridMoods["chill-chill"] = {"chill", "chill", {0.5f, 0.5f}, "zen-calm"};
+    hybridMoods["energetic-energetic"] = {"energetic", "energetic", {0.5f, 0.5f}, "pure-energy"};
+    hybridMoods["suspenseful-suspenseful"] = {"suspenseful", "suspenseful", {0.5f, 0.5f}, "deep-tension"};
+    hybridMoods["uplifting-uplifting"] = {"uplifting", "uplifting", {0.5f, 0.5f}, "pure-joy"};
+    hybridMoods["ominous-ominous"] = {"ominous", "ominous", {0.5f, 0.5f}, "dark-abyss"};
+    hybridMoods["gritty-gritty"] = {"gritty", "gritty", {0.5f, 0.5f}, "raw-power"};
+    hybridMoods["frantic-frantic"] = {"frantic", "frantic", {0.5f, 0.5f}, "pure-chaos"};
+    hybridMoods["focused-focused"] = {"focused", "focused", {0.5f, 0.5f}, "laser-precision"};
+    
+    // Triple same mood intensifications
+    hybridMoods["romantic-romantic-romantic"] = {"romantic", "romantic", "romantic", {0.33f, 0.33f, 0.34f}, "passionate-storm"};
+    hybridMoods["dreamy-dreamy-dreamy"] = {"dreamy", "dreamy", "dreamy", {0.33f, 0.33f, 0.34f}, "cosmic-drift"};
+    hybridMoods["chill-chill-chill"] = {"chill", "chill", "chill", {0.33f, 0.33f, 0.34f}, "meditative-trance"};
+    hybridMoods["energetic-energetic-energetic"] = {"energetic", "energetic", "energetic", {0.33f, 0.33f, 0.34f}, "explosive-force"};
+    hybridMoods["suspenseful-suspenseful-suspenseful"] = {"suspenseful", "suspenseful", "suspenseful", {0.33f, 0.33f, 0.34f}, "paralyzing-dread"};
+    
+    // Dual combinations
+    hybridMoods["chill-energetic"] = {"chill", "energetic", {0.7f, 0.3f}, "relaxed-energy"};
+    hybridMoods["energetic-chill"] = {"energetic", "chill", {0.6f, 0.4f}, "controlled-energy"};
+    hybridMoods["suspenseful-uplifting"] = {"suspenseful", "uplifting", {0.6f, 0.4f}, "building-tension"};
+    hybridMoods["uplifting-suspenseful"] = {"uplifting", "suspenseful", {0.7f, 0.3f}, "hopeful-tension"};
+    hybridMoods["ominous-romantic"] = {"ominous", "romantic", {0.5f, 0.5f}, "dark-romance"};
+    hybridMoods["romantic-ominous"] = {"romantic", "ominous", {0.6f, 0.4f}, "melancholic"};
+    hybridMoods["gritty-dreamy"] = {"gritty", "dreamy", {0.4f, 0.6f}, "ethereal-grit"};
+    hybridMoods["dreamy-gritty"] = {"dreamy", "gritty", {0.7f, 0.3f}, "soft-edge"};
+    hybridMoods["frantic-focused"] = {"frantic", "focused", {0.3f, 0.7f}, "controlled-chaos"};
+    hybridMoods["focused-frantic"] = {"focused", "frantic", {0.6f, 0.4f}, "intense-precision"};
+    
+    // Triple combinations
+    hybridMoods["chill-energetic-romantic"] = {"chill", "energetic", "romantic", {0.4f, 0.3f, 0.3f}, "passionate-calm"};
+    hybridMoods["suspenseful-uplifting-gritty"] = {"suspenseful", "uplifting", "gritty", {0.4f, 0.3f, 0.3f}, "raw-hope"};
+    hybridMoods["dreamy-ominous-focused"] = {"dreamy", "ominous", "focused", {0.4f, 0.3f, 0.3f}, "dark-clarity"};
+    hybridMoods["frantic-chill-uplifting"] = {"frantic", "chill", "uplifting", {0.3f, 0.4f, 0.3f}, "chaotic-peace"};
+    hybridMoods["romantic-gritty-suspenseful"] = {"romantic", "gritty", "suspenseful", {0.4f, 0.3f, 0.3f}, "passionate-tension"};
+    
+    // Complex combinations
+    hybridMoods["energetic-uplifting-focused"] = {"energetic", "uplifting", "focused", {0.4f, 0.3f, 0.3f}, "driven-optimism"};
+    hybridMoods["chill-dreamy-romantic"] = {"chill", "dreamy", "romantic", {0.4f, 0.3f, 0.3f}, "ethereal-love"};
+    hybridMoods["ominous-suspenseful-gritty"] = {"ominous", "suspenseful", "gritty", {0.4f, 0.3f, 0.3f}, "dark-intensity"};
+    hybridMoods["frantic-energetic-gritty"] = {"frantic", "energetic", "gritty", {0.4f, 0.3f, 0.3f}, "raw-power"};
+    hybridMoods["uplifting-focused-romantic"] = {"uplifting", "focused", "romantic", {0.4f, 0.3f, 0.3f}, "inspired-love"};
+    
+    // Quadruple combinations
+    hybridMoods["chill-energetic-romantic-dreamy"] = {"chill", "energetic", "romantic", "dreamy", {0.3f, 0.25f, 0.25f, 0.2f}, "passionate-dream"};
+    hybridMoods["suspenseful-uplifting-gritty-focused"] = {"suspenseful", "uplifting", "gritty", "focused", {0.3f, 0.25f, 0.25f, 0.2f}, "intense-determination"};
+    hybridMoods["ominous-romantic-dreamy-chill"] = {"ominous", "romantic", "dreamy", "chill", {0.3f, 0.25f, 0.25f, 0.2f}, "dark-serenity"};
+    hybridMoods["frantic-energetic-gritty-uplifting"] = {"frantic", "energetic", "gritty", "uplifting", {0.3f, 0.25f, 0.25f, 0.2f}, "explosive-joy"};
+    hybridMoods["focused-suspenseful-romantic-chill"] = {"focused", "suspenseful", "romantic", "chill", {0.3f, 0.25f, 0.25f, 0.2f}, "controlled-passion"};
+    
+    // Extreme combinations
+    hybridMoods["frantic-ominous-gritty-suspenseful"] = {"frantic", "ominous", "gritty", "suspenseful", {0.3f, 0.25f, 0.25f, 0.2f}, "apocalyptic-chaos"};
+    hybridMoods["dreamy-romantic-chill-uplifting"] = {"dreamy", "romantic", "chill", "uplifting", {0.3f, 0.25f, 0.25f, 0.2f}, "heavenly-bliss"};
+    hybridMoods["energetic-focused-uplifting-gritty"] = {"energetic", "focused", "uplifting", "gritty", {0.3f, 0.25f, 0.25f, 0.2f}, "unstoppable-force"};
+    hybridMoods["chill-dreamy-romantic-focused"] = {"chill", "dreamy", "romantic", "focused", {0.3f, 0.25f, 0.25f, 0.2f}, "meditative-love"};
+    hybridMoods["suspenseful-ominous-frantic-gritty"] = {"suspenseful", "ominous", "frantic", "gritty", {0.3f, 0.25f, 0.25f, 0.2f}, "nightmare-fuel"};
+    
+    // Balanced combinations
+    hybridMoods["all-balanced"] = {"chill", "energetic", "suspenseful", "uplifting", "ominous", "romantic", "gritty", "dreamy", "frantic", "focused", 
+                                 {0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f}, "universal-harmony"};
+    hybridMoods["positive-spectrum"] = {"chill", "energetic", "uplifting", "romantic", "dreamy", "focused", 
+                                       {0.2f, 0.2f, 0.2f, 0.15f, 0.15f, 0.1f}, "pure-positivity"};
+    hybridMoods["dark-spectrum"] = {"suspenseful", "ominous", "gritty", "frantic", 
+                                   {0.3f, 0.3f, 0.2f, 0.2f}, "pure-darkness"};
+    hybridMoods["dynamic-spectrum"] = {"energetic", "frantic", "gritty", "uplifting", "focused", 
+                                      {0.25f, 0.2f, 0.2f, 0.2f, 0.15f}, "pure-energy"};
+    hybridMoods["serene-spectrum"] = {"chill", "dreamy", "romantic", "focused", 
+                                     {0.3f, 0.3f, 0.25f, 0.15f}, "pure-serenity"};
 }
 
 void AIMidiGenerator::initializeInstrumentPresets()
@@ -235,17 +314,474 @@ AIMidiGenerator::GeneratedPattern AIMidiGenerator::generateMoodPattern(const std
     return pattern;
 }
 
+// Enhanced hybrid mood system
+AIMidiGenerator::GeneratedPattern AIMidiGenerator::generateHybridPattern(const std::vector<std::string>& moods, const std::vector<float>& weights, double duration)
+{
+    if (moods.empty() || moods.size() != weights.size()) {
+        return generateDefaultPattern(duration);
+    }
+    
+    GeneratedPattern pattern;
+    pattern.patternType = "hybrid";
+    pattern.duration = duration;
+    
+    // Check if this is a same-mood repetition (intensification)
+    bool isSameMoodIntensification = true;
+    for (size_t i = 1; i < moods.size(); ++i) {
+        if (moods[i] != moods[0]) {
+            isSameMoodIntensification = false;
+            break;
+        }
+    }
+    
+    if (isSameMoodIntensification) {
+        // Generate intensified version of the mood
+        pattern = generateIntensifiedMoodPattern(moods[0], moods.size(), duration);
+    } else {
+        // Normalize weights
+        float totalWeight = 0.0f;
+        for (float weight : weights) {
+            totalWeight += weight;
+        }
+        
+        if (totalWeight <= 0.0f) {
+            return generateDefaultPattern(duration);
+        }
+        
+        // Generate base patterns for each mood
+        std::vector<GeneratedPattern> basePatterns;
+        for (const auto& mood : moods) {
+            basePatterns.push_back(generateMoodPattern(mood, duration));
+        }
+        
+        // Blend patterns based on weights
+        pattern = blendPatterns(basePatterns, weights);
+    }
+    
+    pattern.confidence = calculateHybridConfidence(moods, weights);
+    return pattern;
+}
+
+AIMidiGenerator::GeneratedPattern AIMidiGenerator::generateIntensifiedMoodPattern(const std::string& mood, int intensity, double duration)
+{
+    GeneratedPattern pattern;
+    pattern.patternType = "intensified-" + mood;
+    pattern.duration = duration;
+    
+    // Get base mood characteristics
+    auto scale = getMoodScale(mood);
+    double baseRhythm = getMoodRhythm(mood);
+    int baseVelocity = getMoodVelocity(mood);
+    
+    // Calculate intensification factors
+    float intensityMultiplier = 1.0f + (intensity - 1) * 0.3f; // 30% increase per repetition
+    float densityMultiplier = 1.0f + (intensity - 1) * 0.2f;  // 20% density increase per repetition
+    float complexityMultiplier = 1.0f + (intensity - 1) * 0.25f; // 25% complexity increase per repetition
+    
+    // Generate intensified pattern
+    int noteCount = static_cast<int>(duration * 4 * densityMultiplier);
+    double currentTime = 0.0;
+    
+    for (int i = 0; i < noteCount; ++i) {
+        // Use scale with intensification
+        int scaleIndex = i % scale.size();
+        int octave = 4 + (i / scale.size());
+        int note = scale[scaleIndex] + (octave * 12);
+        note = juce::jlimit(36, 84, note);
+        
+        // Intensified velocity
+        int intensifiedVelocity = static_cast<int>(baseVelocity * intensityMultiplier);
+        intensifiedVelocity = juce::jlimit(1, 127, intensifiedVelocity);
+        
+        // Add complexity variations
+        if (intensity > 1) {
+            // Add chromatic passing tones for complexity
+            if (random.nextFloat() < complexityMultiplier * 0.3f) {
+                note += random.nextInt(3) - 1; // Chromatic variation
+                note = juce::jlimit(36, 84, note);
+            }
+            
+            // Add velocity variations for expressiveness
+            int velocityVariation = random.nextInt(static_cast<int>(20 * complexityMultiplier)) - static_cast<int>(10 * complexityMultiplier);
+            intensifiedVelocity = juce::jlimit(1, 127, intensifiedVelocity + velocityVariation);
+        }
+        
+        juce::MidiMessage noteOn = juce::MidiMessage::noteOn(0, note, static_cast<juce::uint8>(intensifiedVelocity));
+        noteOn.setTimeStamp(currentTime);
+        pattern.messages.push_back(noteOn);
+        
+        // Intensified rhythm (faster for higher intensity)
+        double noteLength = baseRhythm / intensityMultiplier;
+        if (intensity > 2) {
+            noteLength *= (0.7f + random.nextFloat() * 0.6f); // More variation for high intensity
+        }
+        
+        juce::MidiMessage noteOff = juce::MidiMessage::noteOff(0, note, static_cast<juce::uint8>(intensifiedVelocity));
+        noteOff.setTimeStamp(currentTime + noteLength);
+        pattern.messages.push_back(noteOff);
+        
+        // Intensified timing
+        double timeStep = baseRhythm / intensityMultiplier;
+        if (intensity > 1) {
+            timeStep *= (0.8f + random.nextFloat() * 0.4f); // More variation
+        }
+        currentTime += timeStep;
+    }
+    
+    // Calculate confidence based on intensity
+    float baseConfidence = 0.8f;
+    float intensityBonus = (intensity - 1) * 0.05f; // 5% bonus per intensity level
+    pattern.confidence = juce::jlimit(0.0f, 1.0f, baseConfidence + intensityBonus);
+    
+    return pattern;
+}
+
 AIMidiGenerator::GeneratedPattern AIMidiGenerator::generateTransitionPattern(const std::string& fromMood, const std::string& toMood, double duration)
 {
     GeneratedPattern pattern;
     pattern.patternType = "transition";
     pattern.duration = duration;
     
-    // Generate transition between moods
-    // This would involve morphing from one mood's characteristics to another
+    // Generate smooth transition between moods
+    int transitionSteps = static_cast<int>(duration * 4); // 4 steps per second
+    double currentTime = 0.0;
     
-    pattern.confidence = 0.6f;
+    for (int step = 0; step < transitionSteps; ++step) {
+        float progress = static_cast<float>(step) / transitionSteps;
+        
+        // Generate notes with morphing characteristics
+        auto transitionNotes = generateTransitionNotes(fromMood, toMood, progress, 4); // 4 notes per step
+        auto transitionRhythm = generateTransitionRhythm(fromMood, toMood, progress, 4);
+        auto transitionVelocities = generateTransitionVelocities(fromMood, toMood, progress, 4);
+        
+        // Add notes to pattern
+        for (size_t i = 0; i < transitionNotes.size() && i < transitionRhythm.size() && i < transitionVelocities.size(); ++i) {
+            juce::MidiMessage noteOn = juce::MidiMessage::noteOn(0, transitionNotes[i], static_cast<juce::uint8>(transitionVelocities[i]));
+            noteOn.setTimeStamp(currentTime);
+            pattern.messages.push_back(noteOn);
+            
+            double noteDuration = transitionRhythm[i] * (60.0 / 120.0); // Assume 120 BPM
+            juce::MidiMessage noteOff = juce::MidiMessage::noteOff(0, transitionNotes[i], static_cast<juce::uint8>(transitionVelocities[i]));
+            noteOff.setTimeStamp(currentTime + noteDuration);
+            pattern.messages.push_back(noteOff);
+            
+            currentTime += noteDuration * 0.8; // Slight overlap
+        }
+    }
+    
+    pattern.confidence = 0.8f;
     return pattern;
+}
+
+AIMidiGenerator::GeneratedPattern AIMidiGenerator::blendPatterns(const std::vector<GeneratedPattern>& patterns, const std::vector<float>& weights)
+{
+    GeneratedPattern blendedPattern;
+    blendedPattern.patternType = "blended";
+    blendedPattern.duration = patterns.empty() ? 0.0 : patterns[0].duration;
+    
+    if (patterns.empty()) return blendedPattern;
+    
+    // Normalize weights
+    float totalWeight = 0.0f;
+    for (float weight : weights) {
+        totalWeight += weight;
+    }
+    
+    if (totalWeight <= 0.0f) return patterns[0];
+    
+    // Create time-sorted message list
+    std::vector<juce::MidiMessage> allMessages;
+    
+    for (size_t i = 0; i < patterns.size(); ++i) {
+        float normalizedWeight = weights[i] / totalWeight;
+        
+        for (const auto& message : patterns[i].messages) {
+            juce::MidiMessage weightedMessage = message;
+            
+            // Apply weight to velocity
+            if (message.isNoteOn()) {
+                int newVelocity = static_cast<int>(message.getVelocity() * normalizedWeight);
+                weightedMessage = juce::MidiMessage::noteOn(message.getChannel(), message.getNoteNumber(), static_cast<juce::uint8>(newVelocity));
+            }
+            
+            allMessages.push_back(weightedMessage);
+        }
+    }
+    
+    // Sort messages by timestamp
+    std::sort(allMessages.begin(), allMessages.end(), 
+        [](const juce::MidiMessage& a, const juce::MidiMessage& b) {
+            return a.getTimeStamp() < b.getTimeStamp();
+        });
+    
+    // Merge overlapping notes and apply blending
+    blendedPattern.messages = mergeOverlappingNotes(allMessages);
+    
+    return blendedPattern;
+}
+
+std::vector<juce::MidiMessage> AIMidiGenerator::mergeOverlappingNotes(const std::vector<juce::MidiMessage>& messages)
+{
+    std::vector<juce::MidiMessage> mergedMessages;
+    std::map<int, std::vector<juce::MidiMessage>> activeNotes; // note -> messages
+    
+    for (const auto& message : messages) {
+        if (message.isNoteOn()) {
+            activeNotes[message.getNoteNumber()].push_back(message);
+        } else if (message.isNoteOff()) {
+            auto it = activeNotes.find(message.getNoteNumber());
+            if (it != activeNotes.end() && !it->second.empty()) {
+                // Find the most recent note on for this note
+                auto& noteOnMessages = it->second;
+                auto latestNoteOn = std::max_element(noteOnMessages.begin(), noteOnMessages.end(),
+                    [](const juce::MidiMessage& a, const juce::MidiMessage& b) {
+                        return a.getTimeStamp() < b.getTimeStamp();
+                    });
+                
+                // Add the note on and off
+                mergedMessages.push_back(*latestNoteOn);
+                mergedMessages.push_back(message);
+                
+                // Remove this note from active notes
+                activeNotes.erase(it);
+            }
+        }
+    }
+    
+    return mergedMessages;
+}
+
+std::vector<int> AIMidiGenerator::generateTransitionNotes(const std::string& fromMood, const std::string& toMood, float progress, int count)
+{
+    std::vector<int> notes;
+    
+    // Get scale characteristics for both moods
+    auto fromScale = getMoodScale(fromMood);
+    auto toScale = getMoodScale(toMood);
+    
+    for (int i = 0; i < count; ++i) {
+        // Interpolate between scales
+        float fromWeight = 1.0f - progress;
+        float toWeight = progress;
+        
+        int fromNote = fromScale[i % fromScale.size()] + 60; // C4 base
+        int toNote = toScale[i % toScale.size()] + 60;
+        
+        // Linear interpolation
+        int blendedNote = static_cast<int>(fromNote * fromWeight + toNote * toWeight);
+        notes.push_back(juce::jlimit(36, 84, blendedNote));
+    }
+    
+    return notes;
+}
+
+std::vector<double> AIMidiGenerator::generateTransitionRhythm(const std::string& fromMood, const std::string& toMood, float progress, int count)
+{
+    std::vector<double> rhythm;
+    
+    // Get rhythm characteristics for both moods
+    double fromRhythm = getMoodRhythm(fromMood);
+    double toRhythm = getMoodRhythm(toMood);
+    
+    for (int i = 0; i < count; ++i) {
+        // Interpolate rhythm
+        double blendedRhythm = fromRhythm * (1.0 - progress) + toRhythm * progress;
+        
+        // Add variation
+        double variation = 0.5 + random.nextFloat();
+        rhythm.push_back(blendedRhythm * variation);
+    }
+    
+    return rhythm;
+}
+
+std::vector<int> AIMidiGenerator::generateTransitionVelocities(const std::string& fromMood, const std::string& toMood, float progress, int count)
+{
+    std::vector<int> velocities;
+    
+    // Get velocity characteristics for both moods
+    int fromVelocity = getMoodVelocity(fromMood);
+    int toVelocity = getMoodVelocity(toMood);
+    
+    for (int i = 0; i < count; ++i) {
+        // Interpolate velocity
+        int blendedVelocity = static_cast<int>(fromVelocity * (1.0f - progress) + toVelocity * progress);
+        
+        // Add variation
+        int variation = random.nextInt(20) - 10;
+        velocities.push_back(juce::jlimit(1, 127, blendedVelocity + variation));
+    }
+    
+    return velocities;
+}
+
+std::vector<int> AIMidiGenerator::getMoodScale(const std::string& mood)
+{
+    if (mood == "chill" || mood == "dreamy") {
+        return {0, 2, 4, 5, 7, 9, 11}; // Major scale
+    } else if (mood == "energetic" || mood == "frantic") {
+        return {0, 2, 4, 6, 7, 9, 11}; // Mixolydian
+    } else if (mood == "suspenseful" || mood == "ominous") {
+        return {0, 2, 3, 5, 7, 8, 10}; // Natural minor
+    } else if (mood == "uplifting") {
+        return {0, 2, 4, 5, 7, 9, 11}; // Major scale
+    } else if (mood == "romantic") {
+        return {0, 2, 4, 5, 7, 9, 11}; // Major scale
+    } else if (mood == "gritty") {
+        return {0, 3, 5, 6, 7, 10}; // Blues scale
+    } else if (mood == "focused") {
+        return {0, 2, 4, 7, 9}; // Pentatonic
+    } else {
+        return {0, 2, 4, 5, 7, 9, 11}; // Default major
+    }
+}
+
+double AIMidiGenerator::getMoodRhythm(const std::string& mood)
+{
+    if (mood == "chill" || mood == "dreamy") {
+        return 0.8; // Slow, sustained
+    } else if (mood == "energetic" || mood == "frantic") {
+        return 0.2; // Fast, staccato
+    } else if (mood == "suspenseful" || mood == "ominous") {
+        return 0.6; // Medium, irregular
+    } else if (mood == "uplifting") {
+        return 0.3; // Fast, punchy
+    } else if (mood == "romantic") {
+        return 0.5; // Medium, flowing
+    } else if (mood == "gritty") {
+        return 0.25; // Fast, aggressive
+    } else if (mood == "focused") {
+        return 0.4; // Medium, precise
+    } else {
+        return 0.5; // Default medium
+    }
+}
+
+int AIMidiGenerator::getMoodVelocity(const std::string& mood)
+{
+    if (mood == "chill" || mood == "dreamy") {
+        return 50; // Soft
+    } else if (mood == "energetic" || mood == "frantic") {
+        return 90; // Loud
+    } else if (mood == "suspenseful" || mood == "ominous") {
+        return 60; // Medium-low
+    } else if (mood == "uplifting") {
+        return 80; // Loud
+    } else if (mood == "romantic") {
+        return 65; // Medium
+    } else if (mood == "gritty") {
+        return 85; // Very loud
+    } else if (mood == "focused") {
+        return 70; // Medium-high
+    } else {
+        return 70; // Default medium-high
+    }
+}
+
+float AIMidiGenerator::calculateHybridConfidence(const std::vector<std::string>& moods, const std::vector<float>& weights)
+{
+    if (moods.empty()) return 0.0f;
+    
+    // Base confidence from individual moods
+    float totalConfidence = 0.0f;
+    float totalWeight = 0.0f;
+    
+    for (size_t i = 0; i < moods.size(); ++i) {
+        auto pattern = generateMoodPattern(moods[i], 1.0);
+        totalConfidence += pattern.confidence * weights[i];
+        totalWeight += weights[i];
+    }
+    
+    if (totalWeight <= 0.0f) return 0.0f;
+    
+    float baseConfidence = totalConfidence / totalWeight;
+    
+    // Reduce confidence for complex combinations
+    float complexityPenalty = 1.0f - (moods.size() - 1) * 0.1f;
+    complexityPenalty = juce::jlimit(0.5f, 1.0f, complexityPenalty);
+    
+    return baseConfidence * complexityPenalty;
+}
+
+AIMidiGenerator::GeneratedPattern AIMidiGenerator::generateDefaultPattern(double duration)
+{
+    GeneratedPattern pattern;
+    pattern.patternType = "default";
+    pattern.duration = duration;
+    
+    // Simple C major scale pattern
+    int noteCount = static_cast<int>(duration * 4);
+    double currentTime = 0.0;
+    
+    int scale[] = {60, 62, 64, 65, 67, 69, 71}; // C major scale
+    
+    for (int i = 0; i < noteCount; ++i) {
+        int note = scale[i % 7];
+        int velocity = 70;
+        
+        juce::MidiMessage noteOn = juce::MidiMessage::noteOn(0, note, static_cast<juce::uint8>(velocity));
+        noteOn.setTimeStamp(currentTime);
+        pattern.messages.push_back(noteOn);
+        
+        juce::MidiMessage noteOff = juce::MidiMessage::noteOff(0, note, static_cast<juce::uint8>(velocity));
+        noteOff.setTimeStamp(currentTime + 0.5);
+        pattern.messages.push_back(noteOff);
+        
+        currentTime += 0.5;
+    }
+    
+    pattern.confidence = 0.7f;
+    return pattern;
+}
+
+// Hybrid mood management methods
+AIMidiGenerator::GeneratedPattern AIMidiGenerator::generatePredefinedHybrid(const std::string& hybridName, double duration)
+{
+    auto it = hybridMoods.find(hybridName);
+    if (it == hybridMoods.end()) {
+        return generateDefaultPattern(duration);
+    }
+    
+    const HybridMood& hybrid = it->second;
+    return generateHybridPattern(hybrid.moods, hybrid.weights, duration);
+}
+
+std::vector<std::string> AIMidiGenerator::getAvailableHybridMoods() const
+{
+    std::vector<std::string> availableMoods;
+    for (const auto& pair : hybridMoods) {
+        availableMoods.push_back(pair.first);
+    }
+    return availableMoods;
+}
+
+AIMidiGenerator::HybridMood AIMidiGenerator::getHybridMoodInfo(const std::string& hybridName) const
+{
+    auto it = hybridMoods.find(hybridName);
+    if (it != hybridMoods.end()) {
+        return it->second;
+    }
+    
+    // Return default hybrid mood
+    HybridMood defaultMood;
+    defaultMood.moods = {"chill"};
+    defaultMood.weights = {1.0f};
+    defaultMood.description = "default";
+    return defaultMood;
+}
+
+void AIMidiGenerator::addCustomHybridMood(const std::string& name, const HybridMood& hybridMood)
+{
+    hybridMoods[name] = hybridMood;
+}
+
+// Utility method for creating same-mood intensifications
+AIMidiGenerator::GeneratedPattern AIMidiGenerator::generateSameMoodPattern(const std::string& mood, int repetitions, double duration)
+{
+    std::vector<std::string> moods(repetitions, mood);
+    std::vector<float> weights(repetitions, 1.0f / repetitions); // Equal weights
+    
+    return generateHybridPattern(moods, weights, duration);
 }
 
 void AIMidiGenerator::setInstrumentPreset(int channel, const InstrumentPreset& preset)
