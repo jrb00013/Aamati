@@ -356,13 +356,43 @@ AIMidiGenerator::GeneratedPattern AIMidiGenerator::generateEnergeticPattern(doub
     return pattern;
 }
 
-// Additional mood pattern implementations would go here...
+// Complete mood pattern implementations
 AIMidiGenerator::GeneratedPattern AIMidiGenerator::generateSuspensefulPattern(double duration)
 {
     GeneratedPattern pattern;
     pattern.patternType = "suspenseful";
     pattern.duration = duration;
-    pattern.confidence = 0.7f;
+    
+    // Generate tense, building pattern with irregular timing
+    int noteCount = static_cast<int>(duration * 3); // Moderate density
+    double currentTime = 0.0;
+    
+    for (int i = 0; i < noteCount; ++i)
+    {
+        // Use minor scale with chromatic tension
+        int baseNote = 60 + (i % 12); // C minor scale base
+        int tensionNote = baseNote + (random.nextInt(3) - 1); // Add chromatic tension
+        int note = juce::jlimit(36, 84, tensionNote);
+        
+        // Varying velocities for tension
+        int velocity = 50 + random.nextInt(40); // Medium to high velocity
+        
+        juce::MidiMessage noteOn = juce::MidiMessage::noteOn(0, note, static_cast<juce::uint8>(velocity));
+        noteOn.setTimeStamp(currentTime);
+        pattern.messages.push_back(noteOn);
+        
+        // Irregular note lengths for suspense
+        double noteLength = 0.3 + random.nextFloat() * 0.4; // 0.3-0.7 seconds
+        juce::MidiMessage noteOff = juce::MidiMessage::noteOff(0, note, static_cast<juce::uint8>(velocity));
+        noteOff.setTimeStamp(currentTime + noteLength);
+        pattern.messages.push_back(noteOff);
+        
+        // Irregular timing - sometimes pause, sometimes rush
+        double nextTime = 0.2 + random.nextFloat() * 0.6; // 0.2-0.8 seconds
+        currentTime += nextTime;
+    }
+    
+    pattern.confidence = 0.85f;
     return pattern;
 }
 
@@ -371,7 +401,36 @@ AIMidiGenerator::GeneratedPattern AIMidiGenerator::generateUpliftingPattern(doub
     GeneratedPattern pattern;
     pattern.patternType = "uplifting";
     pattern.duration = duration;
-    pattern.confidence = 0.8f;
+    
+    // Generate ascending, bright pattern
+    int noteCount = static_cast<int>(duration * 4); // Higher density
+    double currentTime = 0.0;
+    
+    for (int i = 0; i < noteCount; ++i)
+    {
+        // Ascending pattern with major scale
+        int scaleDegree = i % 7; // Major scale degrees
+        int octave = 4 + (i / 7); // Ascending octaves
+        int note = 60 + scaleDegree + (octave * 12); // C major scale
+        
+        // Bright, energetic velocities
+        int velocity = 70 + random.nextInt(30); // High velocity
+        
+        juce::MidiMessage noteOn = juce::MidiMessage::noteOn(0, note, static_cast<juce::uint8>(velocity));
+        noteOn.setTimeStamp(currentTime);
+        pattern.messages.push_back(noteOn);
+        
+        // Shorter, punchy notes
+        double noteLength = 0.2 + random.nextFloat() * 0.3; // 0.2-0.5 seconds
+        juce::MidiMessage noteOff = juce::MidiMessage::noteOff(0, note, static_cast<juce::uint8>(velocity));
+        noteOff.setTimeStamp(currentTime + noteLength);
+        pattern.messages.push_back(noteOff);
+        
+        // Regular, upbeat timing
+        currentTime += 0.25 + random.nextFloat() * 0.1; // Slight variation
+    }
+    
+    pattern.confidence = 0.9f;
     return pattern;
 }
 
@@ -380,7 +439,44 @@ AIMidiGenerator::GeneratedPattern AIMidiGenerator::generateOminousPattern(double
     GeneratedPattern pattern;
     pattern.patternType = "ominous";
     pattern.duration = duration;
-    pattern.confidence = 0.7f;
+    
+    // Generate dark, descending pattern
+    int noteCount = static_cast<int>(duration * 2); // Lower density
+    double currentTime = 0.0;
+    
+    for (int i = 0; i < noteCount; ++i)
+    {
+        // Descending pattern with minor scale and tritones
+        int scaleDegree = (6 - (i % 7)) % 7; // Descending minor scale
+        int octave = 5 - (i / 7); // Descending octaves
+        int note = 60 + scaleDegree + (octave * 12);
+        
+        // Add tritone for dissonance
+        if (random.nextFloat() < 0.3f)
+        {
+            note += 6; // Tritone
+        }
+        
+        note = juce::jlimit(36, 84, note);
+        
+        // Dark, low velocities
+        int velocity = 30 + random.nextInt(30); // Low to medium velocity
+        
+        juce::MidiMessage noteOn = juce::MidiMessage::noteOn(0, note, static_cast<juce::uint8>(velocity));
+        noteOn.setTimeStamp(currentTime);
+        pattern.messages.push_back(noteOn);
+        
+        // Long, sustained notes
+        double noteLength = 0.8 + random.nextFloat() * 0.4; // 0.8-1.2 seconds
+        juce::MidiMessage noteOff = juce::MidiMessage::noteOff(0, note, static_cast<juce::uint8>(velocity));
+        noteOff.setTimeStamp(currentTime + noteLength);
+        pattern.messages.push_back(noteOff);
+        
+        // Slow, ominous timing
+        currentTime += 0.5 + random.nextFloat() * 0.3; // 0.5-0.8 seconds
+    }
+    
+    pattern.confidence = 0.8f;
     return pattern;
 }
 
@@ -389,7 +485,41 @@ AIMidiGenerator::GeneratedPattern AIMidiGenerator::generateRomanticPattern(doubl
     GeneratedPattern pattern;
     pattern.patternType = "romantic";
     pattern.duration = duration;
-    pattern.confidence = 0.8f;
+    
+    // Generate flowing, lyrical pattern
+    int noteCount = static_cast<int>(duration * 3); // Moderate density
+    double currentTime = 0.0;
+    
+    for (int i = 0; i < noteCount; ++i)
+    {
+        // Romantic intervals (thirds, sixths)
+        int interval = (i % 2 == 0) ? 4 : 7; // Major third or perfect fifth
+        int baseNote = 60 + (i % 12);
+        int note = baseNote + interval;
+        note = juce::jlimit(48, 84, note);
+        
+        // Expressive velocities with crescendo/decrescendo
+        int baseVelocity = 60;
+        float crescendo = std::sin(currentTime * 2.0) * 0.3f; // Musical phrasing
+        int velocity = juce::jlimit(40, 80, static_cast<int>(baseVelocity + crescendo * 20));
+        
+        juce::MidiMessage noteOn = juce::MidiMessage::noteOn(0, note, static_cast<juce::uint8>(velocity));
+        noteOn.setTimeStamp(currentTime);
+        pattern.messages.push_back(noteOn);
+        
+        // Flowing note lengths
+        double noteLength = 0.4 + random.nextFloat() * 0.4; // 0.4-0.8 seconds
+        juce::MidiMessage noteOff = juce::MidiMessage::noteOff(0, note, static_cast<juce::uint8>(velocity));
+        noteOff.setTimeStamp(currentTime + noteLength);
+        pattern.messages.push_back(noteOff);
+        
+        // Rubato timing - slight tempo variations
+        double baseTime = 0.3;
+        double rubato = std::sin(currentTime * 1.5) * 0.1; // Subtle tempo variation
+        currentTime += baseTime + rubato;
+    }
+    
+    pattern.confidence = 0.85f;
     return pattern;
 }
 
@@ -398,7 +528,47 @@ AIMidiGenerator::GeneratedPattern AIMidiGenerator::generateGrittyPattern(double 
     GeneratedPattern pattern;
     pattern.patternType = "gritty";
     pattern.duration = duration;
-    pattern.confidence = 0.7f;
+    
+    // Generate aggressive, distorted pattern
+    int noteCount = static_cast<int>(duration * 6); // High density
+    double currentTime = 0.0;
+    
+    for (int i = 0; i < noteCount; ++i)
+    {
+        // Use blues scale with chromatic passing tones
+        int bluesScale[] = {0, 3, 5, 6, 7, 10}; // Blues scale intervals
+        int scaleIndex = i % 6;
+        int octave = 4 + (i / 6);
+        int note = 60 + bluesScale[scaleIndex] + (octave * 12);
+        
+        // Add chromatic grit
+        if (random.nextFloat() < 0.4f)
+        {
+            note += random.nextInt(3) - 1; // Chromatic variation
+        }
+        
+        note = juce::jlimit(36, 84, note);
+        
+        // Aggressive velocities
+        int velocity = 80 + random.nextInt(40); // High velocity
+        
+        juce::MidiMessage noteOn = juce::MidiMessage::noteOn(0, note, static_cast<juce::uint8>(velocity));
+        noteOn.setTimeStamp(currentTime);
+        pattern.messages.push_back(noteOn);
+        
+        // Short, staccato notes
+        double noteLength = 0.1 + random.nextFloat() * 0.2; // 0.1-0.3 seconds
+        juce::MidiMessage noteOff = juce::MidiMessage::noteOff(0, note, static_cast<juce::uint8>(velocity));
+        noteOff.setTimeStamp(currentTime + noteLength);
+        pattern.messages.push_back(noteOff);
+        
+        // Aggressive, syncopated timing
+        double baseTime = 0.15;
+        if (i % 3 == 0) baseTime *= 0.5; // Syncopation
+        currentTime += baseTime + random.nextFloat() * 0.1;
+    }
+    
+    pattern.confidence = 0.9f;
     return pattern;
 }
 
@@ -407,6 +577,37 @@ AIMidiGenerator::GeneratedPattern AIMidiGenerator::generateDreamyPattern(double 
     GeneratedPattern pattern;
     pattern.patternType = "dreamy";
     pattern.duration = duration;
+    
+    // Generate ethereal, floating pattern
+    int noteCount = static_cast<int>(duration * 2); // Low density
+    double currentTime = 0.0;
+    
+    for (int i = 0; i < noteCount; ++i)
+    {
+        // Use whole tone scale for dreamy effect
+        int wholeToneScale[] = {0, 2, 4, 6, 8, 10}; // Whole tone scale
+        int scaleIndex = i % 6;
+        int octave = 4 + (i / 6);
+        int note = 60 + wholeToneScale[scaleIndex] + (octave * 12);
+        note = juce::jlimit(48, 84, note);
+        
+        // Soft, floating velocities
+        int velocity = 40 + random.nextInt(25); // Low to medium velocity
+        
+        juce::MidiMessage noteOn = juce::MidiMessage::noteOn(0, note, static_cast<juce::uint8>(velocity));
+        noteOn.setTimeStamp(currentTime);
+        pattern.messages.push_back(noteOn);
+        
+        // Very long, sustained notes
+        double noteLength = 1.0 + random.nextFloat() * 1.0; // 1.0-2.0 seconds
+        juce::MidiMessage noteOff = juce::MidiMessage::noteOff(0, note, static_cast<juce::uint8>(velocity));
+        noteOff.setTimeStamp(currentTime + noteLength);
+        pattern.messages.push_back(noteOff);
+        
+        // Slow, floating timing
+        currentTime += 0.6 + random.nextFloat() * 0.4; // 0.6-1.0 seconds
+    }
+    
     pattern.confidence = 0.8f;
     return pattern;
 }
@@ -416,7 +617,35 @@ AIMidiGenerator::GeneratedPattern AIMidiGenerator::generateFranticPattern(double
     GeneratedPattern pattern;
     pattern.patternType = "frantic";
     pattern.duration = duration;
-    pattern.confidence = 0.9f;
+    
+    // Generate chaotic, high-energy pattern
+    int noteCount = static_cast<int>(duration * 12); // Very high density
+    double currentTime = 0.0;
+    
+    for (int i = 0; i < noteCount; ++i)
+    {
+        // Random chromatic notes for chaos
+        int note = 60 + random.nextInt(24) - 12; // Wide range
+        note = juce::jlimit(36, 84, note);
+        
+        // Very high velocities
+        int velocity = 90 + random.nextInt(35); // Very high velocity
+        
+        juce::MidiMessage noteOn = juce::MidiMessage::noteOn(0, note, static_cast<juce::uint8>(velocity));
+        noteOn.setTimeStamp(currentTime);
+        pattern.messages.push_back(noteOn);
+        
+        // Very short notes
+        double noteLength = 0.05 + random.nextFloat() * 0.1; // 0.05-0.15 seconds
+        juce::MidiMessage noteOff = juce::MidiMessage::noteOff(0, note, static_cast<juce::uint8>(velocity));
+        noteOff.setTimeStamp(currentTime + noteLength);
+        pattern.messages.push_back(noteOff);
+        
+        // Chaotic timing
+        currentTime += 0.05 + random.nextFloat() * 0.1; // 0.05-0.15 seconds
+    }
+    
+    pattern.confidence = 0.95f;
     return pattern;
 }
 
@@ -425,7 +654,38 @@ AIMidiGenerator::GeneratedPattern AIMidiGenerator::generateFocusedPattern(double
     GeneratedPattern pattern;
     pattern.patternType = "focused";
     pattern.duration = duration;
-    pattern.confidence = 0.8f;
+    
+    // Generate precise, structured pattern
+    int noteCount = static_cast<int>(duration * 4); // Moderate density
+    double currentTime = 0.0;
+    
+    for (int i = 0; i < noteCount; ++i)
+    {
+        // Use pentatonic scale for clarity
+        int pentatonicScale[] = {0, 2, 4, 7, 9}; // Pentatonic scale intervals
+        int scaleIndex = i % 5;
+        int octave = 4 + (i / 5);
+        int note = 60 + pentatonicScale[scaleIndex] + (octave * 12);
+        note = juce::jlimit(48, 84, note);
+        
+        // Consistent, focused velocities
+        int velocity = 65 + random.nextInt(20); // Medium-high, consistent
+        
+        juce::MidiMessage noteOn = juce::MidiMessage::noteOn(0, note, static_cast<juce::uint8>(velocity));
+        noteOn.setTimeStamp(currentTime);
+        pattern.messages.push_back(noteOn);
+        
+        // Precise note lengths
+        double noteLength = 0.25 + random.nextFloat() * 0.1; // 0.25-0.35 seconds
+        juce::MidiMessage noteOff = juce::MidiMessage::noteOff(0, note, static_cast<juce::uint8>(velocity));
+        noteOff.setTimeStamp(currentTime + noteLength);
+        pattern.messages.push_back(noteOff);
+        
+        // Precise, metronomic timing
+        currentTime += 0.25; // Exact quarter notes
+    }
+    
+    pattern.confidence = 0.9f;
     return pattern;
 }
 

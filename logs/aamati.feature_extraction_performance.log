@@ -1,0 +1,142 @@
+2025-09-20 19:48:40,077 - PERFORMANCE - Starting feature extraction for: MusicGroovesMIDI/TrainingMIDIs/Elvis Presley - Jailhouse Rock.mid
+2025-09-20 19:48:40,236 - PERFORMANCE - Error processing MusicGroovesMIDI/TrainingMIDIs/Elvis Presley - Jailhouse Rock.mid: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- onset_entropy
+- syncopation
+- tempo
+
+2025-09-20 19:48:40,238 - PERFORMANCE - {"operation": "extract_features", "duration": 0.16242408752441406, "timestamp": "2025-09-20T19:48:40.238716"}
+2025-09-20 19:48:40,240 - PERFORMANCE - Starting feature extraction for: MusicGroovesMIDI/TrainingMIDIs/Eminem - Detroit Vs. Everybody.mid
+2025-09-20 19:48:40,265 - PERFORMANCE - Error processing MusicGroovesMIDI/TrainingMIDIs/Eminem - Detroit Vs. Everybody.mid: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- onset_entropy
+- syncopation
+- tempo
+
+2025-09-20 19:48:40,268 - PERFORMANCE - {"operation": "extract_features", "duration": 0.0273439884185791, "timestamp": "2025-09-20T19:48:40.267994"}
+2025-09-20 19:48:40,269 - PERFORMANCE - Starting feature extraction for: MusicGroovesMIDI/TrainingMIDIs/Eminem - Guilty Conscience.mid
+2025-09-20 19:48:40,397 - PERFORMANCE - Error processing MusicGroovesMIDI/TrainingMIDIs/Eminem - Guilty Conscience.mid: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- onset_entropy
+- syncopation
+- tempo
+
+2025-09-20 19:48:40,399 - PERFORMANCE - {"operation": "extract_features", "duration": 0.13022851943969727, "timestamp": "2025-09-20T19:48:40.399092"}
+2025-09-20 19:48:40,400 - PERFORMANCE - Starting feature extraction for: MusicGroovesMIDI/TrainingMIDIs/eminem-mockingbird.mid
+2025-09-20 19:48:40,541 - PERFORMANCE - Error processing MusicGroovesMIDI/TrainingMIDIs/eminem-mockingbird.mid: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- onset_entropy
+- syncopation
+- tempo
+
+2025-09-20 19:48:40,544 - PERFORMANCE - {"operation": "extract_features", "duration": 0.14404869079589844, "timestamp": "2025-09-20T19:48:40.544187"}
+2025-09-20 19:48:40,546 - PERFORMANCE - Starting feature extraction for: MusicGroovesMIDI/TrainingMIDIs/Endless-Love.mid
+2025-09-20 19:48:40,700 - PERFORMANCE - Error processing MusicGroovesMIDI/TrainingMIDIs/Endless-Love.mid: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- onset_entropy
+- syncopation
+- tempo
+
+2025-09-20 19:48:40,702 - PERFORMANCE - {"operation": "extract_features", "duration": 0.15665507316589355, "timestamp": "2025-09-20T19:48:40.702378"}
+2025-09-20 19:48:40,703 - PERFORMANCE - Starting feature extraction for: MusicGroovesMIDI/TrainingMIDIs/ENEMY.MID
+2025-09-20 19:48:40,893 - PERFORMANCE - Error processing MusicGroovesMIDI/TrainingMIDIs/ENEMY.MID: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- onset_entropy
+- syncopation
+- tempo
+
+2025-09-20 19:48:40,896 - PERFORMANCE - {"operation": "extract_features", "duration": 0.19272780418395996, "timestamp": "2025-09-20T19:48:40.896214"}
+2025-09-20 19:48:40,898 - PERFORMANCE - Starting feature extraction for: MusicGroovesMIDI/TrainingMIDIs/Enjoy-The-Silence.mid
+2025-09-20 19:48:41,082 - PERFORMANCE - Error processing MusicGroovesMIDI/TrainingMIDIs/Enjoy-The-Silence.mid: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- onset_entropy
+- syncopation
+- tempo
+
+2025-09-20 19:48:41,084 - PERFORMANCE - {"operation": "extract_features", "duration": 0.1867694854736328, "timestamp": "2025-09-20T19:48:41.084471"}
+2025-09-20 19:48:41,086 - PERFORMANCE - Starting feature extraction for: MusicGroovesMIDI/TrainingMIDIs/Ennio-Morricone-Medley-(Westerns).mid
+2025-09-20 19:48:41,256 - PERFORMANCE - Error processing MusicGroovesMIDI/TrainingMIDIs/Ennio-Morricone-Medley-(Westerns).mid: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- onset_entropy
+- syncopation
+- tempo
+
+2025-09-20 19:48:41,257 - PERFORMANCE - {"operation": "extract_features", "duration": 0.1722242832183838, "timestamp": "2025-09-20T19:48:41.257901"}
+2025-09-20 19:48:41,259 - PERFORMANCE - Starting feature extraction for: MusicGroovesMIDI/TrainingMIDIs/entertainer-scott_joplin.mid
+2025-09-20 19:48:41,346 - PERFORMANCE - Error processing MusicGroovesMIDI/TrainingMIDIs/entertainer-scott_joplin.mid: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- onset_entropy
+- syncopation
+- tempo
+
+2025-09-20 19:48:41,348 - PERFORMANCE - {"operation": "extract_features", "duration": 0.08937692642211914, "timestamp": "2025-09-20T19:48:41.348395"}
+2025-09-20 19:48:41,350 - PERFORMANCE - Starting feature extraction for: MusicGroovesMIDI/TrainingMIDIs/Eric Clapton - Tears In Heaven.mid
+2025-09-20 19:48:41,478 - PERFORMANCE - Error processing MusicGroovesMIDI/TrainingMIDIs/Eric Clapton - Tears In Heaven.mid: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- onset_entropy
+- syncopation
+- tempo
+
+2025-09-20 19:48:41,479 - PERFORMANCE - {"operation": "extract_features", "duration": 0.1302797794342041, "timestamp": "2025-09-20T19:48:41.479742"}
+2025-09-20 19:48:41,481 - PERFORMANCE - Starting feature extraction for: MusicGroovesMIDI/TrainingMIDIs/Eric Clapton - Wonderful Tonight.mid
+2025-09-20 19:48:41,619 - PERFORMANCE - {"operation": "extract_features", "duration": 0.1387805938720703, "timestamp": "2025-09-20T19:48:41.619723"}
+2025-09-20 19:48:41,620 - PERFORMANCE - Error in extract_features: 
+2025-09-20 19:49:05,141 - PERFORMANCE - Starting feature extraction for: MusicGroovesMIDI/TrainingMIDIs/Elvis Presley - Jailhouse Rock.mid
+2025-09-20 19:49:05,279 - PERFORMANCE - Error processing MusicGroovesMIDI/TrainingMIDIs/Elvis Presley - Jailhouse Rock.mid: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- onset_entropy
+- syncopation
+- tempo
+
+2025-09-20 19:49:05,281 - PERFORMANCE - {"operation": "extract_features", "duration": 0.14009499549865723, "timestamp": "2025-09-20T19:49:05.281098"}
+2025-09-20 19:49:05,282 - PERFORMANCE - Starting feature extraction for: MusicGroovesMIDI/TrainingMIDIs/Eminem - Detroit Vs. Everybody.mid
+2025-09-20 19:49:05,311 - PERFORMANCE - Error processing MusicGroovesMIDI/TrainingMIDIs/Eminem - Detroit Vs. Everybody.mid: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- onset_entropy
+- syncopation
+- tempo
+
+2025-09-20 19:49:05,315 - PERFORMANCE - {"operation": "extract_features", "duration": 0.03272867202758789, "timestamp": "2025-09-20T19:49:05.315080"}
+2025-09-20 19:49:05,320 - PERFORMANCE - Starting feature extraction for: MusicGroovesMIDI/TrainingMIDIs/Eminem - Guilty Conscience.mid
+2025-09-20 19:49:05,453 - PERFORMANCE - Error processing MusicGroovesMIDI/TrainingMIDIs/Eminem - Guilty Conscience.mid: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- onset_entropy
+- syncopation
+- tempo
+
+2025-09-20 19:49:05,454 - PERFORMANCE - {"operation": "extract_features", "duration": 0.13483190536499023, "timestamp": "2025-09-20T19:49:05.454597"}
+2025-09-20 19:49:05,456 - PERFORMANCE - Starting feature extraction for: MusicGroovesMIDI/TrainingMIDIs/eminem-mockingbird.mid
+2025-09-20 19:49:05,553 - PERFORMANCE - Error processing MusicGroovesMIDI/TrainingMIDIs/eminem-mockingbird.mid: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- onset_entropy
+- syncopation
+- tempo
+
+2025-09-20 19:49:05,555 - PERFORMANCE - {"operation": "extract_features", "duration": 0.09936690330505371, "timestamp": "2025-09-20T19:49:05.555129"}
+2025-09-20 19:49:05,556 - PERFORMANCE - Starting feature extraction for: MusicGroovesMIDI/TrainingMIDIs/Endless-Love.mid
+2025-09-20 19:49:05,674 - PERFORMANCE - Error processing MusicGroovesMIDI/TrainingMIDIs/Endless-Love.mid: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- onset_entropy
+- syncopation
+- tempo
+
+2025-09-20 19:49:05,676 - PERFORMANCE - {"operation": "extract_features", "duration": 0.12039875984191895, "timestamp": "2025-09-20T19:49:05.676500"}
+2025-09-20 19:49:05,677 - PERFORMANCE - Starting feature extraction for: MusicGroovesMIDI/TrainingMIDIs/ENEMY.MID
+2025-09-20 19:49:05,815 - PERFORMANCE - Error processing MusicGroovesMIDI/TrainingMIDIs/ENEMY.MID: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- onset_entropy
+- syncopation
+- tempo
+
+2025-09-20 19:49:05,818 - PERFORMANCE - {"operation": "extract_features", "duration": 0.14028549194335938, "timestamp": "2025-09-20T19:49:05.817926"}
+2025-09-20 19:49:05,819 - PERFORMANCE - Starting feature extraction for: MusicGroovesMIDI/TrainingMIDIs/Enjoy-The-Silence.mid
+2025-09-20 19:49:05,973 - PERFORMANCE - Error processing MusicGroovesMIDI/TrainingMIDIs/Enjoy-The-Silence.mid: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- onset_entropy
+- syncopation
+- tempo
+
+2025-09-20 19:49:05,975 - PERFORMANCE - {"operation": "extract_features", "duration": 0.1557936668395996, "timestamp": "2025-09-20T19:49:05.974986"}
+2025-09-20 19:49:05,976 - PERFORMANCE - Starting feature extraction for: MusicGroovesMIDI/TrainingMIDIs/Ennio-Morricone-Medley-(Westerns).mid
+2025-09-20 19:49:05,998 - PERFORMANCE - {"operation": "extract_features", "duration": 0.02199244499206543, "timestamp": "2025-09-20T19:49:05.998554"}
+2025-09-20 19:49:05,999 - PERFORMANCE - Error in extract_features: 

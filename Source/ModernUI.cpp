@@ -171,18 +171,80 @@ void ModernUI::createEmotionalOptimizationPanel()
     auto* panel = new juce::Component();
     panel->setName("Emotional Optimization");
     
-    // Add controls for emotional optimization
+    // Energy control
     auto* energySlider = new juce::Slider();
     energySlider->setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
     energySlider->setTextBoxStyle(juce::Slider::TextBoxBelow, false, 80, 20);
     energySlider->setRange(0.0, 1.0, 0.01);
     energySlider->setValue(0.5);
+    energySlider->setColour(juce::Slider::rotarySliderFillColourId, style.primary);
+    energySlider->setColour(juce::Slider::rotarySliderOutlineColourId, style.surface);
+    energySlider->setColour(juce::Slider::thumbColourId, style.accent);
     panel->addAndMakeVisible(energySlider);
     
     auto* energyLabel = new juce::Label();
     energyLabel->setText("Energy", juce::dontSendNotification);
+    energyLabel->setFont(style.bodyFont);
+    energyLabel->setColour(juce::Label::textColourId, style.secondary);
     energyLabel->attachToComponent(energySlider, false);
     panel->addAndMakeVisible(energyLabel);
+    
+    // Tension control
+    auto* tensionSlider = new juce::Slider();
+    tensionSlider->setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
+    tensionSlider->setTextBoxStyle(juce::Slider::TextBoxBelow, false, 80, 20);
+    tensionSlider->setRange(0.0, 1.0, 0.01);
+    tensionSlider->setValue(0.5);
+    tensionSlider->setColour(juce::Slider::rotarySliderFillColourId, style.primary);
+    tensionSlider->setColour(juce::Slider::rotarySliderOutlineColourId, style.surface);
+    tensionSlider->setColour(juce::Slider::thumbColourId, style.accent);
+    panel->addAndMakeVisible(tensionSlider);
+    
+    auto* tensionLabel = new juce::Label();
+    tensionLabel->setText("Tension", juce::dontSendNotification);
+    tensionLabel->setFont(style.bodyFont);
+    tensionLabel->setColour(juce::Label::textColourId, style.secondary);
+    tensionLabel->attachToComponent(tensionSlider, false);
+    panel->addAndMakeVisible(tensionLabel);
+    
+    // Warmth control
+    auto* warmthSlider = new juce::Slider();
+    warmthSlider->setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
+    warmthSlider->setTextBoxStyle(juce::Slider::TextBoxBelow, false, 80, 20);
+    warmthSlider->setRange(0.0, 1.0, 0.01);
+    warmthSlider->setValue(0.5);
+    warmthSlider->setColour(juce::Slider::rotarySliderFillColourId, style.primary);
+    warmthSlider->setColour(juce::Slider::rotarySliderOutlineColourId, style.surface);
+    warmthSlider->setColour(juce::Slider::thumbColourId, style.accent);
+    panel->addAndMakeVisible(warmthSlider);
+    
+    auto* warmthLabel = new juce::Label();
+    warmthLabel->setText("Warmth", juce::dontSendNotification);
+    warmthLabel->setFont(style.bodyFont);
+    warmthLabel->setColour(juce::Label::textColourId, style.secondary);
+    warmthLabel->attachToComponent(warmthSlider, false);
+    panel->addAndMakeVisible(warmthLabel);
+    
+    // Apply button
+    auto* applyButton = new juce::TextButton();
+    applyButton->setButtonText("Apply Emotional Optimization");
+    applyButton->setColour(juce::TextButton::buttonColourId, style.accent);
+    applyButton->setColour(juce::TextButton::textColourOnId, juce::Colours::white);
+    applyButton->setColour(juce::TextButton::textColourOffId, style.secondary);
+    panel->addAndMakeVisible(applyButton);
+    
+    // Layout controls
+    auto bounds = panel->getLocalBounds().reduced(20);
+    auto sliderSize = 120;
+    auto spacing = 20;
+    
+    energySlider->setBounds(bounds.removeFromLeft(sliderSize));
+    bounds.removeFromLeft(spacing);
+    tensionSlider->setBounds(bounds.removeFromLeft(sliderSize));
+    bounds.removeFromLeft(spacing);
+    warmthSlider->setBounds(bounds.removeFromLeft(sliderSize));
+    
+    applyButton->setBounds(bounds.removeFromTop(40).reduced(10));
     
     featurePanels["Emotional Optimization"] = panel;
     featurePanel.addChildComponent(panel);
@@ -193,18 +255,80 @@ void ModernUI::createGrooveShapingPanel()
     auto* panel = new juce::Component();
     panel->setName("Groove Shaping");
     
-    // Add controls for groove shaping
+    // Humanization control
     auto* humanizationSlider = new juce::Slider();
     humanizationSlider->setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
     humanizationSlider->setTextBoxStyle(juce::Slider::TextBoxBelow, false, 80, 20);
     humanizationSlider->setRange(0.0, 1.0, 0.01);
     humanizationSlider->setValue(0.5);
+    humanizationSlider->setColour(juce::Slider::rotarySliderFillColourId, style.primary);
+    humanizationSlider->setColour(juce::Slider::rotarySliderOutlineColourId, style.surface);
+    humanizationSlider->setColour(juce::Slider::thumbColourId, style.accent);
     panel->addAndMakeVisible(humanizationSlider);
     
     auto* humanizationLabel = new juce::Label();
     humanizationLabel->setText("Humanization", juce::dontSendNotification);
+    humanizationLabel->setFont(style.bodyFont);
+    humanizationLabel->setColour(juce::Label::textColourId, style.secondary);
     humanizationLabel->attachToComponent(humanizationSlider, false);
     panel->addAndMakeVisible(humanizationLabel);
+    
+    // Swing amount control
+    auto* swingSlider = new juce::Slider();
+    swingSlider->setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
+    swingSlider->setTextBoxStyle(juce::Slider::TextBoxBelow, false, 80, 20);
+    swingSlider->setRange(0.0, 1.0, 0.01);
+    swingSlider->setValue(0.3);
+    swingSlider->setColour(juce::Slider::rotarySliderFillColourId, style.primary);
+    swingSlider->setColour(juce::Slider::rotarySliderOutlineColourId, style.surface);
+    swingSlider->setColour(juce::Slider::thumbColourId, style.accent);
+    panel->addAndMakeVisible(swingSlider);
+    
+    auto* swingLabel = new juce::Label();
+    swingLabel->setText("Swing Amount", juce::dontSendNotification);
+    swingLabel->setFont(style.bodyFont);
+    swingLabel->setColour(juce::Label::textColourId, style.secondary);
+    swingLabel->attachToComponent(swingSlider, false);
+    panel->addAndMakeVisible(swingLabel);
+    
+    // Velocity variation control
+    auto* velocitySlider = new juce::Slider();
+    velocitySlider->setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
+    velocitySlider->setTextBoxStyle(juce::Slider::TextBoxBelow, false, 80, 20);
+    velocitySlider->setRange(0.0, 1.0, 0.01);
+    velocitySlider->setValue(0.4);
+    velocitySlider->setColour(juce::Slider::rotarySliderFillColourId, style.primary);
+    velocitySlider->setColour(juce::Slider::rotarySliderOutlineColourId, style.surface);
+    velocitySlider->setColour(juce::Slider::thumbColourId, style.accent);
+    panel->addAndMakeVisible(velocitySlider);
+    
+    auto* velocityLabel = new juce::Label();
+    velocityLabel->setText("Velocity Variation", juce::dontSendNotification);
+    velocityLabel->setFont(style.bodyFont);
+    velocityLabel->setColour(juce::Label::textColourId, style.secondary);
+    velocityLabel->attachToComponent(velocitySlider, false);
+    panel->addAndMakeVisible(velocityLabel);
+    
+    // Apply groove button
+    auto* applyGrooveButton = new juce::TextButton();
+    applyGrooveButton->setButtonText("Apply Groove Shaping");
+    applyGrooveButton->setColour(juce::TextButton::buttonColourId, style.accent);
+    applyGrooveButton->setColour(juce::TextButton::textColourOnId, juce::Colours::white);
+    applyGrooveButton->setColour(juce::TextButton::textColourOffId, style.secondary);
+    panel->addAndMakeVisible(applyGrooveButton);
+    
+    // Layout controls
+    auto bounds = panel->getLocalBounds().reduced(20);
+    auto sliderSize = 120;
+    auto spacing = 20;
+    
+    humanizationSlider->setBounds(bounds.removeFromLeft(sliderSize));
+    bounds.removeFromLeft(spacing);
+    swingSlider->setBounds(bounds.removeFromLeft(sliderSize));
+    bounds.removeFromLeft(spacing);
+    velocitySlider->setBounds(bounds.removeFromLeft(sliderSize));
+    
+    applyGrooveButton->setBounds(bounds.removeFromTop(40).reduced(10));
     
     featurePanels["Groove Shaping"] = panel;
     featurePanel.addChildComponent(panel);

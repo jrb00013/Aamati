@@ -46,14 +46,131 @@ void EmotionalOptimizer::processMIDINotes(std::vector<MIDINote>& notes, float te
 {
     if (notes.empty()) return;
     
-    // Apply emotional optimization
+    // Apply emotional optimization with enhanced algorithms
     applyEmotionalOptimization(notes, currentProfile);
     
-    // Apply specific emotional adjustments
+    // Apply specific emotional adjustments with improved algorithms
     adjustVelocityForEmotion(notes, currentProfile.energy, currentProfile.tension);
     adjustDensityForEmotion(notes, currentProfile.complexity, currentProfile.energy);
     adjustHarmonicTension(notes, currentProfile.tension, currentProfile.brightness);
     adjustGrooveForEmotion(notes, currentProfile.danceability, tempo);
+    
+    // Apply advanced emotional processing
+    applyDynamicShaping(notes, currentProfile);
+    applyArticulationVariation(notes, currentProfile);
+    applyPhrasingEnhancement(notes, currentProfile);
+}
+
+void EmotionalOptimizer::applyDynamicShaping(std::vector<MIDINote>& notes, const EmotionalProfile& profile)
+{
+    if (notes.empty()) return;
+    
+    // Calculate dynamic curve based on emotional profile
+    float energyCurve = profile.energy;
+    float tensionCurve = profile.tension;
+    
+    for (size_t i = 0; i < notes.size(); ++i)
+    {
+        float position = static_cast<float>(i) / notes.size();
+        
+        // Create dynamic curve using multiple sine waves
+        float energyVariation = std::sin(position * juce::MathConstants<float>::pi * 2.0f) * energyCurve;
+        float tensionVariation = std::sin(position * juce::MathConstants<float>::pi * 4.0f) * tensionCurve;
+        
+        // Apply dynamic shaping
+        float dynamicMultiplier = 1.0f + (energyVariation + tensionVariation) * 0.3f;
+        notes[i].velocity = juce::jlimit(1.0f, 127.0f, notes[i].velocity * dynamicMultiplier);
+    }
+}
+
+void EmotionalOptimizer::applyArticulationVariation(std::vector<MIDINote>& notes, const EmotionalProfile& profile)
+{
+    if (notes.empty()) return;
+    
+    float articulationIntensity = profile.complexity * profile.energy;
+    
+    for (auto& note : notes)
+    {
+        // Apply articulation based on emotional profile
+        if (articulationIntensity > 0.7f)
+        {
+            // Staccato articulation for high energy/complexity
+            note.duration *= 0.6f;
+        }
+        else if (articulationIntensity < 0.3f)
+        {
+            // Legato articulation for low energy/complexity
+            note.duration *= 1.3f;
+        }
+        
+        // Add subtle timing variations for humanization
+        float timingVariation = (juce::Random::getSystemRandom().nextFloat() - 0.5f) * 0.02f;
+        note.startTime += timingVariation;
+    }
+}
+
+void EmotionalOptimizer::applyPhrasingEnhancement(std::vector<MIDINote>& notes, const EmotionalProfile& profile)
+{
+    if (notes.size() < 4) return;
+    
+    // Group notes into phrases (every 4-8 notes)
+    size_t phraseLength = 4 + static_cast<size_t>(profile.complexity * 4);
+    
+    for (size_t phraseStart = 0; phraseStart < notes.size(); phraseStart += phraseLength)
+    {
+        size_t phraseEnd = std::min(phraseStart + phraseLength, notes.size());
+        
+        // Apply phrase-level dynamics
+        applyPhraseDynamics(notes, phraseStart, phraseEnd, profile);
+        
+        // Apply phrase-level timing
+        applyPhraseTiming(notes, phraseStart, phraseEnd, profile);
+    }
+}
+
+void EmotionalOptimizer::applyPhraseDynamics(std::vector<MIDINote>& notes, size_t start, size_t end, const EmotionalProfile& profile)
+{
+    if (end <= start) return;
+    
+    // Create phrase-level dynamic curve
+    for (size_t i = start; i < end; ++i)
+    {
+        float phrasePosition = static_cast<float>(i - start) / (end - start);
+        
+        // Crescendo/decrescendo based on emotional profile
+        float phraseDynamic = 1.0f;
+        if (profile.energy > 0.6f)
+        {
+            // Crescendo for high energy
+            phraseDynamic = 0.8f + phrasePosition * 0.4f;
+        }
+        else if (profile.energy < 0.4f)
+        {
+            // Decrescendo for low energy
+            phraseDynamic = 1.2f - phrasePosition * 0.4f;
+        }
+        
+        notes[i].velocity = juce::jlimit(1.0f, 127.0f, notes[i].velocity * phraseDynamic);
+    }
+}
+
+void EmotionalOptimizer::applyPhraseTiming(std::vector<MIDINote>& notes, size_t start, size_t end, const EmotionalProfile& profile)
+{
+    if (end <= start) return;
+    
+    // Apply rubato based on emotional profile
+    float rubatoAmount = profile.warmth * 0.1f; // More rubato for warmer emotions
+    
+    for (size_t i = start; i < end; ++i)
+    {
+        float phrasePosition = static_cast<float>(i - start) / (end - start);
+        
+        // Create rubato curve
+        float rubatoVariation = std::sin(phrasePosition * juce::MathConstants<float>::pi) * rubatoAmount;
+        
+        // Apply timing variation
+        notes[i].startTime += rubatoVariation;
+    }
 }
 
 void EmotionalOptimizer::applyEmotionalOptimization(std::vector<MIDINote>& notes, const EmotionalProfile& profile)

@@ -135,53 +135,131 @@ GrooveFeatures FeatureExtractor::extractFeaturesFromMidi(const string& midiPath)
     return {tempo, swing, density, dynamicRange, energy};
 }
 
-// Helper method implementations for real-time audio analysis
+// Enhanced audio analysis implementations
 double FeatureExtractor::calculateTempo(const std::vector<float>& audioData, double sampleRate)
 {
-    // Simple tempo estimation based on peak detection
-    // This is a simplified version - in practice you'd use more sophisticated algorithms
-    std::vector<float> peaks;
-    float threshold = 0.1f;
+    if (audioData.size() < static_cast<size_t>(sampleRate)) return 120.0;
     
-    for (size_t i = 1; i < audioData.size() - 1; ++i)
+    // Use autocorrelation for tempo detection
+    std::vector<float> autocorrelation = calculateAutocorrelation(audioData);
+    
+    // Find peaks in autocorrelation
+    std::vector<int> peakIndices = findPeaks(autocorrelation);
+    
+    if (peakIndices.empty()) return 120.0;
+    
+    // Calculate tempo from peak intervals
+    std::vector<double> tempos;
+    for (size_t i = 0; i < peakIndices.size() - 1; ++i)
     {
-        if (audioData[i] > audioData[i-1] && audioData[i] > audioData[i+1] && audioData[i] > threshold)
+        double interval = static_cast<double>(peakIndices[i+1] - peakIndices[i]) / sampleRate;
+        if (interval > 0.1 && interval < 2.0) // Reasonable tempo range
         {
-            peaks.push_back(static_cast<float>(i) / static_cast<float>(sampleRate));
+            tempos.push_back(60.0 / interval);
         }
     }
     
-    if (peaks.size() < 2) return 120.0; // Default tempo
+    if (tempos.empty()) return 120.0;
     
-    // Calculate average time between peaks
-    double avgInterval = 0.0;
-    for (size_t i = 1; i < peaks.size(); ++i)
+    // Return median tempo for stability
+    std::sort(tempos.begin(), tempos.end());
+    return tempos[tempos.size() / 2];
+}
+
+std::vector<float> FeatureExtractor::calculateAutocorrelation(const std::vector<float>& audioData)
+{
+    size_t maxLag = std::min(audioData.size() / 2, static_cast<size_t>(44100)); // Max 1 second
+    std::vector<float> autocorrelation(maxLag, 0.0f);
+    
+    for (size_t lag = 0; lag < maxLag; ++lag)
     {
-        avgInterval += peaks[i] - peaks[i-1];
+        float sum = 0.0f;
+        size_t count = 0;
+        
+        for (size_t i = 0; i < audioData.size() - lag; ++i)
+        {
+            sum += audioData[i] * audioData[i + lag];
+            count++;
+        }
+        
+        if (count > 0)
+        {
+            autocorrelation[lag] = sum / count;
+        }
     }
-    avgInterval /= (peaks.size() - 1);
     
-    // Convert to BPM
-    return 60.0 / avgInterval;
+    return autocorrelation;
+}
+
+std::vector<int> FeatureExtractor::findPeaks(const std::vector<float>& data)
+{
+    std::vector<int> peaks;
+    float threshold = 0.1f;
+    
+    for (size_t i = 1; i < data.size() - 1; ++i)
+    {
+        if (data[i] > data[i-1] && data[i] > data[i+1] && data[i] > threshold)
+        {
+            peaks.push_back(static_cast<int>(i));
+        }
+    }
+    
+    return peaks;
 }
 
 double FeatureExtractor::calculateSwing(const std::vector<float>& audioData, double sampleRate)
 {
-    // Simplified swing calculation based on rhythm analysis
-    // In practice, this would be much more sophisticated
-    double swing = 0.0;
-    int count = 0;
+    if (audioData.size() < static_cast<size_t>(sampleRate)) return 0.0;
     
-    for (size_t i = 0; i < audioData.size() - 1; ++i)
+    // Detect onsets for swing analysis
+    std::vector<float> onsets = detectOnsets(audioData, sampleRate);
+    
+    if (onsets.size() < 4) return 0.0;
+    
+    // Analyze timing patterns for swing
+    double swingAmount = 0.0;
+    int swingCount = 0;
+    
+    for (size_t i = 0; i < onsets.size() - 2; ++i)
     {
-        if (std::abs(audioData[i]) > 0.1f) // If there's significant audio
+        double interval1 = onsets[i+1] - onsets[i];
+        double interval2 = onsets[i+2] - onsets[i+1];
+        
+        // Look for swing patterns (long-short-long)
+        if (interval1 > interval2 * 1.5) // First interval significantly longer
         {
-            swing += std::abs(audioData[i] - audioData[i+1]);
-            count++;
+            double expectedSwing = interval1 * 0.67; // Expected swing ratio
+            double actualRatio = interval2 / interval1;
+            swingAmount += std::abs(actualRatio - 0.67);
+            swingCount++;
         }
     }
     
-    return count > 0 ? swing / count : 0.0;
+    return swingCount > 0 ? swingAmount / swingCount : 0.0;
+}
+
+std::vector<float> FeatureExtractor::detectOnsets(const std::vector<float>& audioData, double sampleRate)
+{
+    std::vector<float> onsets;
+    
+    // Simple onset detection using spectral flux
+    float threshold = 0.1f;
+    float prevEnergy = 0.0f;
+    
+    for (size_t i = 1; i < audioData.size(); ++i)
+    {
+        float currentEnergy = std::abs(audioData[i]);
+        
+        // Detect sudden increase in energy
+        if (currentEnergy > prevEnergy * 1.5f && currentEnergy > threshold)
+        {
+            onsets.push_back(static_cast<float>(i) / static_cast<float>(sampleRate));
+        }
+        
+        prevEnergy = currentEnergy;
+    }
+    
+    return onsets;
 }
 
 double FeatureExtractor::calculateDensity(const std::vector<float>& audioData, double sampleRate)
@@ -357,3 +435,4 @@ double FeatureExtractor::calculateOnsetEntropy(const std::vector<float>& audioDa
     
     return entropy;
 }
+
