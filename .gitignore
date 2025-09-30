@@ -5,7 +5,7 @@ MusicGroovesMidi/ProcessedMIDIs/*.mid
 MusicGroovesMidi/TrainingMIDIs/*.mid
 MusicGroovesMidi/TrainingMIDIs/*.midi
 __pycache__/
-.csv
+*.csv
 .cursor 
 .vscode
 *.log
